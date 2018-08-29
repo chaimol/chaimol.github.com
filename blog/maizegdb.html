@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>连接maizegdb数据库</title>
+    <style type="text/css">
+    td {
+        border: 1px solid #325;
+    }
+    .search{
+        height: 35px;
+        width: 200px;
+        font-size: 20px;
+        padding: 5px;
+    }
+    .search-btn{
+        height: 50px;
+        width: 60px;
+        font-size: 20px;
+        padding: 5px;
+        text-align: center;
+
+    }
+    .hidden{
+        display: none;
+    }
+    footer{
+        position: fixed;
+        width: 100%;
+        bottom: 10px;
+        margin:10px auto;
+        text-align: center;
+        cursor: pointer;
+    }
+    footer a{
+        display: inline-block;
+        color: #000;
+        text-align: center;
+        text-decoration: none;
+    }
+    a:hover{
+        color:#6699de;
+    }
+    </style>
+</head>
+
+<body>
+<h1>ssr引物标记查询</h1>
+    <form method="get" action="https://www.maizegdb.org/search_engine/search" target="_blank">
+        <input class="search" id="term" name="term" type="search" label="引物名称" placeholder="mmc0143" required="required"></input>
+        <input class="search hidden" id="masker" name="type" type="text" label="标记类型" value="11"></input>
+        <input name="alldata" value="false" class="hidden" type=""></input>
+        <input class="search-btn" id="btn-1" type="submit" value="提交"></input>
+    </form>
+
+    <hr>
+    <h1>全部数据查询（alldata）</h1>
+     <form method="get" action="https://www.maizegdb.org/search_engine/search" target="_blank">
+        <input class="search clear" id="term" name="term" type="search" label="引物名称" placeholder="mmc0143" required="required"></input>
+        <input class="search hidden" id="masker" name="type" type="text" label="标记类型" value=""></input>
+        <input name="alldata" value="true" class="hidden" type=""></input>
+        <input class="search-btn" id="btn-1" type="submit" value="提交"></input>
+    </form>
+    
+
+<h1>基因数据查询（Maizegdb）</h1>
+     <form method="post" name="form" action="" target="_blank">
+        <input class="search clear" id="gene"  type="search" label="基因名称" placeholder="" required="required"></input>
+       <!--  <input class="search hidden" id="masker" name="type" type="text" label="标记类型" value="2"></input> -->
+       <!--  <input name="alldata" value="false" class="hidden" type=""></input> -->
+        <input class="search-btn" id="btn-1" type="button" value="提交" onclick="subForm();"></input>
+    </form>
+<h1>基因数据查询（NCBI）</h1>
+     <form method="get" name="form" action="https://www.ncbi.nlm.nih.gov/gene/" target="_blank">
+        <input class="search clear" id="gen" name="term" type="search" label="基因名称" placeholder="" required="required"></input>
+       <!--  <input class="search hidden" id="masker" name="type" type="text" label="标记类型" value="2"></input> -->
+       <!--  <input name="alldata" value="false" class="hidden" type=""></input> -->
+        <input class="search-btn" id="btn-2" type="submit" value="提交" onclick=""></input>
+    </form>
+
+  
+    <script type="text/javascript">
+    function subForm(){
+    	idn = id.value; //idn 表示用户输入的基因编号，
+    	idn_1 = idn.slice(0,1);
+    	idn_1 = idn_1.toUpperCase(); //将第一个字符大写
+
+    	idn_2 = idn.slice(1,2);
+    	idn_2 = idn_2.toLowerCase(); //将第二个字符小写
+    	idn_3 = idn.slice(2);
+    	idn = idn_1 + idn_2 + idn_3;
+    	console.log(idn_2);
+    	this.form.action="https://www.maizegdb.org/gene_center/gene/"+ idn ;
+    	this.form.submit();
+    }
+        var term = document.getElementById('term');
+        var id = document.getElementById('gene');
+        //     btn.onclick = function(){
+        //         console.log(masker.value);
+        //     }
+        //     
+        //     
+        var code = term.value;  //引物名称
+        var tagID = masker.value;//标记类型  11对应SSR  16对应QTL  此处默认设置为11，并且用class-hidden 隐藏起该输入框
+        var alldata = false;
+        refL = "https://www.maizegdb.org/search/alldata/searchResultsProxy.php?term=" + code + "&type=" + tagID + "&alldata=" + alldata;
+
+
+
+
+
+        //gene数据查询页面
+        var gene = document.getElementById('gene');
+        refL = "https://www.maizegdb.org/gene_center/gene/"+gene.value;
+
+
+
+    </script>
+    <footer>&copy;copyright <span>2017</span> <a href="../product/hao123/index.html">@chaimol</a></footer>
+</body>
+
+</html>
