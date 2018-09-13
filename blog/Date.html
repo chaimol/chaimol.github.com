@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>月月计算器</title>
+</head>
+<style type="text/css">
+
+    input{
+        display: inline-block;
+        min-height: 20px;
+        padding:5px;
+        font-size: 20px;
+        margin: 20px;
+        width: 180px;
+    }
+    #frind{
+        width:500px;
+        margin:10px auto;
+        text-align: center;
+        border: 1px solid #9791e8;
+    }
+    #submit{
+        width: 300px;
+    }
+    label{
+        width: 150px;
+        display: inline-block;
+        text-align: right;
+    }
+</style>
+<body>
+
+<div id="frind">
+    <h3>月月计算器</h3>
+    <label>上次的日期:</label><input type="date" id="lasttime" name="date1" value="">
+    <br>
+    <label>周期天数</label><input type="number" id="week1" name="week1" min="23" max="34" value="28">
+    <br>
+    <label>下次到来还有的天数</label><input readonly type="number" id="cont_time" name="conttime" value="">
+    <br>
+    <label>下次的预计日期:</label><input type="text" id="nexttime" name="date2" value="0">
+    <br>
+    <input type="submit" id="submit" name="submit" value="提交" onclick="runcalc()">
+
+</div>
+
+<script>
+    //声明获取id对象的方法函数
+    function $Id(id){
+        return document.getElementById(id)
+    }
+    //运算函数
+    function runcalc(){
+          lasttime = $Id('lasttime').value;
+
+          lasttime = Date.parse(lasttime);  //把时间格式2018-08-06改成时间戳1533513600000。
+          week1 = $Id('week1').value;
+          week1 = week1 * 24 * 3600 * 1000;
+          nowtime = Date.now();
+          nexttime = lasttime + week1;
+          cont_time = (nexttime - nowtime)/(1000*3600*24);//把时间戳的差值转换成天数
+        if (lasttime > nowtime){
+            alert('请选择比当前时间更早的日期，你选择的上次日期不正确。');
+            return;
+        }else if(cont_time < 0){
+            alert('请确定您输入的是上次的日期，如果确定是，建议你去医院看医生。你可能中标了，哈哈哈！否则就是你在瞎闹！');
+        }else{
+            $Id('cont_time').value = Math.round(cont_time) ;
+            d = new Date(nexttime);
+            nexttime = d.toLocaleString();
+            $Id('nexttime').value = nexttime;
+            console.log(cont_time);
+        }
+
+
+    }
+
+</script>
+</body>
+</html>
