@@ -1,0 +1,79 @@
+@charset "utf-8";
+// 前端知识总结，系列样式文件
+    html{
+          font-size: 16px;
+    }
+
+    body {
+        width: 50em;
+        margin: 1.5em auto;
+        padding: 1em;
+        border: 1px solid #ddd;
+        outline: 2000px solid #f2feef;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+    }
+
+    li {
+        font-size: 1em;
+        line-height: 1.5em;
+    }
+    
+    a {
+        text-decoration: none;
+        font-weight: bolder;
+        color: #4183c4;
+    }
+    
+    a:hover{
+        text-decoration: underline;
+    }
+
+    h1 {
+        text-align: center;
+    }
+    
+    p{
+        font-size: 0.9em;
+        text-indent: 2em;
+        line-height: 1.5em;
+    }
+    ul li{
+        list-style: none;
+    }
+    .css-code{
+        padding:0;
+        margin:0;
+        text-indent: 0;
+        font-size: 1em;
+    }
+    #Totop{
+        display: block;
+        position: fixed;
+        right: 20px;
+        bottom: 50px;
+        background-color: #feddff;
+        width: 40px;
+        height: 30px;
+        line-height: 30px;
+        color: #000;
+        text-align: center;
+    }
+    a#Totop:hover{
+        text-decoration: none;
+    }
+    code{
+        background-color: #ddd;
+        padding:5px;
+        line-height: 1.2em;
+        font-family: helvetica, verdana, sans-serif;
+        user-select:text;
+        -webkit-user-select:text;
+        -moz-user-select:text;
+        -o-user-select:text;
+    }
+    pre{
+        background-color: #ddd;
+    }

@@ -1,0 +1,949 @@
+@charset "utf-8";
+body {
+    padding-bottom: 70px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.banner {
+    position: relative;
+    overflow: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.banner li {
+    list-style: none;
+}
+
+.banner ul li {
+    float: left;
+}
+
+.list-cont {
+    float: left;
+    overflow-x: hidden;
+    font-size: 14px;
+}
+
+.list-cont:hover {
+    background-color: #4ad2eb;
+}
+
+.list-cont a {
+    text-decoration: none;
+}
+
+.list-ico {
+    display: block;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    // border:1px solid transparent;
+}
+
+.list-ico:hover {
+    -webkit-animation: rotaterun 5s linear;
+    -moz-animation: rotaterun 5s linear;
+    -ms-animation: rotaterun 5s linear;
+    animation: rotaterun 5s linear;
+    animation-fill-mode: both;
+}
+
+.list-tit {
+    line-height: 30px;
+    text-align: center;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    word-break: keep-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+@-webkit-keyframes rotaterun {
+    from {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(360deg) scale(1.2);
+    }
+}
+
+@-moz-keyframes rotaterun {
+    from {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(360deg) scale(1.2);
+    }
+}
+
+@-ms-keyframes rotaterun {
+    from {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(360deg) scale(1.2);
+    }
+}
+
+ketframes rotaterun {
+    from {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(360deg) scale(1.2);
+    }
+}
+
+.warning {
+    color: #f00;
+}
+
+img[class^="bc"] {
+    //background:url("../img/biancheng.png") top left no-repeat;
+}
+
+
+/*********************************知识背景图start*******************************************/
+
+.zhishi-1 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -1105px;
+    background-size: 60px;
+}
+
+.zhishi-2 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -1050px;
+    background-size: 60px;
+}
+
+.zhishi-3 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -1209px;
+    background-size: 60px;
+}
+
+.zhishi-4 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -995px;
+    background-size: 60px;
+}
+
+.zhishi-5 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -940px;
+    background-size: 60px;
+}
+
+.zhishi-6 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -885px;
+    background-size: 60px;
+}
+
+.zhishi-7 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -830px;
+    background-size: 60px;
+}
+
+.zhishi-8 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -775px;
+    background-size: 60px;
+}
+
+.zhishi-9 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -1160px;
+    background-size: 60px;
+}
+
+.zhishi-10 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -720px;
+    background-size: 60px;
+}
+
+.zhishi-11 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -665px;
+    background-size: 60px;
+}
+
+.zhishi-12 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -610px;
+    background-size: 60px;
+}
+
+.zhishi-13 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -555px;
+    background-size: 60px;
+}
+
+.zhishi-14 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -500px;
+    background-size: 60px;
+}
+
+.zhishi-15 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -445px;
+    background-size: 60px;
+}
+
+.zhishi-16 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -390px;
+    background-size: 60px;
+}
+
+.zhishi-17 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -335px;
+    background-size: 60px;
+}
+
+.zhishi-18 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -280px;
+    background-size: 60px;
+}
+
+.zhishi-19 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -225px;
+    background-size: 60px;
+}
+
+.zhishi-20 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -170px;
+    background-size: 60px;
+}
+
+.zhishi-21 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -115px;
+    background-size: 60px;
+}
+
+.zhishi-22 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -60px;
+    background-size: 60px;
+}
+
+.zhishi-23 {
+    background: url("../img/konwledge.png") top left no-repeat;
+    background-position: -5px -5px;
+    background-size: 60px;
+}
+
+
+/**********************************知识背景图end*******************************************/
+
+
+/*******************************编程背景start*********************************************/
+
+.bc-1 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -720px;
+    background-size: 60px;
+}
+
+.bc-2 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -665px;
+    background-size: 60px;
+}
+
+.bc-3 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -767px;
+    background-size: 60px;
+}
+
+.bc-4 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -610px;
+    background-size: 60px;
+}
+
+.bc-5 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -500px;
+    background-size: 60px;
+}
+
+.bc-6 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -445px;
+    background-size: 60px;
+}
+
+.bc-7 {
+    /*实际的第四个*/
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -555px;
+    background-size: 60px;
+}
+
+.bc-8 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -390px;
+    background-size: 60px;
+}
+
+.bc-9 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -330px;
+    background-size: 60px;
+}
+
+.bc-10 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -280px;
+    background-size: 60px;
+}
+
+.bc-11 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -225px;
+    background-size: 60px;
+}
+
+.bc-12 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -167px;
+    background-size: 60px;
+}
+
+.bc-13 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -114px;
+    background-size: 60px;
+}
+
+.bc-14 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -60px;
+    background-size: 60px;
+}
+
+.bc-15 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -820px;
+    background-size: 60px;
+}
+
+.bc-16 {
+    background: url("../img/biancheng.png") top left no-repeat;
+    background-position: -5px -10px;
+    background-size: 60px;
+}
+
+
+/****************************编程背景图end********************************************/
+
+
+/*****************************书籍类start*********************************************/
+
+.book-1 {
+    background: url("../img/tushu.png") top left no-repeat;
+    background-position: -5px -505px;
+    background-size: 60px;
+}
+
+.book-2 {
+    background: url("../img/tushu.png") top left no-repeat;
+    background-position: -5px -450px;
+    background-size: 60px;
+}
+
+.book-3 {
+    background: url("../img/tushu.png") top left no-repeat;
+    background-position: -5px -395px;
+    background-size: 60px;
+}
+
+.book-4 {
+    background: url("../img/tushu.png") top left no-repeat;
+    background-position: -5px -6px;
+    background-size: 60px;
+}
+
+.book-5 {
+    background: url("../img/tushu.png") top left no-repeat;
+    background-position: -5px -340px;
+    background-size: 60px;
+}
+
+.book-6 {
+    background: url("../img/tushu.png") top left no-repeat;
+    background-position: -5px -285px;
+    background-size: 60px;
+}
+
+.book-7 {
+    background: url("../img/tushu.png") top left no-repeat;
+    background-position: -5px -230px;
+    background-size: 60px;
+}
+
+.book-8 {
+    background: url("../img/tushu.png") top left no-repeat;
+    background-position: -5px -175px;
+    background-size: 60px;
+}
+
+.book-9 {
+    background: url("../img/tushu.png") top left no-repeat;
+    background-position: -5px -120px;
+    background-size: 60px;
+}
+
+.book-10 {
+    background: url("../img/tushu.png") top left no-repeat;
+    background-position: -5px -65px;
+    background-size: 60px;
+}
+
+
+/****************************书籍类end******************************************************************/
+
+
+/****************************图片类背景图start*********************************************************/
+
+.pic-1 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -720px;
+    background-size: 60px;
+}
+
+.pic-2 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -665px;
+    background-size: 60px;
+}
+
+.pic-3 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -610px;
+    background-size: 60px;
+}
+
+.pic-4 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -555px;
+    background-size: 60px;
+}
+
+.pic-5 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -500px;
+    background-size: 60px;
+}
+
+.pic-6 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -445px;
+    background-size: 60px;
+}
+
+.pic-7 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -390px;
+    background-size: 60px;
+}
+
+.pic-8 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -335px;
+    background-size: 60px;
+}
+
+.pic-9 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -775px;
+    background-size: 60px;
+}
+
+.pic-10 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -280px;
+    background-size: 60px;
+}
+
+.pic-11 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -225px;
+    background-size: 60px;
+}
+
+.pic-12 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -170px;
+    background-size: 60px;
+}
+
+.pic-13 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -115px;
+    background-size: 60px;
+}
+
+.pic-14 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -682px;
+    background-size: 50px;
+}
+
+.pic-15 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -60px;
+    background-size: 60px;
+}
+
+.pic-16 {
+    background: url("../img/picture.png") top left no-repeat;
+    background-position: -5px -5px;
+    background-size: 60px;
+}
+
+
+/***************************************音乐部分背景图start******************************************/
+
+.music-1 {
+    background: url("../img/music.png") top left no-repeat;
+    background-position: -5px -500px;
+    background-size: 60px;
+}
+
+.music-2 {
+    background: url("../img/music.png") top left no-repeat;
+    background-position: -5px -445px;
+    background-size: 60px;
+}
+
+.music-3 {
+    background: url("../img/music.png") top left no-repeat;
+    background-position: -5px -390px;
+    background-size: 60px;
+}
+
+.music-4 {
+    background: url("../img/music.png") top left no-repeat;
+    background-position: -5px -335px;
+    background-size: 60px;
+}
+
+.music-5 {
+    background: url("../img/music.png") top left no-repeat;
+    background-position: -5px -280px;
+    background-size: 60px;
+}
+
+.music-6 {
+    background: url("../img/music.png") top left no-repeat;
+    background-position: -5px -225px;
+    background-size: 60px;
+}
+
+.music-7 {
+    background: url("../img/music.png") top left no-repeat;
+    background-position: -5px -170px;
+    background-size: 60px;
+}
+
+.music-8 {
+    background: url("../img/music.png") top left no-repeat;
+    background-position: -5px -115px;
+    background-size: 60px;
+}
+
+.music-9 {
+    background: url("../img/music.png") top left no-repeat;
+    background-position: -5px -60px;
+    background-size: 60px;
+}
+
+.music-10 {
+    background: url("../img/music.png") top left no-repeat;
+    background-position: -5px -5px;
+    background-size: 60px;
+}
+
+
+/*************************music end*****************/
+
+
+/*************************vedio start*************************************/
+
+.ved-1 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -610px;
+    background-size: 60px;
+}
+
+.ved-2 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -555px;
+    background-size: 60px;
+}
+
+.ved-3 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -500px;
+    background-size: 60px;
+}
+
+.ved-4 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -445px;
+    background-size: 60px;
+}
+
+.ved-5 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -390px;
+    background-size: 60px;
+}
+
+.ved-6 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -335px;
+    background-size: 60px;
+}
+
+.ved-7 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -280px;
+    background-size: 60px;
+}
+
+.ved-8 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -225px;
+    background-size: 60px;
+}
+
+.ved-9 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -170px;
+    background-size: 60px;
+}
+
+.ved-10 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -115px;
+    background-size: 60px;
+}
+
+.ved-11 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -60px;
+    background-size: 60px;
+}
+
+.ved-12 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -5px;
+    background-size: 60px;
+}
+
+
+/***************************vedio end***********************************/
+
+
+/****************************movie start********************************************/
+.mov-0 {
+    background: url("../img/vedio.png") top left no-repeat;
+    background-position: -5px -500px;
+    background-size: 60px;
+}
+
+.mov-1 {
+    background: url("../img/movie.png") top left no-repeat;
+    background-position: -5px -390px;
+    background-size: 60px;
+}
+
+.mov-2 {
+    background: url("../img/movie.png") top left no-repeat;
+    background-position: -5px -335px;
+    background-size: 60px;
+}
+
+.mov-3 {
+    background: url("../img/movie.png") top left no-repeat;
+    background-position: -23px -594px;
+    background-size: 80px;
+}
+
+.mov-4 {
+    background: url("../img/movie.png") top left no-repeat;
+    background-position: -5px -280px;
+    background-size: 60px;
+}
+
+.mov-5 {
+    background: url("../img/movie.png") top left no-repeat;
+    background-position: -5px -225px;
+    background-size: 60px;
+}
+
+.mov-6 {
+    background: url("../img/movie.png") top left no-repeat;
+    background-position: -5px -170px;
+    background-size: 60px;
+}
+
+.mov-7 {
+    background: url("../img/movie.png") top left no-repeat;
+    background-position: -5px -115px;
+    background-size: 60px;
+}
+
+.mov-8 {
+    background: url("../img/movie.png") top left no-repeat;
+    background-position: -5px -60px;
+    background-size: 60px;
+}
+
+.mov-9 {
+    background: url("../img/movie.png") top left no-repeat;
+    background-position: -5px -5px;
+    background-size: 60px;
+}
+
+
+/****************************movie end************************************************/
+
+
+/*****************************shopping start*************************************************/
+.shop-1{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -830px;
+    background-size: 60px;
+}
+.shop-2{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -775px;
+    background-size: 60px;
+}
+.shop-3{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -939px;
+    background-size: 60px;
+}
+.shop-4{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -720px;
+    background-size: 60px;
+}
+.shop-5{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -665px;
+    background-size: 60px;
+}
+.shop-6{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -610px;
+    background-size: 60px;
+}
+.shop-7{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -555px;
+    background-size: 60px;
+}
+.shop-8{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -500px;
+    background-size: 60px;
+}
+.shop-9{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -445px;
+    background-size: 60px;
+}
+.shop-10{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -390px;
+    background-size: 60px;
+}
+.shop-11{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -885px;
+    background-size: 60px;
+}
+.shop-12{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -335px;
+    background-size: 60px;
+}
+.shop-13{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -985px;
+    background-size: 60px;
+}
+.shop-14{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -280px;
+    background-size: 60px;
+}
+.shop-15{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -225px;
+    background-size: 60px;
+}
+.shop-16{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -170px;
+    background-size: 60px;
+}
+.shop-17{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -116px;
+    background-size: 60px;
+}
+.shop-18{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -60px;
+    background-size: 60px;
+}
+.shop-19{
+    background: url("../img/shopping.png") top left no-repeat;
+    background-position: -5px -5px;
+    background-size: 60px;
+}
+
+
+/******************************shopping end*******************************************/
+
+
+/******************搜索start*****************************/
+
+.search-1 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -560px;
+    background-size: 60px;
+}
+
+.search-2 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -68px;
+    background-size: 62px;
+}
+
+.search-3 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -120px;
+    background-size: 60px;
+}
+
+.search-4 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -395px;
+    background-size: 60px;
+}
+
+.search-5 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -340px;
+    background-size: 60px;
+}
+
+.search-6 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -285px;
+    background-size: 60px;
+}
+
+.search-7 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -230px;
+    background-size: 60px;
+}
+
+.search-8 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -177px;
+    background-size: 60px;
+}
+
+.search-9 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -5px;
+    background-size: 60px;
+}
+
+.search-10 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -120px;
+    background-size: 60px;
+}
+
+.search-11 {
+    background: url("../img/search.png") top left no-repeat;
+    background-position: -5px -609px;
+    background-size: 60px;
+}
+
+
+/******************搜索背景图end******************************************/
+
+
+/***********************************增补背景图start***********************/
+
+.bc-cocoachina {
+    background: url("../img/zengbu.png") top left no-repeat;
+    background-position: -5px -115px;
+    background-size: 60px;
+}
+
+.bc-cocoacontrol {
+    background: url("../img/zengbu.png") top left no-repeat;
+    background-position: -5px -60px;
+    background-size: 60px;
+}
+
+.music-pandora {
+    background: url("../img/zengbu.png") top left no-repeat;
+    background-position: -5px -5px;
+    background-size: 60px;
+}
+
+
+/**************************增补背景图end************************************/
+
+@media screen and (max-width:767px) {
+    .list-tit {
+        width: 60px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width:413px) {
+    .list-tit {
+        width: 50px;
+        font-size: 10px;
+    }
+}

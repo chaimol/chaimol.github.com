@@ -1,0 +1,369 @@
+@charset "utf-8";
+#phone-totaler{
+	display: block;
+}
+#totaler{
+	display: none;
+}
+.logo{
+    height: 55px;
+    padding: 17px 0 15px;
+    text-align: center;
+}
+
+span.glyphicon-globe{
+	color:#6FB5E9;
+}
+span.glyphicon-book{
+	color: #AEBC73;
+}
+span.glyphicon-map-marker{
+	color:#60ADE8;
+}
+.main{
+	margin: 10px;
+}
+
+.s_btn{
+	width:79px;
+	height:42px;
+	float:left;
+	margin-left:-79px;
+	position: relative;
+	right: -79px;
+	letter-spacing: -1px;
+	font-weight: 700;
+    font-size: 16px;
+}
+.s_text{
+	height: 40px;
+	float: left;
+	width: 100%;
+}
+
+.inner{
+	margin-right: 79px;
+	width: 100%;
+	height: 40px;
+	display: block;
+}
+input[type="text"]:hover{
+	border: 1px solid #6C91C8;
+}
+input[type="text"]:active{
+	border: 1px solid #6C91C8;
+}
+input[type="text"]:focus{
+	border: 1px solid #6C91C8;
+}
+
+.form2{
+	margin-top:30px;
+	height: 42px;
+	border:1px solid #8d9394;
+	padding-right:79px;
+	overflow: hidden;
+}
+
+#navs{
+	margin:17px 0px 14px;
+	text-align: center;
+}
+
+a.opt{ 
+	float: left;
+    display: block;
+    width: 16.666%;
+    color: #262626;
+}
+a:link,a:visited,a:hover,a:active{
+	color: #262626;
+	text-decoration: none;
+}
+.navs-n{
+	display: block;
+	font-size: 13px;
+}
+
+.glyphicon{
+	height: 24px;
+}
+
+.plus-content{
+	position: relative;
+	display:block;
+	width: 25%;
+	height: 42px;
+	line-height: 42px;
+	float: left;
+	text-align: center;
+	color: #262626;
+}
+.glyphicon-option-vertical{
+	float: right;
+	position: absolute;
+	top:10px;
+	right: 12px;
+}
+
+.nav_plus{
+	border: 1px solid #d9dde2;
+    margin-top: 80px;
+    height: 123px;
+}
+
+.normalize_title{
+	line-height: 40px;
+	font-size: 15px;
+	font-weight: 400;
+	color: #aaa;
+	position: relative;
+    margin: 2px 14px 0;
+    height: 40px;
+    text-align: left;
+}
+
+#plus_card{
+	position: relative;
+	padding: 2px 10px 10px 10px;
+}
+
+.nav_plus2{
+	border: 1px solid #d9dde2;
+    margin-top: 10px;
+    height: 166px;
+}
+
+.plu-content{
+	position: relative;
+	display:block;
+	width: 50%;
+	height: 42px;
+	line-height: 42px;
+	float: left;
+	text-align: left;
+	color: #262626;
+}
+
+.normalize_title2{
+	line-height: 40px;
+	font-size: 15px;
+	font-weight: 400;
+	color: #aaa;
+	position: relative;
+	margin: 2px 14px 0;
+    height: 40px;
+    text-align: left;
+}
+
+.glyphicon-repeat{
+	float: right;
+	position:absolute;
+	top:10px;
+	right:80px;
+}
+
+.text1{
+	position: absolute;
+	right: 30px;
+	color: #aaa;
+}
+
+.news{
+	  padding: 0px 14px;
+}
+.gps-z{
+	margin: 8px 14px 14px;
+}
+
+.gps-text{
+	display: inline-block;
+	float: left;
+}
+
+button.btn1{
+	width: 70px;
+	height: 30px;
+	border-radius: 0px;
+	float: right;
+	background: transparent;
+	border: 1px solid #d2d6dd;
+}
+
+.nav_plus3{
+	border: 1px solid #d9dde2;
+    margin-top: 10px;
+    height: 290px;
+}
+.life{
+	position: relative;
+	margin:10px;
+	margin-top:30px;
+	height: 210px;
+}
+
+.list1{
+	position: relative;
+	display:block;
+	width: 25%;
+	height: 42px;
+	line-height: 42px;
+	float: left;
+	text-align: center;
+	color: #262626;
+	margin-top:20px;
+	margin-bottom: 20px;
+}
+.icon-list1{
+	float: left;
+	width: 42px;
+	height: 40px;
+	border-radius: 50%;
+	background:url("../img/tubiao2.png") top left;
+	background-position: 0px 1px;
+	margin-left:5.55%;
+	margin-right:11%;
+}
+
+.icon-list2{
+	float: left;
+	width: 42px;
+	height: 40px;
+	border-radius: 50%;
+	background:url("../img/tubiao2.png") top left;
+	background-position: 0px 37.5px;
+	margin-left:5.55%;
+	margin-right:11%;
+}
+
+.icon-list3{
+	float: left;
+	width: 42px;
+	height: 40px;
+	border-radius: 50%;
+	background:url("../img/tubiao2.png") top left;
+	background-position: 0px 77.5px;
+	margin-left:5.55%;
+	margin-right:11%;
+}
+
+.icon-list4{
+	float: left;
+	width: 42px;
+	height: 40px;
+	border-radius: 50%;
+	background:url("../img/tubiao2.png") top left;
+	background-position: 0px 118px;
+	margin-left:5.55%;
+	margin-right:11%;
+}
+
+.icon-list5{
+	float: left;
+	width: 42px;
+	height: 40px;
+	border-radius: 50%;
+	background:url("../img/tubiao2.png") top left;
+	background-position: 0px 157px;
+	margin-left:5.55%;
+	margin-right:11%;
+}
+
+.icon-list6{
+	float: left;
+	width: 42px;
+	height: 40px;
+	border-radius: 50%;
+	background:url("../img/tubiao2.png") top left;
+	background-position: 0px 196px;
+	margin-left:5.55%;
+	margin-right:11%;
+}
+
+.icon-list7{
+	float: left;
+	width: 42px;
+	height: 40px;
+	border-radius: 50%;
+	background:url("../img/tubiao2.png") top left;
+	background-position: 0px -40px;
+	margin-left:5.55%;
+	margin-right:11%;
+}
+
+.icon-list8{
+	float: left;
+	width: 42px;
+	height: 40px;
+	border-radius: 50%;
+	background:url("../img/tubiao2.png") top left;
+	background-position: 0px -78px;
+	margin-left:5.55%;
+	margin-right:11%;
+}
+
+span.nav3-text{
+	position: relative;
+	display: block;
+	width: 42px;
+	line-height: 18px;
+	height: 18px;
+	text-align: center;
+	margin-top:50px;
+}
+
+.setting{
+	line-height: 45px;
+    height: 45px;
+    font-size: 15px;
+    text-indent: -8px;
+    border: 1px solid #d9dde2; 
+}
+
+.setting-text{
+	color: #0058d2;
+}
+
+.glyphicon-cog{
+	color: #0058d2;
+}
+
+a.bottom-href{
+	position: relative;
+    display: block;
+    padding-left: 11px;
+    font-size: 13px;
+    height: 33px;
+    text-align: left;
+    color: #555;
+}
+
+span.icon4{
+	float: right;
+	line-height: 33px;
+
+}
+
+.img4{
+	width: 15px;
+	height: 15px;
+}
+
+a.foot-href{
+	display: inline-block;
+    height: 24px;
+    width: 47%;
+    line-height: 24px;
+    border: 1px solid #ececec;
+    border-radius: 1px;
+    color: #555;
+    font-size: 13px;
+}
+
+a.index-copyright{
+	display: block;
+    font-size: 10px;
+    line-height: 20px;
+    padding: 35px 0 13px;
+    color: #aaa;
+}

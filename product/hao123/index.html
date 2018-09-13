@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <title>anywhere</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="css/bootstrap-theme.min.css" rel="stylesheet"> -->
+    <link href="css/index.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-inverse">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand active" href="./index.html">首页<span class="sr-only">(current)</span></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav nav-pills">
+                    <li><a href="../index.html">个人项目</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">常用导航<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="http://cn.bing.com/" target="_blank" title="">必应</a></li>
+                            <li><a href="https://www.google.com/" target="_blank" title="">谷歌</a></li>
+                            <li><a href="https://www.douban.com/" target="_blank" title="">豆瓣</a></li>
+                            <li><a href="http://weibo.com/" target="_blank" title="">微博</a></li>
+                            <li><a href="http://www.bilibili.com/" target="_blank" title="">哔哩哔哩</a></li>
+                            <li><a href="https://www.google.cn/maps/" target="_blank" title="">谷歌地图</a></li>
+                            <li><a href="https://github.com/getlantern/forum" target="_blank" title="">lantern下载</a></li>
+                            <li><a href="../relationship/index.html" target="_blank" title="">亲戚关系计算器</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="../../index.html" target="_blank" title="">个人网站</a></li>
+                    <li><a href="./aboutme.html">联系我</a></li>
+                    <li>
+                        <button class="btn navbar-btn nav-right" id="toggle">折叠/展开</button>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <!-- 知识类start -->
+    <div class="panel panel-info">
+        <div class="panel-heading">知识类</div>
+        <div class="panel-body">
+            <ul class="media-list clearfix">
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.zhihu.com/" target="_blank" title="">
+                        <span class="zhishi-1 list-ico"></span>
+                        <div class="list-tit">知乎</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.quora.com/" target="_blank" title="">
+                        <span class="zhishi-2 list-ico"></span>
+                        <div class="list-tit">Quora</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://zhidao.baidu.com/" target="_blank" title="">
+                        <span class="zhishi-3 list-ico"></span>
+                        <div class="list-tit">百度知道</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://scholar.google.com/" target="_blank" title="">
+                        <span class="zhishi-4 list-ico"></span>
+                        <div class="list-tit">google学术</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://zh.wikihow.com/" target="_blank" title="">
+                        <span class="zhishi-5 list-ico"></span>
+                        <div class="list-tit">wikihow</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://en.wikipedia.org/wiki/Main_Page" target="_blank" title="">
+                        <span class="zhishi-6 list-ico"></span>
+                        <div class="list-tit">wikipedia</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.ted.com/" target="_blank" title="">
+                        <span class="zhishi-7 list-ico"></span>
+                        <div class="list-tit">TED</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.xiachufang.com/" target="_blank" title="">
+                        <span class="zhishi-8 list-ico"></span>
+                        <div class="list-tit">下厨房</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.slideshare.net/" target="_blank" title="">
+                        <span class="zhishi-9 list-ico"></span>
+                        <div class="list-tit">Slideshare</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.guokr.com/" target="_blank" title="">
+                        <span class="zhishi-10 list-ico"></span>
+                        <div class="list-tit">果壳</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.guokr.com/" target="_blank" title="">
+                        <span class="zhishi-11 list-ico"></span>
+                        <div class="list-tit">Wikia</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://delicious.com/" target="_blank" title="">
+                        <span class="zhishi-12 list-ico"></span>
+                        <div class="list-tit">Delicious</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.coursera.org/" target="_blank" title="">
+                        <span class="zhishi-13 list-ico"></span>
+                        <div class="list-tit">Coursera</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://knowyourmeme.com/" target="_blank" title="Konw Your meme">
+                        <span class="zhishi-14 list-ico"></span>
+                        <div class="list-tit">Know Your meme</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.instructables.com/" target="_blank" title="Instructables">
+                        <span class="zhishi-15 list-ico"></span>
+                        <div class="list-tit">Instructables</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.dxy.cn/" target="_blank" title="">
+                        <span class="zhishi-16 list-ico"></span>
+                        <div class="list-tit">丁香园</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.datatang.com/" target="_blank" title="">
+                        <span class="zhishi-17 list-ico"></span>
+                        <div class="list-tit">数据堂</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.icpsr.umich.edu/" target="_blank" title="">
+                        <span class="zhishi-18 list-ico"></span>
+                        <div class="list-tit">ICPSR</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page" target="_blank" title="">
+                        <span class="zhishi-19 list-ico"></span>
+                        <div class="list-tit">wikidata</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.lynda.com/" target="_blank" title="">
+                        <span class="zhishi-20 list-ico"></span>
+                        <div class="list-tit">Lynda</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.ehow.com/" target="_blank" title="">
+                        <span class="zhishi-21 list-ico"></span>
+                        <div class="list-tit">eHow</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.howcast.com/" target="_blank" title="">
+                        <span class="zhishi-22 list-ico"></span>
+                        <div class="list-tit">Howcast</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://archive.org/" target="_blank" title="Internet Archive">
+                        <span class="zhishi-23 list-ico"></span>
+                        <div class="list-tit">Internet Archive</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 知识类end -->
+    <!-- 编程类start -->
+    <div class="panel panel-info">
+        <div class="panel-heading">编程</div>
+        <div class="panel-body">
+            <ul class="media-list clearfix">
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://stackoverflow.com/" target="_blank" title="stack overflow">
+                        <span class="bc-1 list-ico"></span>
+                        <div class="list-tit">Stack Overflow</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://github.com/" target="_blank" title="">
+                        <span class="bc-2 list-ico"></span>
+                        <div class="list-tit">Github</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://developer.apple.com/" target="_blank" title="Apple Developer">
+                        <span class="bc-3 list-ico"></span>
+                        <div class="list-tit">Apple Developer</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://cocoapods.org/" target="_blank" title="">
+                        <span class="bc-4 list-ico"></span>
+                        <div class="list-tit">CocoaPods</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://unity3d.com/cn/" target="_blank" title="">
+                        <span class="bc-7 list-ico"></span>
+                        <div class="list-tit">Unity</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://apis.io/" target="_blank" title="">
+                        <span class="bc-5 list-ico"></span>
+                        <div class="list-tit">APIs.io</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://爱奇艺/" target="_blank" title="">
+                        <span class="bc-6 list-ico"></span>
+                        <div class="list-tit">CodePen.io</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.cocoacontrols.com/" target="_blank" title="Cocoa Controls">
+                        <span class="bc-cocoacontrol list-ico"></span>
+                        <div class="list-tit">Cocoa Controls</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.cocoachina.com/" target="_blank" title="">
+                        <span class="bc-cocoachina list-ico"></span>
+                        <div class="list-tit">CocoaChina</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://code4app.com/" target="_blank" title="">
+                        <span class="bc-9 list-ico"></span>
+                        <div class="list-tit">Code4App</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://processing.org/" target="_blank" title="Processing">
+                        <span class="bc-10 list-ico"></span>
+                        <div class="list-tit">Processing</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://v2ex.com/" target="_blank" title="">
+                        <span class="bc-11 list-ico"></span>
+                        <div class="list-tit">V2EX</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.alexa.com/" target="_blank" title="">
+                        <span class="bc-12 list-ico"></span>
+                        <div class="list-tit">Alexa</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://sg.godaddy.com/zh/" target="_blank" title="">
+                        <span class="bc-13 list-ico"></span>
+                        <div class="list-tit">GoDaddy</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.name.com/" target="_blank" title="">
+                        <span class="bc-14 list-ico"></span>
+                        <div class="list-tit">Name.com</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.csdn.net/" target="_blank" title="">
+                        <span class="bc-15 list-ico"></span>
+                        <div class="list-tit">CSDN</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://w3school.com.cn/" target="_blank" title="">
+                        <span class="bc-16 list-ico"></span>
+                        <div class="list-tit">W3school</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 编程类end -->
+    <!-- 书籍类start -->
+    <div class="panel panel-info">
+        <div class="panel-heading">书籍</div>
+        <div class="panel-body">
+            <ul class="media-list clearfix">
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://book.douban.com/" target="_blank" title="">
+                        <span class="book-1 list-ico"></span>
+                        <div class="list-tit">豆瓣读书</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://vdisk.weibo.com/" target="_blank" title="">
+                        <span class="book-2 list-ico"></span>
+                        <div class="list-tit">微盘</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.goodreads.com/" target="_blank" title="">
+                        <span class="book-3 list-ico"></span>
+                        <div class="list-tit">Goodreads</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://issuu.com/" target="_blank" title="">
+                        <span class="book-4 list-ico"></span>
+                        <div class="list-tit">Issuu</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.amazon.cn/Kindle%E5%95%86%E5%BA%97/b?node=116087071" target="_blank" title="">
+                        <span class="book-5 list-ico"></span>
+                        <div class="list-tit">Kindle电子书</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://uk.phaidon.com/" target="_blank" title="">
+                        <span class="book-6 list-ico"></span>
+                        <div class="list-tit">Phaidon</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.duokan.com/" target="_blank" title="">
+                        <span class="book-7 list-ico"></span>
+                        <div class="list-tit">多看阅读</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.duokan.com/" target="_blank" title="">
+                        <span class="book-8 list-ico"></span>
+                        <div class="list-tit">爱看豆</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://en.wikibooks.org/wiki/Main_Page" target="_blank" title="">
+                        <span class="book-9 list-ico"></span>
+                        <div class="list-tit">Wikibooks</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://i.qidian.com/" target="_blank" title="起点小说网">
+                        <span class="book-10 list-ico"></span>
+                        <div class="list-tit">起点中文小说网</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 书籍类end -->
+    <!-- 图片start -->
+    <div class="panel panel-info">
+        <div class="panel-heading">图片</div>
+        <div class="panel-body">
+            <ul class="media-list clearfix">
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://flickr.com/" target="_blank" title="">
+                        <span class="pic-1 list-ico"></span>
+                        <div class="list-tit">Flickr</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.pinterest.com/" target="_blank" title="">
+                        <span class="pic-2 list-ico"></span>
+                        <div class="list-tit">Pinterest</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.douban.com/" target="_blank" title="">
+                        <span class="pic-3 list-ico"></span>
+                        <div class="list-tit">豆瓣相册</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://instagram.com/" target="_blank" title="">
+                        <span class="pic-4 list-ico"></span>
+                        <div class="list-tit">Instagram</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://500px.com/" target="_blank" title="">
+                        <span class="pic-5 list-ico"></span>
+                        <div class="list-tit">500px</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://photos.google.com/" target="_blank" title="Google Photos">
+                        <span class="pic-6 list-ico"></span>
+                        <div class="list-tit">GooglePhotos</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://commons.wikimedia.org/" target="_blank" title="Wiki Commons">
+                        <span class="pic-7 list-ico"></span>
+                        <div class="list-tit">Wiki Commons</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.brandsoftheworld.com/" target="_blank" title="Brand of the world">
+                        <span class="pic-8 list-ico"></span>
+                        <div class="list-tit">Brand of the world</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://photo.weibo.com/" target="_blank" title="新浪微博图片">
+                        <span class="pic-9 list-ico"></span>
+                        <div class="list-tit">新浪微博图片</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://imgur.com/" target="_blank" title="">
+                        <span class="pic-10 list-ico"></span>
+                        <div class="list-tit">Imgur</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://giphy.com/" target="_blank" title="">
+                        <span class="pic-11 list-ico"></span>
+                        <div class="list-tit">Giphy</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.nasa.gov/multimedia/imagegallery/" target="_blank" title="NASA Images">
+                        <span class="pic-12 list-ico"></span>
+                        <div class="list-tit">NasaImages</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://creative.vcg.com/" target="_blank" title="">
+                        <span class="pic-13 list-ico"></span>
+                        <div class="list-tit">Corbis</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.istockphoto.com/" target="_blank" title="">
+                        <span class="pic-14 list-ico"></span>
+                        <div class="list-tit">iStockphoto</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.gettyimages.cn/" target="_blank" title="华盖创意 Getty China">
+                        <span class="pic-15 list-ico"></span>
+                        <div class="list-tit">华盖创意 Getty China</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.lofter.com/" target="_blank" title="">
+                        <span class="pic-16 list-ico"></span>
+                        <div class="list-tit">Lofter</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 图片end -->
+    <!-- 音乐start -->
+    <div class="panel panel-info">
+        <div class="panel-heading">音乐</div>
+        <div class="panel-body">
+            <ul class="media-list clearfix">
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.xiami.com/" target="_blank" title="">
+                        <span class="music-1 list-ico"></span>
+                        <div class="list-tit">虾米</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://spotify.com/" target="_blank" title="">
+                        <span class="music-2 list-ico"></span>
+                        <div class="list-tit">Spotify</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://soundcloud.com/" target="_blank" title="">
+                        <span class="music-3 list-ico"></span>
+                        <div class="list-tit">Soundcloud</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://music.douban.com/" target="_blank" title="">
+                        <span class="music-4 list-ico"></span>
+                        <div class="list-tit">豆瓣音乐</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://music.163.com/" target="_blank" title="">
+                        <span class="music-5 list-ico"></span>
+                        <div class="list-tit">网易云音乐</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://bandcamp.com/" target="_blank" title="">
+                        <span class="music-6 list-ico"></span>
+                        <div class="list-tit">bandcamp</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://grooveshark.com/" target="_blank" title="">
+                        <span class="music-7 list-ico"></span>
+                        <div class="list-tit">Grooveshark</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.pandora.com/" target="_blank" title="">
+                        <span class="music-pandora list-ico"></span>
+                        <div class="list-tit">Pandora</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.last.fm/" target="_blank" title="">
+                        <span class="music-8 list-ico"></span>
+                        <div class="list-tit">Last.fm</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://fnd.io/#/cn/charts/iphone/top-free/all" target="_blank" title="">
+                        <span class="music-9 list-ico"></span>
+                        <div class="list-tit">iTunes</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://fnd.io/#/cn/charts/iphone/top-free/all" target="_blank" title="">
+                        <span class="music-10 list-ico"></span>
+                        <div class="list-tit">Podcasts</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 音乐end -->
+    <!-- 视频类 start-->
+    <div class="panel panel-info">
+        <div class="panel-heading">视频</div>
+        <div class="panel-body">
+            <ul class="media-list clearfix">
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.youku.com/" target="_blank" title="">
+                        <span class="ved-1 list-ico"></span>
+                        <div class="list-tit">优酷</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://vimeo.com/" target="_blank" title="">
+                        <span class="ved-2 list-ico"></span>
+                        <div class="list-tit">Vimeo</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.youtube.com/" target="_blank" title="">
+                        <span class="ved-3 list-ico"></span>
+                        <div class="list-tit">YouTube</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.bilibili.com/" target="_blank" title="">
+                        <span class="ved-4 list-ico"></span>
+                        <div class="list-tit">Bilibili</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://vine.co/" target="_blank" title="">
+                        <span class="ved-5 list-ico"></span>
+                        <div class="list-tit">Vline</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.tudou.com/" target="_blank" title="">
+                        <span class="ved-6 list-ico"></span>
+                        <div class="list-tit">土豆网</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.iqiyi.com/" target="_blank" title="">
+                        <span class="ved-7 list-ico"></span>
+                        <div class="list-tit">爱奇艺</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.ustream.tv/" target="_blank" title="">
+                        <span class="ved-8 list-ico"></span>
+                        <div class="list-tit">Ustream</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://tv.sohu.com/" target="_blank" title="">
+                        <span class="ved-9 list-ico"></span>
+                        <div class="list-tit">搜狐视频</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.acfun.tv/" target="_blank" title="">
+                        <span class="ved-10 list-ico"></span>
+                        <div class="list-tit">Acfun.tv</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.ted.com/" target="_blank" title="">
+                        <span class="ved-11 list-ico"></span>
+                        <div class="list-tit">TED</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.howcast.com/" target="_blank" title="">
+                        <span class="ved-12 list-ico"></span>
+                        <div class="list-tit">Howcast</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 视频类end -->
+    <!-- 电影start -->
+       <div class="panel panel-info">
+        <div class="panel-heading">电影</div>
+        <div class="panel-body">
+            <ul class="media-list clearfix">
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.zhizhuys.com/" target="_blank" title="各种视频资源应有尽有">
+                        <span class="mov-0 list-ico"></span></span>
+                        <div class="list-tit">蜘蛛影视</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://movie.douban.com/" target="_blank" title="">
+                        <span class="mov-1 list-ico"></span></span>
+                        <div class="list-tit">豆瓣电影</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.imdb.com/" target="_blank" title="">
+                        <span class="mov-2 list-ico"></span>
+                        <div class="list-tit">IMDB</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.mtime.com/" target="_blank" title="">
+                        <span class="mov-3 list-ico"></span>
+                        <div class="list-tit">时光网</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.rottentomatoes.com/" target="_blank" title="">
+                        <span class="mov-4 list-ico"></span>
+                        <div class="list-tit">烂番茄</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://pan.baidu.com/disk/home" target="_blank" title="">
+                        <span class="mov-5 list-ico"></span>
+                        <div class="list-tit">百度云</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://thepiratebay.se/" target="_blank" title="">
+                        <span class="mov-6 list-ico"></span>
+                        <div class="list-tit">ThePirateBay</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://dianying.fm/" target="_blank" title="">
+                        <span class="mov-7 list-ico"></span>
+                        <div class="list-tit">电影FM</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.shooter.cn/" target="_blank" title="">
+                        <span class="mov-8 list-ico"></span>
+                        <div class="list-tit">射手网</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.torrents.to/" target="_blank" title="">
+                        <span class="mov-9 list-ico"></span>
+                        <div class="list-tit">Torrents.to</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 电影end -->
+    <!-- 购物start -->
+       <div class="panel panel-info">
+        <div class="panel-heading">购物</div>
+        <div class="panel-body">
+            <ul class="media-list clearfix">
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.taobao.com/" target="_blank" title="">
+                        <span class="shop-1 list-ico"></span></span>
+                        <div class="list-tit">淘宝</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.smzdm.com/" target="_blank" title="">
+                        <span class="shop-2 list-ico"></span>
+                        <div class="list-tit">什么值得买</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.zhe800.com/" target="_blank" title="">
+                        <span class="shop-3 list-ico"></span>
+                        <div class="list-tit">折800</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.tmall.com/" target="_blank" title="">
+                        <span class="shop-4 list-ico"></span>
+                        <div class="list-tit">天猫</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.jd.com/" target="_blank" title="">
+                        <span class="shop-5 list-ico"></span>
+                        <div class="list-tit">京东</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.amazon.cn/" target="_blank" title="">
+                        <span class="shop-6 list-ico"></span>
+                        <div class="list-tit">亚马逊</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.yhd.com/" target="_blank" title="">
+                        <span class="shop-7 list-ico"></span>
+                        <div class="list-tit">一号店</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.amazon.com/" target="_blank" title="">
+                        <span class="shop-8 list-ico"></span>
+                        <div class="list-tit">Amazon</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.meilishuo.com/" target="_blank" title="">
+                        <span class="shop-9 list-ico"></span>
+                        <div class="list-tit">美丽说</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.mogujie.com/" target="_blank" title="">
+                        <span class="shop-10 list-ico"></span>
+                        <div class="list-tit">蘑菇街</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.suning.com/" target="_blank" title="">
+                        <span class="shop-11 list-ico"></span>
+                        <div class="list-tit">苏宁易购</div>
+                    </a>
+                </li>
+                 <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.ebay.com/" target="_blank" title="">
+                        <span class="shop-12 list-ico"></span></span>
+                        <div class="list-tit">eBay</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.etsy.com/" target="_blank" title="">
+                        <span class="shop-13 list-ico"></span>
+                        <div class="list-tit">Etsy</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://verygoods.co/" target="_blank" title="">
+                        <span class="shop-14 list-ico"></span>
+                        <div class="list-tit">VeryGoods</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://thngs.co/" target="_blank" title="">
+                        <span class="shop-15 list-ico"></span>
+                        <div class="list-tit">Thngs</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.1688.com/" target="_blank" title="">
+                        <span class="shop-16 list-ico"></span>
+                        <div class="list-tit">阿里巴巴</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.fancy.com/" target="_blank" title="">
+                        <span class="shop-17 list-ico"></span>
+                        <div class="list-tit">Fancy</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.chiphell.com/" target="_blank" title="">
+                        <span class="shop-18 list-ico"></span>
+                        <div class="list-tit">Chiphell</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://society6.com/" target="_blank" title="">
+                        <span class="shop-19 list-ico"></span>
+                        <div class="list-tit">Society6</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 购物end -->
+    <!-- 传统搜索start -->
+    <div class="panel panel-info">
+        <div class="panel-heading">传统搜索</div>
+        <div class="panel-body">
+            <ul class="media-list clearfix">
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.baidu.com/" target="_blank" title="谨慎使用">
+                        <span class="search-1 list-ico"></span></span>
+                        <div class="list-tit">百度<span class="warning">*谨慎使用</span></div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://safesearch.avira.com/" target="_blank" title="">
+                        <span class="search-2 list-ico"></span>
+                        <div class="list-tit">AviraSearch</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.google.com/" target="_blank" title="">
+                        <span class="search-3 list-ico"></span>
+                        <div class="list-tit">Google</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://cn.bing.com/" target="_blank" title="">
+                        <span class="search-4 list-ico"></span>
+                        <div class="list-tit">必应Bing</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.yahoo.com/" target="_blank" title="">
+                        <span class="search-5 list-ico"></span>
+                        <div class="list-tit">Yahoo!</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://aol.com/" target="_blank" title="">
+                        <span class="search-6 list-ico"></span>
+                        <div class="list-tit">Aol</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://www.wolframalpha.com/" target="_blank" title="Wolfram|Alpha">
+                        <span class="search-7 list-ico"></span>
+                        <div class="list-tit">Wolfram|Alpha</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://duckduckgo.com/" target="_blank" title="DuckDuckGo">
+                        <span class="search-8 list-ico"></span>
+                        <div class="list-tit">DuckDuckGo</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="http://thinga.com/" target="_blank" title="">
+                        <span class="search-9 list-ico"></span>
+                        <div class="list-tit">Thinga</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://www.ppx.pw/" target="_blank" title="">
+                        <span class="search-10 list-ico"></span>
+                        <div class="list-tit">Google2</div>
+                    </a>
+                </li>
+                <li class="list-cont col-sm-3 col-md-1">
+                    <a href="https://mail.google.com/" target="_blank" title="">
+                        <span class="search-11 list-ico"></span>
+                        <div class="list-tit">Gmail</div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 传统搜索end -->
+    <!-- footer 版权start -->
+    <div class="copy">
+        <p class="col-sm-12 text-center">
+            Copyright &copy; 2016.
+            <a href="aboutme.html">chaimol</a> All rights reserved.
+        </p>
+    </div>
+    <!-- footer 版权end -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/index.js"></script>
+</body>
+
+</html>

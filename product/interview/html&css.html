@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>前端面试HTML和CSS题目</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body>
+    <h1>前端面试HTML和CSS题目<a name="#top"></a></h1>
+    <h3>1.对WEB标准以及W3C的理解与认识？</h3>
+    <p>标签闭合、标签小写、不乱嵌套、提高搜索机器人搜索几率、使用外链css和js脚本、结构行为表现的分离、文件下载与页面速度更快、内容能被更多的用户所访问、内容能被更广泛的设备所访问、更少的代码和组件，容易维护、改版方便，不需要变动页面内容、提供打印版本而不需要复制内容、提高网站易用性。</p>
+    <h3>2.doctype（文档类型）的作用是什么？</h3>
+    <p>声明页面文档的类型，以及告诉浏览器应该使用哪种模式进行渲染。</p>
+    <h3>3.XHTML和HTML有什么区别？</h3>
+    <p>
+        HTML是一种基本的WEB网页设计语言，XHTML是一个基于XML的置标语言。
+        <ul>最主要的不同:
+            <li>XHTML 元素必须被正确地嵌套。</li>
+            <li>XHTML 元素必须被关闭。</li>
+            <li>标签名必须用小写字母。</li>
+            <li>XHTML 文档必须拥有根元素。</li>
+        </ul>
+    </p>
+    <h3>4.行内元素有哪些?块级元素有哪些?</h3>
+    <p>
+        块级元素：div p h1~6 form ul li 　　行内元素: a b br i span input select
+    </p>
+    <h3>5.盒模型，如何在 CSS 中告诉浏览器使用不同的盒模型来渲染你的布局</h3>
+    <p>
+        文档中的每个元素被描绘为矩形盒子。确定其大小，属性——比如颜色、背景、边框，及其位置是渲染引擎的目标。CSS 下这些矩形盒子由标准盒模型描述。这个模型描述元素内容占用空间。盒子有四个边界：外边距边界 margin edge，边框边界 border edge，内边距边界 padding edge 与内容边界 content edge。
+        <img src="http://yianbin.qiniudn.com/fe-box-modal.jpg" style="display: block;">
+        <ul>在 CSS 中可以使用 box-sizing 来改变盒模型：
+            <li>border-box：默认值，标准盒模型。 width 与 height 是内容区的宽与高， 不包括边框，内边距，外边距。</li>
+            <li>padding-box：width 与 height 包括内边距，不包括边框与外边距。</li>
+            <li>border-box： width 与 height 包括内边距与边框，不包括外边距。这是IE怪异模式（Quirks mode）使用的盒模型。</li>
+        </ul>
+    </p>
+    <h3>6.文档流的概念、定位的理解以及z-index计算规则&浏览器差异性</h3>
+    <p>
+        文本流其实就是文档的读取和输出顺序，也就是我们通常看到的由左到右、由上而下的读取和输出形式，在网页中每个元素都是按照这个顺序进行排序和显示的，而float和position两个属性可以将元素从文本流脱离出来显示。top、bottom、left、right等属性在常规流下不会被应用，脱离常规流时可以使用。
+        <br/> 定位position设置对象的定位方式。
+        <ul>position属性取值：
+            <li>默认值：static(遵循常规流)</li>
+            <li>relative（对象遵循常规流）</li>
+            <li>absolute（对象脱离常规流）盒子的偏移位置不影响常规流中的任何元素，其margin不与其他任何margin折叠</li>
+            <li>fixed（对象脱离常规流）以窗口为参考点进行定位，当出现滚动条时，对象不会随着滚动</li>
+        </ul>
+        <h4>z-index在position不是默认值static时方可生效。</h4>
+        <p>z-index用于确定元素在当前层叠上下文中的层叠级别，并确定该元素是否创建新的局部层叠上下文。 每个元素层叠顺序由所属的层叠上下文和元素本身的层叠级别决定（每个元素仅属于一个层叠上下文）。 同一个层叠上下文中，层叠级别（即z-index属性值）大的显示在上面，反之显示在下面。 同一个层叠上下文中，层叠级别相同的两个元素，依据它们在HTML文档流中的顺序，写在后面的将会覆盖前面的。 不同层叠上下文中，元素的显示顺序依据祖先的层叠级别来决定，与自身的层叠级别无关。 当z-index未定义或者值为auto时，在IE6,7下会创建新的局部层叠上下文，而在高级浏览器中，按照规范不产生新的局部层叠上下文.
+        </p>
+    </p>
+    <h3>7.使用 CSS 预处理器（SASS，Compass，Stylus，LESS）的优缺点有哪些？描述下你曾经使用过的 CSS 预处理的优缺点。</h3>
+    <p>
+        优点：1、解决传统 CSS 无法使用变量、算术计算、条件判断等缺陷；2、Mixin 混入技术；3、提高代码开发效率。 使用过LESS。
+    </p>
+    <h3>8.媒体查询或移动端布局</h3>
+    <pre>
+        <code class="css-code">
+        @media all and (min-width:800px){
+            .container{
+                width:740px;
+            }
+        }
+        @media all and (min-width:1000px){
+            .container{
+            width:800px;
+            }
+        }
+        @media all and (min-width: 1280px){
+            .container{
+                width: 1200px;
+            }
+        }
+        </code>
+    </pre>
+    <h3>9.你做的页面在哪些流览器测试过?这些浏览器的内核分别是什么?</h3>
+    <p>
+        Ie(Ie内核) 火狐(Gecko) 谷歌(webkit) opear(Presto)safari(webkit)
+    </p>
+    <h3>10.描述css reset的作用和用途。</h3>
+    <p>
+        Reset重置浏览器的css默认属性 浏览器的品种不同，默认样式不同，重置为统一样式。
+        <br/> 比较流行的 CSS reset 有Eric Meyer’s Reset CSS、Normalize.css、YUI Reset 等等，进一步可以看
+        <a href="http://www.cssreset.com/">CSS Reset</a>。
+    </p>
+    <h3>11.解释下 CSS sprites.</h3>
+    <p>
+        将一些小图片整合到一张大图里面，来达到减少 HTTP 请求的目的。一般我会把单页需要的 icon 整合到一张，整站需要的整合到一张。这样尽量避免加载当前页不需要的图片。还可以把色值相近的图片放一起，可以让压缩的图片体积更小。
+    </p>
+    <h3>12.如果设计中使用了非标准的字体，你该如何去实现？</h3>
+    <p>
+        Webfonts（字体服务例如：Google Fonts，Typekit 等等），或者通过 @font-face 设置。
+    </p>
+    <h3>13.请罗列出你所知道的 display 属性的全部值</h3>
+    <p>
+        display 是 CSS 中最重要的用于控制布局的属性。每个元素都有一个默认的 display 值，这与元素的类型有关。对于大多数元素它们的默认值通常是 block 或 inline。一个 block 元素通常被叫做块级元素。一个 inline 元素通常被叫做行内元素。
+        <ol>
+            <li>block：一个块级元素会新开始一行并且尽可能撑满容器。div 是一个标准的块级元素。其他常用的块级元素包括 p、form 和 HTML5 中的新元素：header、footer、section 等等。</li>
+            <li>inline：一个行内元素可以在段落中 <span>像这样</span> 包裹一些文字而不会打乱段落的布局。a 元素是最常用的行内元素，它可以被用作链接。</li>
+            <li>inline-block：inline-block 的元素在元素外表现的像行内元素，其盒模型的宽度为元素的实际宽度，而在元素内部表现为一个块级元素，可以设置宽高。</li>
+            <li>table 类：与表格 table 相关的。</li>
+            <li>flexbox：弹性布局，参考：http://www.html5rocks.com/zh/tutorials/flexbox/quick/</li>
+            <li>none：通常被 JavaScript 用来在不删除元素的情况下隐藏或显示元素。它和 visibility 属性不一样。把 display 设置成 none 不会保留元素本该显示的空间，但是 visibility: hidden 还会保留。</li>
+        </ol>
+    </p>
+    <h3>14.css哪些属性可以继承?</h3>
+    <p>
+        <ul>所有元素可继承：visibility和cursor。
+            <li>内联元素可继承：letter-spacing、word-spacing、white-space、line-height、color、font、font-family、font-size、font-style、font- variant、font-weight、text-decoration、text-transform、direction。</li>
+            <li>终端块状元素可继承：text-indent和text-align。</li>
+            <li>列表元素可继承：list-style、list-style-type、list-style-position、list-style-image。</li>
+        </ul>
+    </p>
+    <h3>15.清除浮动的几种方式，各自的优缺点</h3>
+    <p>
+        <ol>
+            <li>使用空标签清除浮动 clear:both(理论上能清楚任何标签，增加无意义的标签)</li>
+            <li>使用overflow:auto(空标签元素清除浮动而不得不增加无意代码的弊端,,使用zoom:1用于兼容IE)</li>
+            <li>使用afert伪元素清除浮动(用于非IE浏览器)</li>
+        </ol>
+    </p>
+    <h3>16.浏览器标准模式和怪异模式之间的区别是什么？</h3>
+    <p>
+        由于历史的原因，各个浏览器在对页面的渲染上存在差异，甚至同一浏览器在不同版本中，对页面的渲染也不同。在 W3C 标准出台以前，浏览器在对页面的渲染上 没有统一规范，产生了差异（Quirks mode）；由于 W3C 标准的推出，浏览器渲染页面有了统一的标准（Standars mode），这就是二者最简单的区别。总而言之，怪异模式是为了兼容在标准推出之前出现的页面而设置的。
+        <br/> 浏览器会根据 doctype 来决定使用哪种渲染模式，比如
+       <code>&lt;!doctype html&gt;</code>将会触发标准模式。如果页面中没有声明 doctype，浏览器则会使用怪异模式。
+    </p>
+    <h3>17.CSS选择符有哪些?优先级算法如何计算?内联和important哪个优先级高?</h3>
+    <p>标签选择符 类选择符 id选择符 　　继承不如指定 Id>class>标签选择 　　后者优先级高</p>
+    <a href="#top" id="Totop" title="返回顶部"><b>Top</b></a>
+</body>
+
+</html>

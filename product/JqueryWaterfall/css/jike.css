@@ -1,0 +1,36 @@
+@charset "utf-8";
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.box {
+    position: relative;
+    float: left;
+}
+
+.text {
+    text-align: center;
+    font-size: 30px;
+    color: white;
+    background-color: #e07e7d;
+    margin-bottom: 10px;
+}
+
+.content {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #848484;
+    box-shadow: 0 0 5px #eaedef inset;
+    border-radius: 5px;
+}
+
+img {
+    width: 250px;
+    height: auto;
+    display: block;
+}
+
+.title {
+    display: block;
+}

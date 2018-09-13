@@ -1,0 +1,86 @@
+@charset "utf-8";
+
+/*3D魔方css文件*/
+
+.main {
+    width: 300px;
+    min-height: 300px;
+    margin: 100px auto;
+    position: relative;
+    box-sizing: border-box;
+    display: block;
+    text-align: center;
+    transform: translate3d(0, 0, 0) perspective(100px);
+    backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+    top: 0;
+    left: 0;
+    -webkit-animation: run 6s linear infinite;
+}
+
+@-webkit-keyframes run {
+    0% {
+        -webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(360deg)
+    }
+    100% {
+        -webkit-transform: rotateX(360deg) rotateY(360deg) rotateZ(0deg)
+    }
+}
+
+.left {
+    background-color: rgba(255, 20, 30, 0.2);
+    transform: rotateY(90deg) translateZ(-150px);
+}
+
+.right {
+    background-color: rgba(255, 0, 255, 0.2);
+    transform: rotateY(-90deg) translateZ(-150px);
+}
+
+.up {
+    background-color: rgba(20, 255, 0, 0.2);
+    transform: rotateX(90deg) translateZ(150px);
+}
+
+.down {
+    background-color: rgba(255, 255, 0, 0.2);
+    transform: rotateX(-90deg) translateZ(150px);
+}
+
+.front {
+    background-color: rgba(236, 126, 126, 0.2);
+    transform: translateZ(-150px);
+}
+
+.behind {
+    background-color: rgba(0, 255, 255, 0.2);
+    transform: translateZ(150px);
+}
+
+.left,
+.right,
+.up,
+.down,
+.front,
+.behind {
+    position: absolute;
+    border: 1px solid #000;
+    width: 300px;
+    height: 300px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    box-sizing: border-box;
+    border: 1px solid #000;
+    list-style: none;
+    width: 100px;
+    height: 100px;
+    display: block;
+    float: left;
+    border-radius: 10px;
+}
