@@ -10,9 +10,6 @@ import requests,random
 import csv,re
 import time
 from bs4 import BeautifulSoup
-#https://www.ncbi.nlm.nih.gov/gene/?term=Zm00001d036521
-#payload={'term':'Zm00001d036521'}
-#genename='Zm00001d036521'
 
 #反反爬虫部署，添加headers,random访问，增加代理，使用代理访问。
 user_agents=['Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1','Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50','Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.11']
@@ -37,7 +34,6 @@ def chargecontent(htmlcontent, content_selector):
 
 ##定义主爬取函数，需要传入参数为genename  V3版本
 def getGid(genename):
-	#files={'file':open('deg.csv','rb')}
 	#payload={'gene':'GRMZM2G147279','query':'Zm_Oth_Ara'}
 	payload={'gene':genename,'query':'Zm_Oth_Ara'}
 	headers={'User-Agent':random.choice(user_agents)}
@@ -57,16 +53,6 @@ def getGid(genename):
 		gene2=thread.select_one('tr >td:nth-of-type(2)').get_text()
 		gene3=thread.select_one('tr >td:nth-of-type(3)').text
 		gene4=thread.select_one('tr >td:nth-of-type(4)').text
-		# # gene_name.append(gene1)
-		# # Atr_name.append(gene2)
-		# # annotation.append(gene3)
-		# # p_value.append(gene4)
-		# tr=trx.find_all('td')
-		# a_bf=BeautifulSoup(str(thread[0]))
-		# a=a_bf.find_all('span')
-		# genename=thread.find_all('td',limit=3)
-		#此处的gid就是我们要的基因的GID值
-		#gid = a[0].text.replace('\xa0'*8,'\n\n')
 		out_data=[gene1,gene2,gene3,gene4]
 	return out_data
 
