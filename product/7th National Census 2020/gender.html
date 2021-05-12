@@ -1,0 +1,124 @@
+<html>
+  <head>
+  <meta charset="utf-8">
+  <style type="text/css">
+  body {
+  margin: 0;
+  }
+  #main {
+  height: 100%;
+  }
+  </style>
+  </head>
+  <body>
+  <div id="main"></div>
+  <script src="./js/echarts.js"></script>
+  <script src = "./js/echarts-all.js"></script>
+  <script>
+  var myChart = echarts.init(document.getElementById("main"));
+
+  var optionID_20210512102531_5602495 = 
+{
+  backgroundColor: '#1b1b1b',
+  color: ['gold','aqua','lime'],
+  title : {
+    text: '2020年第七次人口普查男女性别比例（女人为100）',
+    subtext:'',
+    x:'center',
+    textStyle : {
+      color: '#fff'
+    }
+  },
+  tooltip : {
+    trigger: 'item',
+    formatter: function (v) {
+			if(typeof(v[2])=='number'){
+			return(v[1]+': '+v[2])
+			}else if(v[2].tooltipValue!=null){
+          	return v[2].tooltipValue;
+          }else{
+            return v[1];
+          }
+  }},
+    legend: {
+        show:false,
+        orient: 'vertical',
+        x:'left',
+        data:['Data'],
+      	textStyle:{color:'#1b1b1b'}
+
+    },
+  toolbox: {
+    show : true,
+    orient : 'vertical',
+    x: 'right',
+    y: 'center',
+    feature : {
+      mark : {show: true},
+      dataView : {show: true, readOnly: false},
+      restore : {show: true},
+      saveAsImage : {show: true}
+    }
+  },
+  dataRange: {
+    min : 99,
+    max : 114,
+    calculable : true,
+    color: ['#005A32', '#238B45', '#41AB5D', '#74C476', '#A1D99B', '#C7E9C0', '#E5F5E0'],
+    textStyle:{
+      color:'#fff'
+    }
+  },
+  series : [
+    {
+    name:'Data',
+    type:'map',
+    mapType: 'china',
+    itemStyle:{
+    normal:{
+    borderColor:'rgba(100,149,237,1)',
+    borderWidth: 0.5,
+    label:{show:true,textStyle:{color:'#fff'}},
+    },
+    emphasis:{label:{show:true,textStyle:{color:'#fff'}}}
+  },
+  data:[{name:'北京',value:104.65},
+		{name:'天津',value:106.31},
+		{name:'河北',value:102.02},
+		{name:'山西',value:104.06},
+		{name:'内蒙古',value:104.26},
+		{name:'辽宁',value: 99.70},
+		{name:'吉林',value: 99.69},
+		{name:'黑龙江',value:100.35},
+		{name:'上海',value:107.33},
+		{name:'江苏',value:103.15},
+		{name:'浙江',value:109.04},
+		{name:'安徽',value:103.94},
+		{name:'福建',value:106.94},
+		{name:'江西',value:106.62},
+		{name:'山东',value:102.67},
+		{name:'河南',value:100.60},
+		{name:'湖北',value:105.83},
+		{name:'湖南',value:104.77},
+		{name:'广东',value:113.08},
+		{name:'广西',value:107.04},
+		{name:'海南',value:112.86},
+		{name:'重庆',value:102.21},
+		{name:'四川',value:102.19},
+		{name:'贵州',value:104.50},
+		{name:'云南',value:107.16},
+		{name:'西藏',value:110.32},
+		{name:'陕西',value:104.79},
+		{name:'甘肃',value:103.10},
+		{name:'青海',value:104.97},
+		{name:'宁夏',value:103.83},
+		{name:'新疆',value:106.85}]
+  
+  
+  }]
+}
+;
+  myChart.setOption(optionID_20210512102531_5602495);
+  </script>
+  </body>
+  </html>
