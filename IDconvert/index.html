@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>棉花基因组ID转换工具</title>
+    <style>
+        /* 简单美化，适配科研使用，可自行修改 */
+        * {margin: 20px; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif;}
+        .container {max-width: 1200px; margin: 0 auto;}
+        select, input, textarea, button {padding: 10px; font-size: 16px; width: 100%; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;}
+        textarea {height: 200px; resize: vertical;}
+        .result {border: 1px solid #28a745; color: #28a745;}
+        button {background: #007bff; color: white; border: none; cursor: pointer;}
+        button:hover {background: #0056b3;}
+        .tip {color: #6c757d; font-size: 14px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>棉花基因组ID转换工具</h1>
+        <!-- 基因组转换版本选择 -->
+        <select id="genomeSelect">
+            <option value="">请选择基因组转换方式</option>
+            <option value="TM_1_CRI_N244">TM-1 CRI → N244</option>
+            <option value="TM_1_ZJUV2_N244">TM-1 ZJUV2.1 → N244</option>
+            <option value="ZM113T2T_N244">ZM113T2T → N244</option>
+			<option value="TM_1_ZJUV_2_CRI">TM-1 ZJUV2.1 → CRI</option>
+            <!-- 后续新增基因组，只需加option和对应JSON文件 -->
+        </select>
+
+        <!-- 单ID查询（快速单个转换） -->
+        <div>
+            <input type="text" id="singleIdInput" placeholder="输入单个基因ID，例如Gh_A01G0001">
+            <button onclick="convertSingleId()">单ID转换</button>
+            <input type="text" id="singleResult" placeholder="转换结果" readonly>
+        </div>
+
+        <!-- 多ID批量转换（科研常用，支持粘贴多行/多列ID） -->
+        <div>
+            <textarea id="batchIdInput" placeholder="批量粘贴基因ID，每行一个ID，支持空格/制表符分隔"></textarea>
+            <button onclick="convertBatchId()">批量转换</button>
+            <textarea class="result" id="batchResult" placeholder="批量转换结果，每行对应原ID" readonly></textarea>
+            <button onclick="copyResult()">复制批量结果</button>
+        </div>
+
+        <p class="tip">提示：1. 未找到对应ID时，结果显示「未匹配」；2. 批量转换自动去重、过滤空行；3. 所有转换均在本地完成，数据不上传。</p>
+    </div>
+
+    <script>
+        // 全局变量：存储当前加载的ID映射索引（Map结构，查询效率最高）
+        let currentIdMap = new Map();
+        // 基础路径：替换为你的GitHub Pages地址 + data/genome/
+        const BASE_URL = "https://chaimol.github.io/IDconvert/data/genome/";
+
+        // 监听基因组选择变化，按需加载对应JSON文件并构建Map索引
+        document.getElementById("genomeSelect").addEventListener("change", async function() {
+            const selectValue = this.value;
+            if (!selectValue) {
+                currentIdMap.clear(); // 清空索引
+                alert("请选择基因组转换对");
+                return;
+            }
+            // 加载对应JSON文件
+            try {
+                const response = await fetch(`${BASE_URL}${selectValue}.json`);
+                if (!response.ok) throw new Error("文件加载失败，请检查基因组版本或文件路径");
+                const idJson = await response.json();
+                // 将JSON对象转为Map（Map比纯对象查询更高效，且支持特殊字符ID）
+                currentIdMap = new Map(Object.entries(idJson));
+                alert(`✅ 成功加载${selectValue}基因组映射，共${currentIdMap.size}个基因ID`);
+            } catch (err) {
+                alert(`❌ 加载失败：${err.message}`);
+                currentIdMap.clear();
+            }
+        });
+
+        // 单ID转换
+        function convertSingleId() {
+            if (currentIdMap.size === 0) {
+                alert("请先选择并加载基因组转换对");
+                return;
+            }
+            const inputId = document.getElementById("singleIdInput").value.trim();
+            if (!inputId) {
+                alert("请输入基因ID");
+                return;
+            }
+            // 本地查询Map，毫秒级响应
+            const result = currentIdMap.get(inputId) || "未匹配";
+            document.getElementById("singleResult").value = result;
+        }
+
+        // 批量ID转换：处理多行、多分隔符、空行、去重
+        function convertBatchId() {
+            if (currentIdMap.size === 0) {
+                alert("请先选择并加载基因组转换对");
+                return;
+            }
+            const inputText = document.getElementById("batchIdInput").value.trim();
+            if (!inputText) {
+                alert("请粘贴批量基因ID");
+                return;
+            }
+            // 解析输入：按 换行/空格/制表符 分割，过滤空行、去重
+            const rawIds = inputText.split(/[\n\s\t,;]+/).filter(id => id.trim() !== "");
+            const uniqueIds = [...new Set(rawIds)]; // 去重
+            // 批量查询转换
+            const resultList = uniqueIds.map(id => {
+                return currentIdMap.get(id) || "未匹配";
+            });
+            // 结果拼接：原ID → 目标ID，每行一个
+            const output = uniqueIds.map((id, index) => `${id} → ${resultList[index]}`).join("\n");
+            document.getElementById("batchResult").value = output;
+        }
+
+        // 复制批量结果到剪贴板
+        function copyResult() {
+            const resultText = document.getElementById("batchResult").value;
+            if (!resultText) {
+                alert("暂无批量转换结果可复制");
+                return;
+            }
+            navigator.clipboard.writeText(resultText).then(() => {
+                alert("✅ 批量结果已复制到剪贴板");
+            }).catch(() => {
+                alert("❌ 复制失败，请手动复制");
+            });
+        }
+    </script>
+</body>
+</html>
