@@ -120,6 +120,12 @@
         .clear-btn:hover {
             background-color: #d32f2f;
         }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #777;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -172,9 +178,15 @@
                 <button id="downloadResult" class="secondary-btn">下载结果</button>
             </div>
         </div>
+         <div class="footer">
+            <p>Copyright &copy; <span id="currentYear"></span> Author: chaimol</p>
+        </div>
     </div>
 
 <script>
+    // 设置当前年份
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
     // 根据转换类型获取对应的JSON文件路径
     function getJsonPath(conversionType) {
         // 直接使用conversionType作为文件名前缀
