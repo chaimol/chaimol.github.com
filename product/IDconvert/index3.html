@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>棉花基因ID转换工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+        
+        .control-item {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        select, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .output-container {
+            margin-top: 20px;
+        }
+        
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .button-row button {
+            flex: 1;
+            margin-top: 0;
+            min-width: 120px;
+        }
+        
+        .download-btn {
+            background-color: #2196F3;
+        }
+        
+        .download-btn:hover {
+            background-color: #1976D2;
+        }
+        
+        .secondary-btn {
+            background-color: #FF9800;
+        }
+        
+        .secondary-btn:hover {
+            background-color: #F57C00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>棉花基因ID转换工具</h1>
+        
+        <div class="input-group">
+            <label for="inputGenes">输入基因ID (每行一个):</label>
+            <textarea id="inputGenes" placeholder="请选择转换类型查看示例"></textarea>
+        </div>
+        
+        <div class="controls">
+            <div class="control-item">
+                <label for="conversionType">转换类型:</label>
+                <select id="conversionType">
+                    <option value="TM_1_CRI_N244">TM-1 CRI - N244</option>
+                    <option value="TM_1_ZJUV_2_CRI">TM-1 ZJUV2.1 - CRI</option>
+                    <!-- 可以在这里添加更多的转换类型 -->
+                </select>
+            </div>
+            
+            <div class="control-item">
+                <label for="direction">转换方向:</label>
+                <select id="direction">
+                    <option value="forward">正向</option>
+                    <option value="reverse">反向</option>
+                </select>
+            </div>
+            
+            <div class="control-item">
+                <button id="convertBtn">转换</button>
+            </div>
+            
+            <div class="control-item">
+                <button id="downloadMapping" class="download-btn">下载关系表</button>
+            </div>
+        </div>
+        
+        <div class="output-container">
+            <label for="outputGenes">转换结果:</label>
+            <textarea id="outputGenes" readonly></textarea>
+            
+            <div class="button-row">
+                <button id="copyResult" class="download-btn">复制结果</button>
+                <button id="downloadResult" class="secondary-btn">下载结果</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // 根据转换类型获取对应的JSON文件路径
+    function getJsonPath(conversionType) {
+        // 直接使用conversionType作为文件名前缀
+        return `./data/genome/${conversionType}.json`;
+    }
+
+    // 缓存示例ID，避免重复加载
+    const exampleCache = {};
+
+    // 根据转换类型获取示例基因ID
+    async function getExampleIds(conversionType) {
+        const cacheKey = `${conversionType}_${document.getElementById('direction').value}`;
+        
+        // 如果缓存中有数据，直接返回
+        if (exampleCache[cacheKey]) {
+            return exampleCache[cacheKey];
+        }
+
+        try {
+            // 从指定路径加载映射数据
+            const response = await fetch(getJsonPath(conversionType));
+            if (!response.ok) {
+                throw new Error(`加载映射数据失败: HTTP ${response.status} - ${response.statusText}`);
+            }
+            
+            const data = await response.json();
+            
+            // 提取字段名
+            let mappingArray = [];
+            if (Array.isArray(data)) {
+                mappingArray = data;
+            } else if (data.mappings && Array.isArray(data.mappings)) {
+                mappingArray = data.mappings;
+            }
+            
+            if (mappingArray.length === 0) {
+                return '';
+            }
+            
+            // 获取字段名
+            const fields = Object.keys(mappingArray[0]);
+            if (fields.length < 2) {
+                return '';
+            }
+            
+            // 确定源字段和目标字段
+            const field1 = fields[0];  // 如 "CRI"
+            const field2 = fields[1];  // 如 "N244"
+            const direction = document.getElementById('direction').value;
+            const exampleField = direction === 'forward' ? field1 : field2;
+            
+            // 获取前5个示例
+            const examples = mappingArray.slice(0, 5).map(entry => entry[exampleField]).filter(id => id);
+            
+            // 缓存结果
+            exampleCache[cacheKey] = examples.join('\n');
+            
+            return exampleCache[cacheKey];
+        } catch (error) {
+            console.error('获取示例ID失败:', error);
+            return '';
+        }
+    }
+
+    // 更新输入框的占位符文本
+    async function updatePlaceholder() {
+        const conversionType = document.getElementById('conversionType').value;
+        const exampleIds = await getExampleIds(conversionType);
+        
+        const inputTextarea = document.getElementById('inputGenes');
+        if (exampleIds) {
+            inputTextarea.placeholder = `请输入基因ID，每行一个\n例如：\n${exampleIds}`;
+        } else {
+            inputTextarea.placeholder = '请选择转换类型查看示例';
+        }
+    }
+
+    // 从指定路径加载映射数据
+    async function loadMappingData(conversionType) {
+        try {
+            const jsonPath = getJsonPath(conversionType);
+            if (!jsonPath) {
+                throw new Error(`未知的转换类型: ${conversionType}`);
+            }
+            
+            const response = await fetch(jsonPath);
+            if (!response.ok) {
+                throw new Error(`加载映射数据失败: HTTP ${response.status} - ${response.statusText}`);
+            }
+            
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('加载映射数据失败:', error);
+            alert(`无法加载 ${conversionType} 的映射数据，请检查文件是否存在: ${jsonPath}`);
+            return null;
+        }
+    }
+
+    // 从数据中提取字段名（支持多种数据格式）
+    function extractFields(data) {
+        if (Array.isArray(data)) {
+            // 如果是数组格式，取第一个元素的字段名
+            if (data.length > 0) {
+                return Object.keys(data[0]);
+            }
+        } else if (data.mappings && Array.isArray(data.mappings)) {
+            // 如果是带元数据的格式，取mappings中第一个元素的字段名
+            if (data.mappings.length > 0) {
+                return Object.keys(data.mappings[0]);
+            }
+        }
+        return [];
+    }
+
+    // 创建查找映射表（支持多种数据格式）
+    function createLookupMap(data, fromField, toField) {
+        const lookupMap = {};
+        
+        if (Array.isArray(data)) {
+            // 数组格式
+            for (const entry of data) {
+                if (entry[fromField] && entry[toField]) {
+                    lookupMap[entry[fromField]] = entry[toField];
+                }
+            }
+        } else if (data.mappings && Array.isArray(data.mappings)) {
+            // 带元数据的格式
+            for (const entry of data.mappings) {
+                if (entry[fromField] && entry[toField]) {
+                    lookupMap[entry[fromField]] = entry[toField];
+                }
+            }
+        }
+        
+        return lookupMap;
+    }
+
+    // 获取映射数据的实际内容（去除元数据包装）
+    function getMappingArray(data) {
+        if (Array.isArray(data)) {
+            return data;
+        } else if (data.mappings && Array.isArray(data.mappings)) {
+            return data.mappings;
+        }
+        return [];
+    }
+
+    // 转换功能
+    document.getElementById('convertBtn').addEventListener('click', async function() {
+        const conversionType = document.getElementById('conversionType').value;
+        
+        // 加载映射数据
+        const rawData = await loadMappingData(conversionType);
+        if (!rawData) {
+            alert(`无法加载 ${conversionType} 的映射数据`);
+            return;
+        }
+
+        const inputText = document.getElementById('inputGenes').value.trim();
+        const direction = document.getElementById('direction').value;
+
+        if (!inputText) {
+            alert('请输入基因ID');
+            return;
+        }
+
+        const inputGenes = inputText.split('\n')
+            .map(gene => gene.trim())
+            .filter(gene => gene.length > 0);
+
+        // 自动检测字段名
+        const fields = extractFields(rawData);
+        if (fields.length < 2) {
+            alert('映射数据格式错误：至少需要两个字段');
+            return;
+        }
+
+        // 确定源字段和目标字段（假设前两个字段分别是源和目标）
+        const field1 = fields[0];  // 如 "CRI"
+        const field2 = fields[1];  // 如 "N244"
+
+        const fromField = direction === 'forward' ? field1 : field2;
+        const toField = direction === 'forward' ? field2 : field1;
+
+        const lookupMap = createLookupMap(rawData, fromField, toField);
+
+        const results = [];
+        const unmapped = [];
+
+        for (const gene of inputGenes) {
+            const result = lookupMap[gene] || null;
+            if (result) {
+                results.push(result);
+            } else {
+                unmapped.push(gene);
+                results.push(`${gene} (未找到匹配)`); // 显示原始值加未找到标记
+            }
+        }
+
+        document.getElementById('outputGenes').value = results.join('\n');
+
+        if (unmapped.length > 0) {
+            console.warn('以下基因ID未找到匹配:', unmapped);
+        }
+    });
+
+    // 复制结果到剪贴板
+    document.getElementById('copyResult').addEventListener('click', function() {
+        const outputTextarea = document.getElementById('outputGenes');
+        outputTextarea.select();
+        document.execCommand('copy');
+        alert('结果已复制到剪贴板');
+    });
+
+    // 下载结果（用户输入和输出结果的合并CSV）
+    document.getElementById('downloadResult').addEventListener('click', function() {
+        const inputText = document.getElementById('inputGenes').value.trim();
+        const outputText = document.getElementById('outputGenes').value.trim();
+        
+        if (!inputText || !outputText) {
+            alert('请先进行转换操作');
+            return;
+        }
+        
+        const inputGenes = inputText.split('\n');
+        const outputGenes = outputText.split('\n');
+        
+        // 创建CSV内容
+        let csvContent = "Input ID,Output ID\n";
+        
+        for (let i = 0; i < Math.min(inputGenes.length, outputGenes.length); i++) {
+            const inputId = inputGenes[i].trim();
+            const outputId = outputGenes[i].trim();
+            csvContent += `"${inputId}","${outputId}"\n`;
+        }
+        
+        // 创建并下载文件
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'conversion_result.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    // 下载对应关系表
+    document.getElementById('downloadMapping').addEventListener('click', async function() {
+        const conversionType = document.getElementById('conversionType').value;
+        
+        // 加载映射数据
+        const rawData = await loadMappingData(conversionType);
+        if (!rawData) {
+            alert(`无法加载 ${conversionType} 的映射数据`);
+            return;
+        }
+
+        // 自动检测字段名
+        const fields = extractFields(rawData);
+        if (fields.length < 2) {
+            alert('映射数据格式错误：至少需要两个字段');
+            return;
+        }
+
+        // 获取映射数组
+        const mappingArray = getMappingArray(rawData);
+
+        // 创建CSV内容
+        let csvContent = `${fields.join(',')}\n`;
+
+        // 遍历映射数据并生成CSV
+        for (const entry of mappingArray) {
+            const row = fields.map(field => `"${entry[field] || ''}"`).join(',');
+            csvContent += `${row}\n`;
+        }
+
+        // 创建并下载文件
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${conversionType}_mapping_${new Date().toISOString().slice(0, 10)}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    // 监听下拉菜单变化，更新示例
+    document.getElementById('conversionType').addEventListener('change', async function() {
+        await updatePlaceholder();
+    });
+    
+    document.getElementById('direction').addEventListener('change', async function() {
+        await updatePlaceholder();
+    });
+    
+    // 页面加载时初始化占位符
+    document.addEventListener('DOMContentLoaded', async function() {
+        await updatePlaceholder();
+    });
+</script>
+</body>
+</html>
