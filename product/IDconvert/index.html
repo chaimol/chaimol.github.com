@@ -46,12 +46,44 @@
 
         <p class="tip">提示：1. 未找到对应ID时，结果显示「未匹配」；2. 批量转换自动去重、过滤空行；3. 所有转换均在本地完成，数据不上传。</p>
     </div>
-
     <script>
-        // 全局变量：存储当前加载的ID映射索引（Map结构，查询效率最高）
+    // 全局变量：存储双向数据数组（加载一次即可）
+	let bidirectionalData = [];
+	// 基础路径：替换为你的GitHub Pages路径
+	const BASE_URL = "https://chaimol.github.io/product/IDconvert/data/genome/";
+
+	// 加载双向JSON文件
+	async function loadData() {
+	  const res = await fetch(BASE_URL + "cri-n244-bidirectional.json");
+	  const jsonData = await res.json();
+	  // 转数组：方便根据CRI ID反向查询
+	  bidirectionalData = Object.values(jsonData);
+	  console.log("✅ 加载成功，共", bidirectionalData.length, "条数据");
+	}
+
+	// 双向转换核心函数
+	function convertId(inputId, direction) {
+	  if (direction === "cri2n244") {
+		// CRI→N244：根据CRI ID匹配
+		const item = bidirectionalData.find(item => item.cri === inputId);
+		return item ? item.n244 : "未匹配";
+	  } else {
+		// N244→CRI：根据N244 ID匹配
+		const item = bidirectionalData.find(item => item.n244 === inputId);
+		return item ? item.cri : "未匹配";
+	  }
+	}
+
+	// 调用示例
+	loadData().then(() => {
+	  console.log(convertId("CRI_A01G0001", "cri2n244")); // 输出N244_A01G0001
+	  console.log(convertId("N244_A01G0001", "n2442cri")); // 输出CRI_A01G0001
+	});
+
+		// 全局变量：存储当前加载的ID映射索引（Map结构，查询效率最高）
         let currentIdMap = new Map();
         // 基础路径：替换为你的GitHub Pages地址 + data/genome/
-        const BASE_URL = "https://chaimol.github.io/IDconvert/data/genome/";
+        const BASE_URL = "https://chaimol.github.io/product/IDconvert/data/genome/";
 
         // 监听基因组选择变化，按需加载对应JSON文件并构建Map索引
         document.getElementById("genomeSelect").addEventListener("change", async function() {
@@ -127,6 +159,7 @@
                 alert("❌ 复制失败，请手动复制");
             });
         }
+
     </script>
 </body>
 </html>
