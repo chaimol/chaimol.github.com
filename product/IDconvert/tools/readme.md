@@ -46,5 +46,9 @@
 
 - 如果存在对应`${ref_abbr}.dmnd`这个数据库文件，就不会再重新创建了。
 
-# 输出
-输出文件是`${query_abbr}.${ref_abbr}.tsv`
+- 如果物种之间亲缘关系远或某个版本组装比较差，可以适当降低-m的参数值，否则输出的匹配的基因数量会很少。
+
+# 输出文件
+- `${query_abbr}.${ref_abbr}.tsv` 这个是基因对之间的对应关系，用户指定最多匹配n个，就是n个。这是最全的结果。
+- `${query_abbr}.${ref_abbr}.xls` 这是基因对之间的1对1的关系。
+- `${query_abbr}.${ref_abbr}.json` 这是根据1对1生成的json文件，把这个文件放置到`../data/genome/`目录里，再修改`../index.html`页面里新增这个json的option即可在线使用搜索。

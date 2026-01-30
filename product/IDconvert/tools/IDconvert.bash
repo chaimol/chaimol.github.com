@@ -1,4 +1,7 @@
 #!/bin/bash
+#用于获取脚本所在的路径，保存为变量path1,调用其他脚本都依赖这个路径。
+path1="$(cd "$(dirname ${BASH_SOURCE[0]})";pwd)"
+#此程序是主程序，运行此程序会调用其他脚本。
 
 # 用法说明
 usage() {
@@ -199,3 +202,6 @@ END {
     for (q in best_line) print best_line[q]
 }' "${query_abbr}.${ref_abbr}.tsv" | sort -k1|cut -f1-2 > "${query_abbr}.${ref_abbr}.xls"
 echo "1对1的匹配结果文件是${query_abbr}.${ref_abbr}.xls"
+
+#把输出的结果转为json格式 用法说明：参数1是2列基因id对应文件 参数2是输出json 参数3是第1列缩写字符串 参数4是第2列的缩写字符串
+python3 ${path1}/id2json.py ${query_abbr}.${ref_abbr}.xls ${query_abbr}_${ref_abbr}.json ${query_abbr} ${ref_abbr}
