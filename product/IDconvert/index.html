@@ -3,512 +3,510 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>棉花基因ID转换工具</title>
+    <title>基因ID转换</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 10px;
-            background-color: #f5f5f5;
+            background-color: #f5f9fc;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
         }
         
         .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
-        h1 {
+        header {
             text-align: center;
-            color: #333;
+            padding: 30px 0;
             margin-bottom: 30px;
         }
         
-        .input-group {
-            margin-bottom: 20px;
+        h1 {
+            color: #2c3e50;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
         }
         
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 20px auto 0;
+            line-height: 1.7;
+        }
+        
+        .species-selection {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+        
+        .species-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .species-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            text-decoration: none;
+        }
+        
+        .species-circle:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .species-circle:active {
+            transform: translateY(-5px) scale(1.02);
+        }
+        
+        .species-image {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .species-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .species-count {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        .instructions {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .instructions h3 {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instructions p {
+            margin-bottom: 15px;
             color: #555;
         }
         
-        textarea {
-            width: 100%;
-            height: 120px;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-family: monospace;
-            resize: vertical;
-            box-sizing: border-box;
-        }
-        
-        .controls {
+        .step {
             display: flex;
-            gap: 10px;
+            align-items: flex-start;
             margin-bottom: 20px;
-            align-items: end;
-            flex-wrap: wrap;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #eee;
         }
         
-        .control-item {
-            flex: 1;
-            min-width: 150px;
+        .step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
         
-        select, button {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        button {
-            background-color: #4CAF50;
+        .step-number {
+            background-color: #3498db;
             color: white;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
         }
         
-        button:hover {
-            background-color: #45a049;
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #95a5a6;
+            font-size: 0.9rem;
         }
         
-        .output-container {
+        .github-section {
+            text-align: center;
             margin-top: 20px;
         }
         
-        .button-row {
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #7f8c8d;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .github-link:hover {
+            color: #3498db;
+        }
+        
+        .github-stats {
+            display: inline-flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        
+        .github-stat {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 5px;
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
         }
         
-        .button-row button {
-            flex: 1;
-            margin-top: 0;
-            min-width: 120px;
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
-        .download-btn {
-            background-color: #2196F3;
+        .species-circle:hover .loading {
+            opacity: 1;
         }
         
-        .download-btn:hover {
-            background-color: #1976D2;
+        /* 自定义图标样式 */
+        .cotton-icon {
+            color: #3498db;
+            position: relative;
         }
         
-        .secondary-btn {
-            background-color: #FF9800;
+        .cotton-icon::before {
+            content: "❀";
+            font-size: 3.5rem;
         }
         
-        .secondary-btn:hover {
-            background-color: #F57C00;
+        .maize-icon {
+            color: #e74c3c;
+            position: relative;
         }
         
-        .clear-btn {
-            background-color: #f44336;
+        .maize-icon::before {
+            content: "🌽";
+            font-size: 3.5rem;
         }
         
-        .clear-btn:hover {
-            background-color: #d32f2f;
+        @media (max-width: 768px) {
+            .species-grid {
+                gap: 25px;
+            }
+            
+            .species-circle {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .species-image {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .cotton-icon::before, .maize-icon::before {
+                font-size: 2.8rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
         }
-        .footer {
-            text-align: center;
-            margin-top: 10px;
-            color: #777;
-            font-size: 14px;
+        
+        @media (max-width: 480px) {
+            .species-grid {
+                gap: 20px;
+            }
+            
+            .species-circle {
+                width: 130px;
+                height: 130px;
+            }
+            
+            .species-image {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .cotton-icon::before, .maize-icon::before {
+                font-size: 2.4rem;
+            }
+            
+            .species-name {
+                font-size: 1rem;
+            }
+            
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+            
+            .instructions {
+                padding: 15px 20px;
+                margin: 30px 10px 0;
+            }
+            
+            .instructions h3 {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* 新增：更小屏幕尺寸的适配 */
+        @media (max-width: 360px) {
+            .species-grid {
+                gap: 15px;
+            }
+            
+            .species-circle {
+                width: 110px;
+                height: 110px;
+            }
+            
+            .species-image {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .cotton-icon::before, .maize-icon::before {
+                font-size: 2rem;
+            }
+            
+            .species-name {
+                font-size: 0.9rem;
+            }
+            
+            .species-count {
+                font-size: 0.75rem;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+        }
+        
+        /* 触摸设备优化 */
+        @media (hover: none) and (pointer: coarse) {
+            .species-circle:hover {
+                transform: scale(1.05); /* 移除 translateY 效果，更适合触摸设备 */
+            }
+            
+            .species-circle:active {
+                transform: scale(1.02);
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>棉花基因ID转换工具</h1>
+        <header>
+            <h1>基因ID转换</h1>
+            <p class="subtitle">选择目标物种，进行基因标识符的转换和映射。支持不同数据库间的基因ID转换。</p>
+        </header>
         
-        <div class="input-group">
-            <label for="inputGenes">输入基因ID (每行一个):</label>
-            <textarea id="inputGenes" placeholder="请选择转换类型查看示例"></textarea>
-        </div>
+        <main>
+            <section class="species-selection">
+                <p>点击下方物种图标进入对应的基因ID转换页面</p>
+                
+                <div class="species-grid">
+                    <!-- 棉花 -->
+                    <a href="cotton.html" target="_blank" class="species-circle" id="cotton">
+                        <div class="species-image">
+                            <div class="cotton-icon"></div>
+                        </div>
+                        <div class="species-name">棉花</div>
+                        <div class="species-count">四倍体约6-8万个基因</div>
+                        <div class="loading">
+                            <i class="fas fa-spinner fa-spin fa-2x" style="color: #3498db;"></i>
+                        </div>
+                    </a>
+                    
+                    <!-- 玉米 -->
+                    <a href="maize.html" target="_blank" class="species-circle" id="maize">
+                        <div class="species-image">
+                            <div class="maize-icon"></div>
+                        </div>
+                        <div class="species-name">玉米</div>
+                        <div class="species-count">约3-4万个基因</div>
+                        <div class="loading">
+                            <i class="fas fa-spinner fa-spin fa-2x" style="color: #e74c3c;"></i>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        </main>
         
-        <div class="controls">
-            <div class="control-item">
-                <label for="conversionType">转换类型:</label>
-                <select id="conversionType">
-                    <option value="TM_1_CRI_N244">TM-1 CRI - N244</option>
-                    <option value="TM_1_ZJUV_2_N244">TM-1 ZJUV2.1 - N244</option>
-                    <option value="ZM113T2T_N244">ZM113T2T - N244</option>
-                    <option value="TM-1_T2T_N244">TM-1_T2T ZJU - N244</option>
-                    <option value="D5_T2T_N244_A">D5_T2T - N244_A</option>
-                    <option value="D5_T2T_N244_D">D5_T2T - N244_D</option>
-                    <option value="TM_1_ZJUV_2_CRI">TM-1 ZJUV2.1 - CRI</option>
-                    <option value="TM_1_HAU_V1_CRI">TM-1 HAU_V1 - CRI</option>
-                    <option value="ZM113T2T_TM_1_CRI">ZM113T2T - TM-1 CRI</option>
-                    <option value="Jin668_T2T_N244">Jin668_T2T - N244</option>
-                    <option value="Jin668_T2T_ZM113">Jin668_T2T - ZM113T2T</option>
-                    <!-- 可以在这里添加更多的转换类型,注意这里的value里面的值要和./data/genome/的json文件的前缀相同，通过程序是读取这个路径的json文件后进行解析的-->
-                </select>
+        <footer>
+            <p>基因ID转换工具 &copy; chaimol | 支持物种: 棉花、玉米</p>
+            <p>数据来源: Ensembl, cottongen, maizegdb</p>
+            <div class="github-section">
+                <a href="https://github.com/chaimol/chaimol.github.com/tree/master/product/IDconvert/" target="_blank" class="github-link">
+                    <i class="fab fa-github"></i>
+                    查看项目源代码
+                </a>
+                <div class="github-stats">
+                    <span id="github-stars" class="github-stat">
+                        <i class="fas fa-star"></i>
+                        <span>加载中...</span>
+                    </span>
+                    <span id="github-forks" class="github-stat">
+                        <i class="fas fa-code-branch"></i>
+                        <span>加载中...</span>
+                    </span>
+                </div>
             </div>
-            
-            <div class="control-item">
-                <label for="direction">转换方向:</label>
-                <select id="direction">
-                    <option value="forward">正向</option>
-                    <option value="reverse">反向</option>
-                </select>
-            </div>
-            
-            <div class="control-item">
-                <button id="convertBtn">转换</button>
-            </div>
-            
-            <div class="control-item">
-                <button id="downloadMapping" class="download-btn">下载关系表</button>
-            </div>
-        </div>
-        
-        <div class="output-container">
-            <label for="outputGenes">转换结果:</label>
-            <textarea id="outputGenes" readonly></textarea>
-            
-            <div class="button-row">
-                <button id="copyResult" class="download-btn">复制结果</button>
-                <button id="clearBtn" class="clear-btn">清空</button>
-                <button id="downloadResult" class="secondary-btn">下载结果</button>
-            </div>
-        </div>
-         <div class="footer">
-            <p>Copyright &copy; <span id="currentYear"></span> Author: chaimol</p>
-        </div>
+        </footer>
     </div>
 
-<script>
-    // 设置当前年份
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-    // 根据转换类型获取对应的JSON文件路径
-    function getJsonPath(conversionType) {
-        // 直接使用conversionType作为文件名前缀
-        return `./data/genome/${conversionType}.json`;
-    }
-
-    // 缓存示例ID，避免重复加载
-    const exampleCache = {};
-
-    // 根据转换类型获取示例基因ID
-    async function getExampleIds(conversionType) {
-        const cacheKey = `${conversionType}_${document.getElementById('direction').value}`;
-        
-        // 如果缓存中有数据，直接返回
-        if (exampleCache[cacheKey]) {
-            return exampleCache[cacheKey];
-        }
-
-        try {
-            // 从指定路径加载映射数据
-            const response = await fetch(getJsonPath(conversionType));
-            if (!response.ok) {
-                throw new Error(`加载映射数据失败: HTTP ${response.status} - ${response.statusText}`);
-            }
-            
-            const data = await response.json();
-            
-            // 提取字段名
-            let mappingArray = [];
-            if (Array.isArray(data)) {
-                mappingArray = data;
-            } else if (data.mappings && Array.isArray(data.mappings)) {
-                mappingArray = data.mappings;
-            }
-            
-            if (mappingArray.length === 0) {
-                return '';
-            }
-            
-            // 获取字段名
-            const fields = Object.keys(mappingArray[0]);
-            if (fields.length < 2) {
-                return '';
-            }
-            
-            // 确定源字段和目标字段
-            const field1 = fields[0];  // 如 "CRI"
-            const field2 = fields[1];  // 如 "N244"
-            const direction = document.getElementById('direction').value;
-            const exampleField = direction === 'forward' ? field1 : field2;
-            
-            // 获取前5个示例
-            const examples = mappingArray.slice(0, 5).map(entry => entry[exampleField]).filter(id => id);
-            
-            // 缓存结果
-            exampleCache[cacheKey] = examples.join('\n');
-            
-            return exampleCache[cacheKey];
-        } catch (error) {
-            console.error('获取示例ID失败:', error);
-            return '';
-        }
-    }
-
-    // 更新输入框的占位符文本
-    async function updatePlaceholder() {
-        const conversionType = document.getElementById('conversionType').value;
-        const exampleIds = await getExampleIds(conversionType);
-        
-        const inputTextarea = document.getElementById('inputGenes');
-        if (exampleIds) {
-            inputTextarea.placeholder = `请输入基因ID，每行一个\n例如：\n${exampleIds}`;
-        } else {
-            inputTextarea.placeholder = '请选择转换类型查看示例';
-        }
-    }
-
-    // 从指定路径加载映射数据
-    async function loadMappingData(conversionType) {
-        try {
-            const jsonPath = getJsonPath(conversionType);
-            if (!jsonPath) {
-                throw new Error(`未知的转换类型: ${conversionType}`);
-            }
-            
-            const response = await fetch(jsonPath);
-            if (!response.ok) {
-                throw new Error(`加载映射数据失败: HTTP ${response.status} - ${response.statusText}`);
-            }
-            
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('加载映射数据失败:', error);
-            alert(`无法加载 ${conversionType} 的映射数据，请检查文件是否存在: ${jsonPath}`);
-            return null;
-        }
-    }
-
-    // 从数据中提取字段名（支持多种数据格式）
-    function extractFields(data) {
-        if (Array.isArray(data)) {
-            // 如果是数组格式，取第一个元素的字段名
-            if (data.length > 0) {
-                return Object.keys(data[0]);
-            }
-        } else if (data.mappings && Array.isArray(data.mappings)) {
-            // 如果是带元数据的格式，取mappings中第一个元素的字段名
-            if (data.mappings.length > 0) {
-                return Object.keys(data.mappings[0]);
-            }
-        }
-        return [];
-    }
-
-    // 创建查找映射表（支持多种数据格式）
-    function createLookupMap(data, fromField, toField) {
-        const lookupMap = {};
-        
-        if (Array.isArray(data)) {
-            // 数组格式
-            for (const entry of data) {
-                if (entry[fromField] && entry[toField]) {
-                    lookupMap[entry[fromField]] = entry[toField];
+    <script>
+        // 获取GitHub仓库统计数据
+        async function fetchGithubStats() {
+            try {
+                // 注意：由于CORS限制，直接从浏览器请求GitHub API可能失败
+                // 这里提供了一个替代方案，使用JSONP或后端代理
+                const repo = 'chaimol/chaimol.github.com'; // 假设这是正确的仓库名
+                
+                // 使用fetch API获取仓库信息
+                const response = await fetch(`https://api.github.com/repos/${repo}`);
+                const data = await response.json();
+                
+                if(data.stargazers_count !== undefined && data.forks_count !== undefined) {
+                    document.getElementById('github-stars').querySelector('span').textContent = data.stargazers_count;
+                    document.getElementById('github-forks').querySelector('span').textContent = data.forks_count;
                 }
+            } catch (error) {
+                // 如果API请求失败，隐藏统计信息或显示错误
+                document.querySelector('.github-stats').style.display = 'none';
+                console.error('获取GitHub统计信息失败:', error);
             }
-        } else if (data.mappings && Array.isArray(data.mappings)) {
-            // 带元数据的格式
-            for (const entry of data.mappings) {
-                if (entry[fromField] && entry[toField]) {
-                    lookupMap[entry[fromField]] = entry[toField];
+        }
+        
+        // 页面加载完成后获取GitHub统计信息
+        document.addEventListener('DOMContentLoaded', fetchGithubStats);
+        
+        // 添加点击效果和页面跳转模拟
+        document.querySelectorAll('.species-circle').forEach(circle => {
+            circle.addEventListener('click', function(e) {
+                // 添加点击效果
+                this.style.transform = 'scale(0.95)';
+                
+                // 模拟加载延迟
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+                
+                // 在实际应用中，这里会跳转到对应页面
+                // 由于是示例，我们只显示提示信息
+                const speciesName = this.querySelector('.species-name').textContent;
+                console.log(`正在跳转到${speciesName}的基因ID转换页面...`);
+            });
+        });
+        
+        // 添加键盘导航支持
+        document.addEventListener('keydown', function(e) {
+            const circles = document.querySelectorAll('.species-circle');
+            let currentIndex = -1;
+            
+            // 检查当前焦点是否在某个圆圈上
+            circles.forEach((circle, index) => {
+                if (circle === document.activeElement) {
+                    currentIndex = index;
                 }
+            });
+            
+            // 处理方向键导航
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                const nextIndex = (currentIndex + 1) % circles.length;
+                circles[nextIndex].focus();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                const prevIndex = (currentIndex - 1 + circles.length) % circles.length;
+                circles[prevIndex].focus();
             }
-        }
-        
-        return lookupMap;
-    }
-
-    // 获取映射数据的实际内容（去除元数据包装）
-    function getMappingArray(data) {
-        if (Array.isArray(data)) {
-            return data;
-        } else if (data.mappings && Array.isArray(data.mappings)) {
-            return data.mappings;
-        }
-        return [];
-    }
-
-    // 转换功能
-    document.getElementById('convertBtn').addEventListener('click', async function() {
-        const conversionType = document.getElementById('conversionType').value;
-        
-        // 加载映射数据
-        const rawData = await loadMappingData(conversionType);
-        if (!rawData) {
-            alert(`无法加载 ${conversionType} 的映射数据`);
-            return;
-        }
-
-        const inputText = document.getElementById('inputGenes').value.trim();
-        const direction = document.getElementById('direction').value;
-
-        if (!inputText) {
-            alert('请输入基因ID');
-            return;
-        }
-
-        const inputGenes = inputText.split('\n')
-            .map(gene => gene.trim())
-            .filter(gene => gene.length > 0);
-
-        // 自动检测字段名
-        const fields = extractFields(rawData);
-        if (fields.length < 2) {
-            alert('映射数据格式错误：至少需要两个字段');
-            return;
-        }
-
-        // 确定源字段和目标字段（假设前两个字段分别是源和目标）
-        const field1 = fields[0];  // 如 "CRI"
-        const field2 = fields[1];  // 如 "N244"
-
-        const fromField = direction === 'forward' ? field1 : field2;
-        const toField = direction === 'forward' ? field2 : field1;
-
-        const lookupMap = createLookupMap(rawData, fromField, toField);
-
-        const results = [];
-        const unmapped = [];
-
-        for (const gene of inputGenes) {
-            const result = lookupMap[gene] || null;
-            if (result) {
-                results.push(result);
-            } else {
-                unmapped.push(gene);
-                results.push(`${gene} (未找到匹配)`); // 显示原始值加未找到标记
-            }
-        }
-
-        document.getElementById('outputGenes').value = results.join('\n');
-
-        if (unmapped.length > 0) {
-            console.warn('以下基因ID未找到匹配:', unmapped);
-        }
-    });
-
-    // 复制结果到剪贴板
-    document.getElementById('copyResult').addEventListener('click', function() {
-        const outputTextarea = document.getElementById('outputGenes');
-        outputTextarea.select();
-        document.execCommand('copy');
-        alert('结果已复制到剪贴板');
-    });
-
-    // 清空功能
-    document.getElementById('clearBtn').addEventListener('click', async function() {
-        // 清空输入框
-        document.getElementById('inputGenes').value = '';
-        
-        // 清空输出框
-        document.getElementById('outputGenes').value = '';
-        
-        // 更新占位符文本以显示示例
-        await updatePlaceholder();
-    });
-
-    // 下载结果（用户输入和输出结果的合并CSV）
-    document.getElementById('downloadResult').addEventListener('click', function() {
-        const inputText = document.getElementById('inputGenes').value.trim();
-        const outputText = document.getElementById('outputGenes').value.trim();
-        
-        if (!inputText || !outputText) {
-            alert('请先进行转换操作');
-            return;
-        }
-        
-        const inputGenes = inputText.split('\n');
-        const outputGenes = outputText.split('\n');
-        
-        // 创建CSV内容
-        let csvContent = "Input ID,Output ID\n";
-        
-        for (let i = 0; i < Math.min(inputGenes.length, outputGenes.length); i++) {
-            const inputId = inputGenes[i].trim();
-            const outputId = outputGenes[i].trim();
-            csvContent += `"${inputId}","${outputId}"\n`;
-        }
-        
-        // 创建并下载文件
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'conversion_result.csv');
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
-
-    // 下载对应关系表
-    document.getElementById('downloadMapping').addEventListener('click', async function() {
-        const conversionType = document.getElementById('conversionType').value;
-        
-        // 加载映射数据
-        const rawData = await loadMappingData(conversionType);
-        if (!rawData) {
-            alert(`无法加载 ${conversionType} 的映射数据`);
-            return;
-        }
-
-        // 自动检测字段名
-        const fields = extractFields(rawData);
-        if (fields.length < 2) {
-            alert('映射数据格式错误：至少需要两个字段');
-            return;
-        }
-
-        // 获取映射数组
-        const mappingArray = getMappingArray(rawData);
-
-        // 创建CSV内容
-        let csvContent = `${fields.join(',')}\n`;
-
-        // 遍历映射数据并生成CSV
-        for (const entry of mappingArray) {
-            const row = fields.map(field => `"${entry[field] || ''}"`).join(',');
-            csvContent += `${row}\n`;
-        }
-
-        // 创建并下载文件
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', `${conversionType}_mapping_${new Date().toISOString().slice(0, 10)}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
-
-    // 监听下拉菜单变化，更新示例
-    document.getElementById('conversionType').addEventListener('change', async function() {
-        await updatePlaceholder();
-    });
-    
-    document.getElementById('direction').addEventListener('change', async function() {
-        await updatePlaceholder();
-    });
-    
-    // 页面加载时初始化占位符
-    document.addEventListener('DOMContentLoaded', async function() {
-        await updatePlaceholder();
-    });
-</script>
+        });
+    </script>
 </body>
-
 </html>

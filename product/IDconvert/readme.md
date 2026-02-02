@@ -1,8 +1,10 @@
 # 这是一个用于不同版本的基因id在线转换的网站
 
-- index.html 棉花的iD转换在线网页源码
-- data/genome/ 这里存放的是转换后对应关系的文件，每个对应关系是一个json格式文件。
-- tools/ 这里是ID转换的原始工具
+- index.html 基因iD转换在线网页源码
+- data/ 这里存放的是转换后对应关系的文件，每个物种一个文件夹,每个对应关系是一个json格式文件。
+	+ cotton 棉花json文件
+	+ maize 玉米json文件
+- tools/ 这里是ID转换的原始工具,用以从基因组蛋白文件比对获取json数据文件。
 - readme.md
 
 ### 使用在线网页，访问 https://chaimol.com/product/IDconvert/index.html 这个项目的在线网页,可以查询棉花的不同版本的基因id转换
