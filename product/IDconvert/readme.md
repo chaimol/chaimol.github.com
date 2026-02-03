@@ -7,7 +7,7 @@
 - tools/ 这里是ID转换的原始工具,用以从基因组蛋白文件比对获取json数据文件。
 - readme.md
 
-### 使用在线网页，访问 https://chaimol.com/product/IDconvert/index.html 这个项目的在线网页,可以查询棉花的不同版本的基因id转换
+### 使用在线网页，访问 https://chaimol.com/product/IDconvert/index.html 这个项目的在线网页,可以查询棉花、玉米的不同版本的基因id转换
 
 *如果需要添加新的棉花的物种id转换关系，可以提issue,发送你需要的关系对应表*
 ### 使用tools/IDconvert.bash这个脚本，可以生成任何2个物种间的基因id对应关系。
