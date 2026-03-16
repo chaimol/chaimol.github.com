@@ -5,7 +5,7 @@ IDconvertAD.bash TM_1_CRI TM_1_CRI.pep Gh_A Gh_D
 IDconvertAD.bash TM_1.ZJUV_2.1 TM_1.ZJUV_2.1.pep GH_A GH_D
 IDconvertAD.bash ZM113T2T ZM113T2T.pep Ghir_A Ghir_D
 IDconvertAD.bash TM-1.HAU_V1.1 TM-1.HAU_V1.1.pep Ghir_A Ghir_D
-
+IDconvertAD.bash Ghicr24 ZM24.pep Ghicr24_A Ghicr24_D
 
 #以N244为参考
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM_1_CRI.A -r N244.A --query-protein TM_1_CRI.A.pep --ref-protein N244.A.pep -n 2 -m 85
@@ -25,6 +25,12 @@ python3 id2json.py ZM113T2T_N244.xls ZM113T2T_N244.json ZM113T2T N244
 
 
 ####以TM-1 CRI为参考
+bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q Ghicr24.A -r TM_1_CRI.A --query-protein Ghicr24.A.pep --ref-protein TM_1_CRI.A.pep -n 2 -m 85
+bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q Ghicr24.D -r TM_1_CRI.D --query-protein Ghicr24.D.pep --ref-protein TM_1_CRI.D.pep -n 2 -m 85
+cat Ghicr24.A.TM_1_CRI.A.xls Ghicr24.D.TM_1_CRI.D.xls >Ghicr24.TM_1_CRI.xls
+python3 id2json.py Ghicr24.TM_1_CRI.xls ZM24_TM_1_CRI.json ZM24 CRI
+
+
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM_1.ZJUV_2.1.A -r TM_1_CRI.A --query-protein TM_1.ZJUV_2.1.A.pep --ref-protein TM_1_CRI.A.pep -n 2 -m 85
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM_1.ZJUV_2.1.D -r TM_1_CRI.D --query-protein TM_1.ZJUV_2.1.D.pep --ref-protein TM_1_CRI.D.pep -n 2 -m 85
 cat TM_1.ZJUV_2.1.A.TM_1_CRI.A.xls TM_1.ZJUV_2.1.D.TM_1_CRI.D.xls >TM_1.ZJUV_2.1_TM_1_CRI.xls
