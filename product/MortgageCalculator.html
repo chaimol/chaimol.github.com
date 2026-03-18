@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专业房贷计算器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .calculator-box {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #3498db;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .col {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .result-title {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .result-item {
+            margin: 10px 0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .detail-list {
+            margin-top: 10px;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background-color: white;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            border-left: 3px solid #3498db;
+        }
+
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-label {
+            color: #555;
+        }
+
+         .detail-value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .unit-price-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+        }
+
+        .unit-price-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .unit-price-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .repay-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .repay-table th, .repay-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .repay-table th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .repay-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tip {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-box">
+        <h1>专业房贷计算器</h1>
+        
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>房屋面积（㎡）</label>
+                    <input type="number" id="area" placeholder="请输入房屋面积" min="1">
+                </div>
+
+                <div class="form-group">
+                    <label>房屋成交价（万元）</label>
+                    <input type="number" id="price" placeholder="请输入房屋总成交价" min="0.5" required>
+                </div>
+
+                <div class="form-group">
+                    <label>首付比例（15%-95%）</label>
+                    <input type="number" id="downPaymentRatio" placeholder="15-95" min="15" max="95" value="20" required>
+                    <div class="tip">请输入数字，无需输入%</div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label>贷款方式</label>
+                    <select id="loanType">
+                        <option value="fund">公积金贷款</option>
+                        <option value="business">商业贷款</option>
+                        <option value="combination">组合贷款</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>贷款年利率（%）</label>
+                    <input type="number" id="rate" placeholder="请输入年利率" step="0.01" value="2.6" required>
+                </div>
+
+                <div class="form-group">
+                    <label>还款年数</label>
+                    <input type="number" id="years" placeholder="请输入贷款年数" min="1" max="30" value="20" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- 计算结果区域 -->
+        <div class="result-box" id="result" style="display: none;">
+            <div class="result-title">💰 计算结果</div>
+            
+            <div class="result-item">
+                贷款基数：<span class="highlight" id="loanBase"></span> 万元
+            </div>
+            
+            <div class="result-item">
+                贷款总额：<span class="highlight" id="loanAmount"></span> 万元
+            </div>
+            
+            <!--<div class="result-item">
+                首付金额（按比例）：<span class="highlight" id="downPayment"></span> 万元
+            </div>-->
+            
+            <div class="result-item">
+                <span class="highlight" style="font-size: 17px;">首付总费用（含所有杂费）：<span id="totalDownCost"></span> 万元</span>
+                
+                <div class="detail-list">
+                    <div class="detail-item">
+                        <span class="detail-label">首付款（给原房主）</span>
+                        <span class="detail-value" id="detailDownPayment"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">契税（1%）</span>
+                        <span class="detail-value" id="detailDeedTax"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">中介费（0.9%）</span>
+                        <span class="detail-value" id="detailAgencyFee"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">过户代办费</span>
+                        <span class="detail-value" id="detailTransfer"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">贷款代办费</span>
+                        <span class="detail-value" id="detailLoanService"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">定金</span>
+                        <span class="detail-value" id="detailDeposit"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">户口保证金</span>
+                        <span class="detail-value" id="detailHousehold"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">物业费保证金</span>
+                        <span class="detail-value" id="detailProperty"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="unit-price-box" id="unitPriceBox" style="display: none;">
+                <div class="unit-price-label">房屋单价</div>
+                <div class="unit-price-value"><span id="unitPrice"></span> 万元/㎡</div>
+            </div>
+            <div class="result-title" style="margin-top: 25px;">📊 还款明细对比</div>
+            <table class="repay-table">
+                <thead>
+                    <tr>
+                        <th>还款方式</th>
+                        <th>首月月供（元）</th>
+                        <th>每月递减（元）</th>
+                        <th>总利息（元）</th>
+                        <th>总还款额（元）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>等额本金</td>
+                        <td id="equalPrincipalFirst"></td>
+                        <td id="equalPrincipalMonth"></td>
+                        <td id="equalPrincipalInterest"></td>
+                        <td id="equalPrincipalTotal"></td>
+                    </tr>
+                    <tr>
+                        <td>等额本息</td>
+                        <td id="equalInterestMonth"></td>
+                        <td>-</td>
+                        <td id="equalInterestInterest"></td>
+                        <td id="equalInterestTotal"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // 获取所有输入元素
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(item => {
+            item.addEventListener('input', calculateLoan);
+        });
+
+        // 初始化默认利率
+        document.getElementById('loanType').addEventListener('change', function() {
+            const rateInput = document.getElementById('rate');
+            if(this.value === 'fund') rateInput.value = 2.6;
+            if(this.value === 'business') rateInput.value = 3.5;
+            if(this.value === 'combination') rateInput.value = 3.65;
+            calculateLoan();
+        });
+
+        function calculateLoan() {
+            // 获取输入值
+            const price = Number(document.getElementById('price').value) * 10000 || 0;
+            const ratio = Number(document.getElementById('downPaymentRatio').value) || 0;
+            const years = Number(document.getElementById('years').value) || 0;
+            const rate = Number(document.getElementById('rate').value) || 0;
+
+            // 基础数据校验
+            if(price < 10000 || ratio <15 || ratio>95 || years <1 || rate <=0) return;
+
+            // 1. 计算贷款基数：成交价 - 2万定金 -1万户口保证金 -1万物业费保证金
+            const loanBase = price - 20000 - 10000 - 10000;
+            
+            // 2. 计算贷款金额 & 首付金额
+            const loanAmount = loanBase * (1 - ratio / 100);  // 贷款总额
+            const downPayment = loanBase * ratio / 100;      // 首付比例金额
+            
+            // 3. 计算首付总费用（所有费用）
+            const deedTax = price * 0.01;               // 1% 契税
+            const agencyTransfer = 2000;                // 过户代办
+            const agencyLoan = 2000;                    // 贷款代办
+            const agencyFee = price * 0.009;            // 0.9% 中介费
+            const fixedFee = 20000 + 10000 + 10000;     // 固定保证金
+
+            const totalDownCost = downPayment + deedTax + agencyTransfer + agencyLoan + agencyFee + fixedFee;
+
+            // 4. 还款计算核心参数
+            const months = years * 12;                 // 总月数
+            const monthRate = rate / 100 / 12;          // 月利率
+
+// 如果输入了面积，则显示单价
+// 获取所有输入元素
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(item => {
+            item.addEventListener('input', calculateLoan);
+        });
+
+        // 单独监听房屋面积输入框
+        const areaInput = document.getElementById('area');
+        areaInput.addEventListener('input', handleAreaChange);
+        areaInput.addEventListener('change', handleAreaChange);
+
+        function handleAreaChange() {
+            const area = Number(areaInput.value) || 0;
+            const unitPriceBox = document.getElementById('unitPriceBox');
+            
+            if(area > 0) {
+                const price = Number(document.getElementById('price').value) || 0;
+                if(price > 0) {
+                    const unitPrice = price / area;
+                    document.getElementById('unitPrice').textContent = formatNumber(unitPrice);
+                    unitPriceBox.style.display = 'block';
+                }
+            } else {
+                unitPriceBox.style.display = 'none';
+            }
+        }
+		// 如果输入了面积，则显示单价
+            const area = Number(document.getElementById('area').value) || 0;
+            const unitPriceBox = document.getElementById('unitPriceBox');
+            if(area > 0 && price > 0) {
+                const unitPrice = price / area;
+                document.getElementById('unitPrice').textContent = formatNumber(unitPrice);
+                unitPriceBox.style.display = 'block';
+            } else {
+                unitPriceBox.style.display = 'none';
+            }
+
+
+            // 等额本金计算
+            const equalPrincipalMonth = loanAmount / months;                          // 每月本金
+            const equalPrincipalFirst = equalPrincipalMonth + loanAmount * monthRate; // 首月还款
+            const equalPrincipalReduce = equalPrincipalMonth * monthRate;             // 每月递减
+            const equalPrincipalInterest = (months + 1) * loanAmount * monthRate / 2; // 总利息
+            const equalPrincipalTotal = loanAmount + equalPrincipalInterest;          // 总还款
+
+            // 等额本息计算
+            const equalInterestMonth = loanAmount * monthRate * Math.pow(1 + monthRate, months) / 
+                                      (Math.pow(1 + monthRate, months) - 1);
+            const equalInterestTotal = equalInterestMonth * months;
+            const equalInterestInterest = equalInterestTotal - loanAmount;
+
+            // 5. 渲染结果到页面
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('loanBase').textContent = formatNumber(loanBase/10000);
+            document.getElementById('loanAmount').textContent = formatNumber(loanAmount/10000);
+            //document.getElementById('downPayment').textContent = formatNumber(downPayment/10000);
+            document.getElementById('totalDownCost').textContent = formatNumber(totalDownCost/10000);
+            // 显示详细费用明细
+            document.getElementById('detailDownPayment').textContent = formatNumber(downPayment);
+            document.getElementById('detailDeedTax').textContent = formatNumber(deedTax);
+            document.getElementById('detailAgencyFee').textContent = formatNumber(agencyFee);
+            document.getElementById('detailTransfer').textContent = formatNumber(agencyTransfer);
+            document.getElementById('detailLoanService').textContent = formatNumber(agencyLoan);
+            document.getElementById('detailDeposit').textContent = formatNumber(20000);
+            document.getElementById('detailHousehold').textContent = formatNumber(10000);
+            document.getElementById('detailProperty').textContent = formatNumber(10000);
+			
+            document.getElementById('equalPrincipalFirst').textContent = formatNumber(equalPrincipalFirst);
+            document.getElementById('equalPrincipalMonth').textContent = formatNumber(equalPrincipalReduce);
+            document.getElementById('equalPrincipalInterest').textContent = formatNumber(equalPrincipalInterest);
+            document.getElementById('equalPrincipalTotal').textContent = formatNumber(equalPrincipalTotal);
+
+            document.getElementById('equalInterestMonth').textContent = formatNumber(equalInterestMonth);
+            document.getElementById('equalInterestInterest').textContent = formatNumber(equalInterestInterest);
+            document.getElementById('equalInterestTotal').textContent = formatNumber(equalInterestTotal);
+        }
+
+        // 数字格式化（千分位）
+        function formatNumber(num) {
+            return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    </script>
+</body>
+</html>
