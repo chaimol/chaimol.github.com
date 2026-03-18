@@ -410,7 +410,7 @@
             const area = Number(document.getElementById('area').value) || 0;
             const unitPriceBox = document.getElementById('unitPriceBox');
             if(area > 0 && price > 0) {
-                const unitPrice = price / area;
+                const unitPrice = price / area/10000;
                 document.getElementById('unitPrice').textContent = formatNumber(unitPrice);
                 unitPriceBox.style.display = 'block';
             } else {
