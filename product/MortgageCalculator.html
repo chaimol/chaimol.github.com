@@ -148,19 +148,45 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+            table-layout: fixed;
         }
 
         .repay-table th, .repay-table td {
             border: 1px solid #ddd;
-            padding: 12px;
+            font-size: 13px;
+            padding: 8px 4px;
             text-align: center;
+            word-break: break-all; /*运行文字换行*/
         }
 
         .repay-table th {
             background-color: #3498db;
             color: white;
+            font-size: 13px;
         }
-
+/*移动端适配*/
+@media screen and (max-width: 768px) {
+    .repay-table {
+        font-size: 12px;
+        display: block;  /* 使表格可滚动 */
+        overflow-x: auto;  /* 横向滚动 */
+        -webkit-overflow-scrolling: touch;  /* iOS 平滑滚动 */
+    }
+    
+    .repay-table thead,
+    .repay-table tbody,
+    .repay-table tr {
+        display: table;  /* 保持表格结构 */
+        width: 100%;
+        table-layout: fixed;
+    }
+    
+    .repay-table th,
+    .repay-table td {
+        padding: 6px 2px;  /* 进一步减小 padding */
+        font-size: 11px;
+    }
+}
         .repay-table tr:nth-child(even) {
             background-color: #f2f2f2;
         }
