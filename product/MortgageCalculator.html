@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>专业房贷计算器</title>
-    <style>
+   <style>
         * {
             margin: 0;
             padding: 0;
@@ -213,11 +213,15 @@
                     <label>房屋成交价（万元）</label>
                     <input type="number" id="price" placeholder="请输入房屋总成交价" min="0.5" required>
                 </div>
-
+                <div class="form-group">
+                    <label>首付金额（万元）</label>
+                    <input type="number" id="downPaymentAmount" placeholder="请输入首付金额" step="0.1" min="0">
+                    <div class="tip">如果填写了首付金额，将优先使用金额而非比例</div>
+                </div>
                 <div class="form-group">
                     <label>首付比例（15%-95%）</label>
                     <input type="number" id="downPaymentRatio" placeholder="15-95" min="15" max="95" value="20" required>
-                    <div class="tip">请输入数字，无需输入%</div>
+                    <div class="tip">未填写首付金额时，使用比例计算</div>
                 </div>
             </div>
 
@@ -227,7 +231,7 @@
                     <select id="loanType">
                         <option value="fund">公积金贷款</option>
                         <option value="business">商业贷款</option>
-                        <option value="combination">组合贷款</option>
+                        <!--<option value="combination">组合贷款</option>-->
                     </select>
                 </div>
 
@@ -239,6 +243,48 @@
                 <div class="form-group">
                     <label>还款年数</label>
                     <input type="number" id="years" placeholder="请输入贷款年数" min="1" max="30" value="20" required>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top: 20px;">
+            <div class="col">
+                <div class="form-group">
+                    <label>定金（万元）</label>
+                    <input type="number" id="deposit" placeholder="请输入定金金额" step="0.1" value="2" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>户口保证金（万元）</label>
+                    <input type="number" id="householdDeposit" placeholder="请输入户口保证金" step="0.1" value="1" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>物业保证金（万元）</label>
+                    <input type="number" id="propertyDeposit" placeholder="请输入物业保证金" step="0.1" value="1" min="0">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label>过户代办费（万元）</label>
+                    <input type="number" id="transferFee" placeholder="请输入过户代办费" step="0.01" value="0.2" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>贷款代办费（万元）</label>
+                    <input type="number" id="loanServiceFee" placeholder="请输入贷款代办费" step="0.01" value="0.2" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>中介费比例（%）</label>
+                    <input type="number" id="agencyRatio" placeholder="请输入中介费比例" step="0.1" value="0.9" min="0">
+                    <div class="tip">请输入数字，无需输入%</div>
+                </div>
+                <div class="form-group">
+                    <label>契税比例（%）</label>
+                    <input type="number" id="deedTaxRatio" placeholder="请输入契税比例" step="0.1" value="1" min="0">
+                    <div class="tip">请输入数字，无需输入%，默认为1%</div>
                 </div>
             </div>
         </div>
@@ -261,16 +307,7 @@
             
             <div class="result-item">
                 <span class="highlight" style="font-size: 17px;">首付总费用（含所有杂费）：<span id="totalDownCost"></span> 万元</span>
-                
                 <div class="detail-list">
-                    <div class="detail-item">
-                        <span class="detail-label">首付款（给原房主）</span>
-                        <span class="detail-value" id="detailDownPayment"></span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">契税（1%）</span>
-                        <span class="detail-value" id="detailDeedTax"></span>
-                    </div>
                     <div class="detail-item">
                         <span class="detail-label">中介费（0.9%）</span>
                         <span class="detail-value" id="detailAgencyFee"></span>
@@ -286,6 +323,14 @@
                     <div class="detail-item">
                         <span class="detail-label">定金</span>
                         <span class="detail-value" id="detailDeposit"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">首付款（给原房主）</span>
+                        <span class="detail-value" id="detailDownPayment"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">契税（1%）</span>
+                        <span class="detail-value" id="detailDeedTax"></span>
                     </div>
                     <div class="detail-item">
                         <span class="detail-label">户口保证金</span>
@@ -352,30 +397,56 @@
         function calculateLoan() {
             // 获取输入值
             const price = Number(document.getElementById('price').value) * 10000 || 0;
+            const downPaymentAmountInput = Number(document.getElementById('downPaymentAmount').value);
             const ratio = Number(document.getElementById('downPaymentRatio').value) || 0;
             const years = Number(document.getElementById('years').value) || 0;
             const rate = Number(document.getElementById('rate').value) || 0;
-
+            // 获取自定义费用（单位：万元，转换为元）
+            const deposit = (Number(document.getElementById('deposit').value) || 2) * 10000;
+            const householdDeposit = (Number(document.getElementById('householdDeposit').value) || 1) * 10000;
+            const propertyDeposit = (Number(document.getElementById('propertyDeposit').value) || 1) * 10000;
+            const transferFee = (Number(document.getElementById('transferFee').value) || 0.2) * 10000;
+            const loanServiceFee = (Number(document.getElementById('loanServiceFee').value) || 0.2) * 10000;
+            const agencyRatio = Number(document.getElementById('agencyRatio').value) || 0.9;
+            const deedTaxRatio = Number(document.getElementById('deedTaxRatio').value) || 1;
+            
             // 基础数据校验
-            if(price < 10000 || ratio <15 || ratio>95 || years <1 || rate <=0) return;
+            if(price < 10000 ||  years <1 || rate <=0) return;
 
-            // 1. 计算贷款基数：成交价 - 2万定金 -1万户口保证金 -1万物业费保证金
-            const loanBase = price - 20000 - 10000 - 10000;
+            // 1. 计算贷款基数：成交价 - 定金 - 户口保证金 - 物业费保证金
+            const loanBase = price - deposit - householdDeposit - propertyDeposit;
             
-            // 2. 计算贷款金额 & 首付金额
-            const loanAmount = loanBase * (1 - ratio / 100);  // 贷款总额
-            const downPayment = loanBase * ratio / 100;      // 首付比例金额
+            // 2.计算首付金额：优先使用用户输入的首付金额，否则使用比例计算
+            let downPayment;
+            let actualRatio;
             
-            // 3. 计算首付总费用（所有费用）
-            const deedTax = price * 0.01;               // 1% 契税
-            const agencyTransfer = 2000;                // 过户代办
-            const agencyLoan = 2000;                    // 贷款代办
-            const agencyFee = price * 0.009;            // 0.9% 中介费
-            const fixedFee = 20000 + 10000 + 10000;     // 固定保证金
+            if(downPaymentAmountInput > 0) {
+                // 如果用户输入了首付金额，直接使用
+                downPayment = downPaymentAmountInput * 10000;
+                actualRatio = (downPayment / loanBase) * 100;
+            } else {
+                // 否则使用比例计算
+                if(ratio < 15 || ratio > 95) return;
+                downPayment = loanBase * ratio / 100;
+                actualRatio = ratio;
+            }
+            
+            // 计算贷款金额
+            const loanAmount = loanBase - downPayment;
+            
+            // 验证首付是否超过贷款基数
+            if(downPayment >= loanBase) {
+                alert('首付金额不能超过贷款基数（成交价减去各项保证金）！');
+                return;
+            }
+            
+            // 计算首付总费用（所有费用）
+            const deedTax = price * (deedTaxRatio / 100);  // 契税（按用户设定比例）
+            const agencyFee = price * (agencyRatio / 100);  // 中介费（按用户设定比例）
 
-            const totalDownCost = downPayment + deedTax + agencyTransfer + agencyLoan + agencyFee + fixedFee;
+            const totalDownCost = downPayment + deedTax + transferFee + loanServiceFee + agencyFee + deposit + householdDeposit + propertyDeposit;
 
-            // 4. 还款计算核心参数
+            // 还款计算核心参数
             const months = years * 12;                 // 总月数
             const monthRate = rate / 100 / 12;          // 月利率
 
@@ -437,15 +508,19 @@
             document.getElementById('loanAmount').textContent = formatNumber(loanAmount/10000);
             //document.getElementById('downPayment').textContent = formatNumber(downPayment/10000);
             document.getElementById('totalDownCost').textContent = formatNumber(totalDownCost/10000);
+            // 显示实际使用的首付比例
+            const ratioText = downPaymentAmountInput > 0 ? 
+                `${formatNumber(actualRatio)}%（按金额${formatNumber(downPaymentAmountInput)}万计算）` : 
+                `${formatNumber(actualRatio)}%`;
             // 显示详细费用明细
-            document.getElementById('detailDownPayment').textContent = formatNumber(downPayment);
-            document.getElementById('detailDeedTax').textContent = formatNumber(deedTax);
+            document.getElementById('detailDownPayment').textContent = formatNumber(downPayment) + ` (${ratioText})`;
+            document.getElementById('detailDeedTax').textContent =  formatNumber(deedTax) + ` (${deedTaxRatio}%)`;
             document.getElementById('detailAgencyFee').textContent = formatNumber(agencyFee);
-            document.getElementById('detailTransfer').textContent = formatNumber(agencyTransfer);
-            document.getElementById('detailLoanService').textContent = formatNumber(agencyLoan);
-            document.getElementById('detailDeposit').textContent = formatNumber(20000);
-            document.getElementById('detailHousehold').textContent = formatNumber(10000);
-            document.getElementById('detailProperty').textContent = formatNumber(10000);
+            document.getElementById('detailTransfer').textContent = formatNumber(transferFee);
+            document.getElementById('detailLoanService').textContent = formatNumber(loanServiceFee);
+            document.getElementById('detailDeposit').textContent = formatNumber(deposit);
+            document.getElementById('detailHousehold').textContent = formatNumber(householdDeposit);
+            document.getElementById('detailProperty').textContent = formatNumber(propertyDeposit);
 			
             document.getElementById('equalPrincipalFirst').textContent = formatNumber(equalPrincipalFirst);
             document.getElementById('equalPrincipalMonth').textContent = formatNumber(equalPrincipalReduce);
