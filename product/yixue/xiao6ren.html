@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小六壬时间起卦</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        .container h2 {
+            text-align: center;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .result-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .location-info {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .time-diff {
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+    <!-- 引入中国各个县的经纬度坐标json数据 -->
+    <script src="china_cities.js"></script>
+    <!-- 引入 lunar-javascript 库 -->
+    <script src="lunar.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>小六壬时间起卦</h2>
+        <div class="input-group">
+            <label for="calcTime">选择时间：</label>
+            <input type="datetime-local" id="calcTime">
+        </div>
+        <div class="input-group">
+            <label for="location">地点（精确到县）：</label>
+            <div style="position: relative; flex: 1; display: flex;">
+                <input type="text" id="location" placeholder="例如：上海市黄浦区" style="flex: 1; padding-right: 30px;">
+                <span id="clearLocation" onclick="clearLocation()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; font-size: 18px; display: none; z-index: 10;">&times;</span>
+            </div>
+            <button onclick="geocodeLocation()" style="background-color: #17a2b8; white-space: nowrap;">解析地点</button>
+            <button onclick="getCurrentLocation()" style="background-color: #28a745; white-space: nowrap;">自动定位</button>
+        </div>
+        <div class="location-info" id="locationInfo">提示：输入县区名称后点击"解析地点"，或使用"自动定位"获取当前位置</div>
+        <div class="input-group">
+            <button onclick="calculateXiaoLiuRen()" style="width: 100%;">开始推算</button>
+        </div>
+        
+        <div id="resultArea" style="display:none; margin-top: 20px;">
+            <h3>推算结果</h3>
+            <div class="result-card">
+                <p><strong>选择的地点：</strong> <span id="locationDisplay"></span></p>
+                <p><strong>北京时间：</strong> <span id="beijingTime"></span></p>
+                <p><strong>地方时：</strong> <span id="localTime"></span></p>
+                <p><strong>农历时间：</strong> <span id="lunarDate"></span></p>
+                <p><strong>起卦参数：</strong> <span id="monthNum"></span>月 <span id="dayNum"></span>日 <span id="hourNum"></span>时</p>
+                <hr>
+                <p><strong>最终宫位：</strong> <span id="finalPalace" style="font-size: 1.5em; font-weight: bold; color: #d9534f;"></span></p>
+                <p><strong>吉凶判断：</strong> <span id="fortuneLevel"></span></p>
+                <p><strong>断语解析：</strong> <span id="interpretation"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 小六壬基础数据
+        const xiaoLiuRenData = [
+            { name: "大安", fortune: "吉", desc: "身不动时，五行属木，颜色青龙，方位正东。凡事可成，病者无妨，求财有得，行人未至。" },
+            { name: "留连", fortune: "凶", desc: "人未归时，五行属水，颜色玄武，方位北方。事事迟滞，求谋未遂，官事有惊，病者难愈。" },
+            { name: "速喜", fortune: "吉", desc: "人即至时，五行属火，颜色朱雀，方位南方。喜事来临，求财有利，行人即至，病者无碍。" },
+            { name: "赤口", fortune: "凶", desc: "官事凶时，五行属金，颜色白虎，方位西方。口舌是非，求财不得，行人受阻，病者沉重。" },
+            { name: "小吉", fortune: "吉", desc: "人来喜时，五行属水，颜色六合，方位北方。诸事皆吉，求财有益，行人将至，病者无妨。" },
+            { name: "空亡", fortune: "大凶", desc: "音信稀时，五行属土，颜色勾陈，方位中央。凡事落空，求财无得，行人未至，病者难治。" }
+        ];
+
+        // 存储当前位置信息
+        let currentLongitude = null;
+        let currentLatitude = null;
+        let currentLocationName = "未设置";
+
+        // 清除地点输入
+        function clearLocation() {
+            document.getElementById('location').value = '';
+            document.getElementById('clearLocation').style.display = 'none';
+            currentLongitude = null;
+            currentLatitude = null;
+            currentLocationName = "未设置";
+            document.getElementById('locationInfo').innerText = '提示：输入县区名称后点击"解析地点"，或使用"自动定位"获取当前位置';
+        }
+
+        // 监听地点输入框的变化，显示或隐藏清除按钮
+        window.addEventListener('DOMContentLoaded', function() {
+            const locationInput = document.getElementById('location');
+            const clearBtn = document.getElementById('clearLocation');
+            
+            if (locationInput && clearBtn) {
+                locationInput.addEventListener('input', function() {
+                    if (this.value.length > 0) {
+                        clearBtn.style.display = 'block';
+                    } else {
+                        clearBtn.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // 查找地点坐标的函数
+        function findLocationCoords(locationName) {
+            if (!ChinaCountiesCoords || typeof ChinaCountiesCoords !== 'object') {
+                console.warn("县区坐标数据未加载");
+                return null;
+            }
+
+            // 直接匹配
+            if (ChinaCountiesCoords[locationName]) {
+                return ChinaCountiesCoords[locationName];
+            }
+            
+            // 模糊匹配：尝试匹配包含关系
+            let bestMatch = null;
+            let bestMatchKey = null;
+            
+            for (const key in ChinaCountiesCoords) {
+                // 如果输入的地点包含在数据键中，或者数据键包含在输入的地点中
+                if (key.includes(locationName) || locationName.includes(key)) {
+                    // 优先选择更精确的匹配（长度更接近的）
+                    if (!bestMatch || Math.abs(key.length - locationName.length) < Math.abs(bestMatchKey.length - locationName.length)) {
+                        bestMatch = ChinaCountiesCoords[key];
+                        bestMatchKey = key;
+                    }
+                }
+            }
+            
+            if (bestMatch) {
+                console.log(`模糊匹配: "${locationName}" -> "${bestMatchKey}"`);
+                return bestMatch;
+            }
+            
+            // 如果都没找到，返回 null
+            console.warn(`未找到地点 "${locationName}" 的坐标`);
+            return null;
+        }
+
+        // 解析地点名称获取经纬度
+        function geocodeLocation() {
+            const locationInput = document.getElementById('location').value.trim();
+            if (!locationInput) {
+                alert("请输入地点名称");
+                return;
+            }
+
+            document.getElementById('locationInfo').innerText = "正在解析地点...";
+
+            // 使用本地数据库查找坐标
+            const coords = findLocationCoords(locationInput);
+            
+            if (coords) {
+                currentLongitude = coords.lng;
+                currentLatitude = coords.lat;
+                currentLocationName = locationInput;
+                
+                document.getElementById('locationInfo').innerHTML = 
+                    `✓ 已解析：<strong>${currentLocationName}</strong><br>` +
+                    `经度: ${currentLongitude.toFixed(4)}°, 纬度: ${currentLatitude.toFixed(4)}°`;
+                
+                console.log("地点解析成功:", currentLocationName, currentLongitude, currentLatitude);
+            } else {
+                document.getElementById('locationInfo').innerHTML = 
+                    `<span style="color: red;">✗ 无法解析该地点，请尝试输入完整的区县名称（如：上海市黄浦区、山东省济南市历下区）</span>`;
+                console.error("地点解析失败:", locationInput);
+            }
+        }
+
+        // 获取当前地理位置
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                document.getElementById('locationInfo').innerText = "正在获取位置...";
+                
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        currentLongitude = position.coords.longitude;
+                        currentLatitude = position.coords.latitude;
+                        
+                        currentLocationName = `当前位置 (经度:${currentLongitude.toFixed(2)}°, 纬度:${currentLatitude.toFixed(2)}°)`;
+                        document.getElementById('location').value = currentLocationName;
+                        
+                        document.getElementById('locationInfo').innerHTML = 
+                            `✓ 定位成功：<strong>${currentLocationName}</strong>`;
+                        
+                        console.log("GPS定位成功:", currentLongitude, currentLatitude);
+                    },
+                    function(error) {
+                        document.getElementById('locationInfo').innerHTML = 
+                            `<span style="color: red;">✗ 定位失败: ${error.message}</span>`;
+                        console.error("定位失败:", error);
+                        
+                        // 降级处理：使用默认北京坐标
+                        currentLongitude = 116.397;
+                        currentLatitude = 39.908;
+                        currentLocationName = "北京（默认）";
+                        alert("定位失败，已使用默认北京坐标");
+                    }
+                );
+            } else {
+                document.getElementById('locationInfo').innerHTML = 
+                    `<span style="color: red;">✗ 浏览器不支持地理定位</span>`;
+                currentLongitude = 116.397;
+                currentLatitude = 39.908;
+                currentLocationName = "北京（默认）";
+                alert("您的浏览器不支持地理定位，已使用默认北京坐标");
+            }
+        }
+
+        // 根据经度计算地方时
+        function calculateLocalTime(beijingTime, longitude) {
+            // 北京时间是东经120度的时间
+            const beijingLongitude = 120;
+            
+            // 计算经度差（度）
+            const longitudeDiff = longitude - beijingLongitude;
+            
+            // 每度经度差对应4分钟时间差
+            // 东边时间早，西边时间晚
+            const timeDiffMinutes = longitudeDiff * 4;
+            
+            // 创建地方时
+            const localTime = new Date(beijingTime.getTime() + timeDiffMinutes * 60 * 1000);
+            
+            return {
+                localTime: localTime,
+                timeDiffMinutes: timeDiffMinutes
+            };
+        }
+
+        // 格式化时间显示
+        function formatTime(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hour = String(date.getHours()).padStart(2, '0');
+            const minute = String(date.getMinutes()).padStart(2, '0');
+            const second = String(date.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+        }
+
+        // 格式化时间差显示（保留2位小数）
+        function formatTimeDiff(minutes) {
+            const hours = minutes / 60;
+            const sign = hours >= 0 ? '+' : '';
+            return `${sign}${hours.toFixed(2)}小时`;
+        }
+
+        function calculateXiaoLiuRen() {
+            const timeInput = document.getElementById('calcTime').value;
+            if (!timeInput) {
+                alert("请选择时间");
+                return;
+            }
+
+            // 获取用户输入的地点
+            const locationInput = document.getElementById('location').value.trim();
+            if (locationInput && locationInput !== currentLocationName && !locationInput.includes("经度")) {
+                // 如果用户手动输入了新的地点名称，尝试重新解析
+                const coords = findLocationCoords(locationInput);
+                if (coords) {
+                    currentLongitude = coords.lng;
+                    currentLatitude = coords.lat;
+                    currentLocationName = locationInput;
+                    
+                    document.getElementById('locationInfo').innerHTML = 
+                        `✓ 已解析：<strong>${currentLocationName}</strong><br>` +
+                        `经度: ${currentLongitude.toFixed(4)}°, 纬度: ${currentLatitude.toFixed(4)}°`;
+                }
+            }
+
+            // 如果没有设置经度，使用默认北京经度
+            if (currentLongitude === null) {
+                currentLongitude = 116.397;
+                currentLatitude = 39.908;
+                currentLocationName = "北京（默认）";
+            }
+
+            const beijingDate = new Date(timeInput);
+            
+            // 计算地方时
+            const { localTime, timeDiffMinutes } = calculateLocalTime(beijingDate, currentLongitude);
+            
+            // 1. 使用 lunar-javascript 库获取农历月、日、时（基于地方时）
+            let lunarMonth, lunarDay, hourIndex, hour;
+
+            try {
+                // 使用地方时进行农历转换
+                const solar = Solar.fromYmdHms(
+                    localTime.getFullYear(), 
+                    localTime.getMonth() + 1, 
+                    localTime.getDate(),
+                    localTime.getHours(),
+                    localTime.getMinutes(),
+                    localTime.getSeconds()
+                );
+                const lunar = solar.getLunar();
+                
+                lunarMonth = lunar.getMonth(); // 农历月份
+                lunarDay = lunar.getDay();     // 农历日期
+                
+                // 根据地方时的小时计算时辰序号 (子时=1, 丑时=2 ... 亥时=12)
+                hour = localTime.getHours();
+                hourIndex = Math.floor((hour + 1) / 2) % 12;
+                if (hourIndex === 0) hourIndex = 12; // 亥时
+
+            } catch (error) {
+                console.error("农历转换错误:", error);
+                // 降级处理
+                lunarMonth = localTime.getMonth() + 1;
+                lunarDay = localTime.getDate();
+                hour = localTime.getHours();
+                hourIndex = Math.floor((hour + 1) / 2) % 12;
+                if (hourIndex === 0) hourIndex = 12;
+            }
+
+            // 2. 小六壬算法
+            // 大安(1), 留连(2), 速喜(3), 赤口(4), 小吉(5), 空亡(6)
+            
+            // 月起：从大安起正月，顺数到本月
+            // 公式：(月 - 1) % 6
+            let monthPos = (lunarMonth - 1) % 6;
+            
+            // 日起：从月位起初一，顺数到本日
+            // 公式：(月位 + 日 - 1) % 6
+            let dayPos = (monthPos + lunarDay - 1) % 6;
+            
+            // 时起：从日位起子时，顺数到本时
+            // 公式：(日位 + 时支序数 - 1) % 6
+            let finalPos = (dayPos + hourIndex - 1) % 6;
+
+            // 3. 输出结果
+            const result = xiaoLiuRenData[finalPos];
+
+            document.getElementById('resultArea').style.display = 'block';
+            document.getElementById('locationDisplay').innerText = `${currentLocationName} (经度: ${currentLongitude.toFixed(2)}°)`;
+            document.getElementById('beijingTime').innerText = formatTime(beijingDate);
+            document.getElementById('localTime').innerText = `${formatTime(localTime)} (与北京时间相差 ${formatTimeDiff(timeDiffMinutes)})`;
+            document.getElementById('lunarDate').innerText = `${localTime.toLocaleDateString()} ${hour}:00 (时辰序数:${hourIndex})`;
+            document.getElementById('monthNum').innerText = lunarMonth;
+            document.getElementById('dayNum').innerText = lunarDay;
+            document.getElementById('hourNum').innerText = hourIndex;
+            
+            document.getElementById('finalPalace').innerText = result.name;
+            document.getElementById('fortuneLevel').innerText = result.fortune;
+            document.getElementById('interpretation').innerText = result.desc;
+        }
+        
+        // 初始化默认时间为当前时间
+        window.onload = function() {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('calcTime').value = now.toISOString().slice(0,16);
+            
+            // 检查数据是否加载
+            if (typeof ChinaCountiesCoords !== 'undefined') {
+                const count = Object.keys(ChinaCountiesCoords).length;
+                document.getElementById('locationInfo').innerHTML = 
+                    `✓ 县区坐标数据已加载，共 <strong>${count}</strong> 条记录<br>请输入地点名称或点击"自动定位"`;
+                console.log("县区坐标数据加载成功:", count, "条记录");
+            } else {
+                document.getElementById('locationInfo').innerHTML = 
+                    `<span style="color: orange;">⚠ 县区坐标数据未加载，请使用"自动定位"功能</span>`;
+                console.warn("县区坐标数据未加载");
+            }
+        }
+    </script>
+</body>
+</html>
