@@ -82,6 +82,12 @@ bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM-1_T2T.D -r 3-79.HAU_
 cat TM-1_T2T.A.3-79.HAU_V2.A.xls TM-1_T2T.D.3-79.HAU_V2.D.xls >TM-1_T2T_3-79.HAU_V2.xls
 python3 id2json.py TM-1_T2T_3-79.HAU_V2.xls TM-1_T2T_3-79.HAU_V2.json TM-1_T2T 3-79.HAU_V2
 
+##N244 和3-79 HAU V2之间进行转换
+bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q N244.A -r 3-79.HAU_V2.A --query-protein N244.A.pep --ref-protein 3-79.HAU_V2.A.pep -n 2 -m 85
+bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q N244.D -r 3-79.HAU_V2.D --query-protein N244.D.pep --ref-protein 3-79.HAU_V2.D.pep -n 2 -m 85
+cat N244.A.3-79.HAU_V2.A.xls N244.D.3-79.HAU_V2.D.xls >N244_3-79.HAU_V2.xls
+python3 id2json.py N244_3-79.HAU_V2.xls N244_3-79.HAU_V2.json N244 3-79.HAU_V2
+
 ##2个海岛棉之间转换
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q Pima90.A -r 3-79.HAU_V2.A --query-protein Pima90.A.pep --ref-protein 3-79.HAU_V2.A.pep -n 2 -m 85
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q Pima90.D -r 3-79.HAU_V2.D --query-protein Pima90.D.pep --ref-protein 3-79.HAU_V2.D.pep -n 2 -m 85
