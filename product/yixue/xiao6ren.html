@@ -22,6 +22,10 @@
             gap: 10px;
             align-items: center;
             margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .input-group label {
+            min-width: 100px;
         }
         .result-card {
             background: #fff;
@@ -36,6 +40,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            white-space: nowrap;
         }
         button:hover {
             background-color: #0056b3;
@@ -49,11 +54,42 @@
             color: #28a745;
             font-weight: bold;
         }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .input-group label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+            
+            .input-group > div[style*="position: relative"] {
+                width: 100%;
+            }
+            
+            .input-group button {
+                width: 100%;
+            }
+            
+            #location {
+                width: 100%;
+            }
+        }
     </style>
     <!-- 引入中国各个县的经纬度坐标json数据 -->
-    <script src="china_cities.js"></script>
+    <script src="china_cities.min.js"></script>
     <!-- 引入 lunar-javascript 库 -->
-    <script src="lunar.js"></script>
+    <script src="lunar.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -65,11 +101,11 @@
         <div class="input-group">
             <label for="location">地点（精确到县）：</label>
             <div style="position: relative; flex: 1; display: flex;">
-                <input type="text" id="location" placeholder="例如：上海市黄浦区" style="flex: 1; padding-right: 30px;">
+                <input type="text" id="location" placeholder="例如：上海市黄浦区" style="flex: 1; padding-right: 30px; min-width: 0;">
                 <span id="clearLocation" onclick="clearLocation()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; font-size: 18px; display: none; z-index: 10;">&times;</span>
             </div>
-            <button onclick="geocodeLocation()" style="background-color: #17a2b8; white-space: nowrap;">解析地点</button>
-            <button onclick="getCurrentLocation()" style="background-color: #28a745; white-space: nowrap;">自动定位</button>
+            <button onclick="geocodeLocation()" style="background-color: #17a2b8;">解析地点</button>
+            <button onclick="getCurrentLocation()" style="background-color: #28a745;">自动定位</button>
         </div>
         <div class="location-info" id="locationInfo">提示：输入县区名称后点击"解析地点"，或使用"自动定位"获取当前位置</div>
         <div class="input-group">
@@ -83,7 +119,7 @@
                 <p><strong>北京时间：</strong> <span id="beijingTime"></span></p>
                 <p><strong>地方时：</strong> <span id="localTime"></span></p>
                 <p><strong>农历时间：</strong> <span id="lunarDate"></span></p>
-                <p><strong>起卦参数：</strong> <span id="monthNum"></span>月 <span id="dayNum"></span>日 <span id="hourNum"></span>时</p>
+                <p><strong>起卦参数：</strong> <span id="monthNum"></span>月 <span id="dayNum"></span>日 <span id="hourNum"></span></p>
                 <hr>
                 <p><strong>最终宫位：</strong> <span id="finalPalace" style="font-size: 1.5em; font-weight: bold; color: #d9534f;"></span></p>
                 <p><strong>吉凶判断：</strong> <span id="fortuneLevel"></span></p>
@@ -107,6 +143,12 @@
         let currentLongitude = null;
         let currentLatitude = null;
         let currentLocationName = "未设置";
+
+        // 时辰名称映射
+        const shichenNames = [
+            "", "子时", "丑时", "寅时", "卯时", "辰时", "巳时", 
+            "午时", "未时", "申时", "酉时", "戌时", "亥时"
+        ];
 
         // 清除地点输入
         function clearLocation() {
@@ -316,7 +358,7 @@
             const { localTime, timeDiffMinutes } = calculateLocalTime(beijingDate, currentLongitude);
             
             // 1. 使用 lunar-javascript 库获取农历月、日、时（基于地方时）
-            let lunarMonth, lunarDay, hourIndex, hour;
+            let lunarMonth, lunarDay, hourIndex, hour, lunarYear, lunarYearStr, lunarMonthStr, lunarDayStr, shichenName;
 
             try {
                 // 使用地方时进行农历转换
@@ -330,22 +372,34 @@
                 );
                 const lunar = solar.getLunar();
                 
-                lunarMonth = lunar.getMonth(); // 农历月份
-                lunarDay = lunar.getDay();     // 农历日期
+                lunarYear = lunar.getYear();           // 农历年份
+                lunarYearStr = lunar.getYearInGanZhi(); // 年干支（如：甲辰）
+                lunarMonth = lunar.getMonth();          // 农历月份
+                lunarMonthStr = lunar.getMonthInChinese(); // 农历月中文（如：正、二、三...）
+                lunarDay = lunar.getDay();              // 农历日期
+                lunarDayStr = lunar.getDayInChinese();  // 农历日中文（如：初一、初二...）
                 
                 // 根据地方时的小时计算时辰序号 (子时=1, 丑时=2 ... 亥时=12)
                 hour = localTime.getHours();
                 hourIndex = Math.floor((hour + 1) / 2) % 12;
                 if (hourIndex === 0) hourIndex = 12; // 亥时
+                
+                // 获取时辰名称
+                shichenName = shichenNames[hourIndex];
 
             } catch (error) {
                 console.error("农历转换错误:", error);
                 // 降级处理
+                lunarYear = localTime.getFullYear();
+                lunarYearStr = "";
                 lunarMonth = localTime.getMonth() + 1;
+                lunarMonthStr = lunarMonth.toString();
                 lunarDay = localTime.getDate();
+                lunarDayStr = lunarDay.toString();
                 hour = localTime.getHours();
                 hourIndex = Math.floor((hour + 1) / 2) % 12;
                 if (hourIndex === 0) hourIndex = 12;
+                shichenName = shichenNames[hourIndex];
             }
 
             // 2. 小六壬算法
@@ -370,10 +424,10 @@
             document.getElementById('locationDisplay').innerText = `${currentLocationName} (经度: ${currentLongitude.toFixed(2)}°)`;
             document.getElementById('beijingTime').innerText = formatTime(beijingDate);
             document.getElementById('localTime').innerText = `${formatTime(localTime)} (与北京时间相差 ${formatTimeDiff(timeDiffMinutes)})`;
-            document.getElementById('lunarDate').innerText = `${localTime.toLocaleDateString()} ${hour}:00 (时辰序数:${hourIndex})`;
+            document.getElementById('lunarDate').innerText = `${lunarYearStr}年 ${lunarMonthStr}月 ${lunarDayStr} ${shichenName}`;
             document.getElementById('monthNum').innerText = lunarMonth;
             document.getElementById('dayNum').innerText = lunarDay;
-            document.getElementById('hourNum').innerText = hourIndex;
+            document.getElementById('hourNum').innerText = shichenName;
             
             document.getElementById('finalPalace').innerText = result.name;
             document.getElementById('fortuneLevel').innerText = result.fortune;
