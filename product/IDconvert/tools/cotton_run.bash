@@ -6,6 +6,11 @@ IDconvertAD.bash TM_1.ZJUV_2.1 TM_1.ZJUV_2.1.pep GH_A GH_D
 IDconvertAD.bash ZM113T2T ZM113T2T.pep Ghir_A Ghir_D
 IDconvertAD.bash TM-1.HAU_V1.1 TM-1.HAU_V1.1.pep Ghir_A Ghir_D
 IDconvertAD.bash Ghicr24 ZM24.pep Ghicr24_A Ghicr24_D
+IDconvertAD.bash 3-79.HAU_V2 AD2_HAUV2.pep Gbar_A Gbar_D
+IDconvertAD.bash Pima90 Pima90.pep GbM_A GbM_D
+
+# 
+
 
 #以N244为参考
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM_1_CRI.A -r N244.A --query-protein TM_1_CRI.A.pep --ref-protein N244.A.pep -n 2 -m 85
@@ -70,4 +75,16 @@ python3 id2json.py TM-1_T2T_N244.xls TM-1_T2T_N244.json TM-1_T2T N244
 
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q D5_T2T -r N244.D --query-protein D5_T2T.pep --ref-protein N244.D.pep -n 2 -m 85
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q D5_T2T -r N244.A --query-protein D5_T2T.pep --ref-protein N244.A.pep -n 2 -m 85
+
+##TM-1 T2T ZJU 和3-79 HAU V2之间进行转换
+bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM-1_T2T.A -r 3-79.HAU_V2.A --query-protein TM-1_T2T.A.pep --ref-protein 3-79.HAU_V2.A.pep -n 2 -m 85
+bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM-1_T2T.D -r 3-79.HAU_V2.D --query-protein TM-1_T2T.D.pep --ref-protein 3-79.HAU_V2.D.pep -n 2 -m 85
+cat TM-1_T2T.A.3-79.HAU_V2.A.xls TM-1_T2T.D.3-79.HAU_V2.D.xls >TM-1_T2T_3-79.HAU_V2.xls
+python3 id2json.py TM-1_T2T_3-79.HAU_V2.xls TM-1_T2T_3-79.HAU_V2.json TM-1_T2T 3-79.HAU_V2
+
+##2个海岛棉之间转换
+bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q Pima90.A -r 3-79.HAU_V2.A --query-protein Pima90.A.pep --ref-protein 3-79.HAU_V2.A.pep -n 2 -m 85
+bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q Pima90.D -r 3-79.HAU_V2.D --query-protein Pima90.D.pep --ref-protein 3-79.HAU_V2.D.pep -n 2 -m 85
+cat Pima90.A.3-79.HAU_V2.A.xls Pima90.D.3-79.HAU_V2.D.xls >Pima90_3-79.HAU_V2.xls
+python3 id2json.py Pima90_3-79.HAU_V2.xls Pima90_3-79.HAU_V2.json Pima90 3-79.HAU_V2
 

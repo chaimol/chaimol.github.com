@@ -7,15 +7,15 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px; 
+            max-width: 1200px; 
             margin: 0 auto;
-            padding: 10px;
+            padding: 20px;
             background-color: #f5f5f5;
         }
         
         .container {
             background-color: white;
-            padding: 15px;
+            padding: 25px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
@@ -23,7 +23,7 @@
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         
         .input-group {
@@ -50,7 +50,7 @@
         
         .controls {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 20px;
             align-items: end;
             flex-wrap: wrap;
@@ -58,7 +58,12 @@
         
         .control-item {
             flex: 1;
-            min-width: 150px;
+            min-width: 200px;
+        }
+        
+        .control-item.wide {
+            flex: 2;
+            min-width: 300px;
         }
         
         select, button {
@@ -66,6 +71,19 @@
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        select {
+            background-color: white;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        select:hover {
+            border-color: #4CAF50;
         }
         
         button {
@@ -74,6 +92,7 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: 10px;
+            transition: background-color 0.3s;
         }
         
         button:hover {
@@ -120,26 +139,92 @@
         .clear-btn:hover {
             background-color: #d32f2f;
         }
+        
         .footer {
             text-align: center;
-            margin-top: 5px;
+            margin-top: 20px;
             color: #777;
             font-size: 14px;
         }
+        
+        .footer p {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        
+        .data-source-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        
         .data-source-links {
-            display: inline-block;
-            margin: 0 5px;
+            display: inline-flex;
         }
         
         .data-source-links a {
             display: inline-block;
-            padding: 3px 3px;
-            margin: 0 2px;
+            padding: 5px 10px;
             text-decoration: none;
             color: #fff;
             background-color: #4CAF50;
             border-radius: 4px;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .data-source-links a:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .control-item {
+                min-width: 100%;
+            }
+            
+            .control-item.wide {
+                min-width: 100%;
+            }
+            
+            .footer {
+                font-size: 13px;
+            }
+            
+            .data-source-container {
+                gap: 6px;
+            }
+            
+            .data-source-links a {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .footer {
+                font-size: 12px;
+            }
+            
+            .data-source-links a {
+                padding: 3px 6px;
+                font-size: 11px;
+            }
         }
     </style>
 </head>
@@ -153,7 +238,7 @@
         </div>
         
         <div class="controls">
-            <div class="control-item">
+            <div class="control-item wide">
                 <label for="conversionType">转换类型:</label>
                 <select id="conversionType">
                     <option value="TM_1_CRI_N244">TM-1 CRI - N244</option>
@@ -168,6 +253,8 @@
                     <option value="ZM113T2T_TM_1_CRI">ZM113T2T - TM-1 CRI</option>
                     <option value="Jin668_T2T_N244">Jin668_T2T - N244</option>
                     <option value="Jin668_T2T_ZM113">Jin668_T2T - ZM113T2T</option>
+                    <option value="TM-1_T2T_3-79.HAU_V2">TM-1_T2T ZJU - 3-79 HAU_V2</option>
+                    <option value="Pima90_3-79.HAU_V2">Pima90 - 3-79 HAU_V2</option>
                     <!-- 可以在这里添加更多的转换类型,注意这里的value里面的值要和./data/genome/的json文件的前缀相同，通过程序是读取这个路径的json文件后进行解析的-->
                 </select>
             </div>
@@ -200,12 +287,13 @@
             </div>
         </div>
          <div class="footer">
-			    <p>基因组数据来源: 
-				 <span class="data-source-links"><a href="https://yanglab.hzau.edu.cn/CottonMD/" title="TM-1 HAU" target="_blank">cottonMD</a></span>
-                <span class="data-source-links"><a href="https://db.cngb.org/cottonGVD/" title="TM-1 CRI" target="_blank">cottonGVD</a></span>
-                <span class="data-source-links"><a href="https://www.cottongen.org/" title="TM-1 ZJU" target="_blank">cottongen</a></span>
-                <span class="data-source-links"><a href="http://jinlab.hzau.edu.cn/T2TCottonHub/" title="Jin668_T2T" target="_blank">T2TCottonHub</a></span>
-				</p>
+                <p>基因组数据来源:</p>
+                <div class="data-source-container">
+                    <span class="data-source-links"><a href="https://yanglab.hzau.edu.cn/CottonMD/" title="TM-1 HAU" target="_blank">cottonMD</a></span>
+                    <span class="data-source-links"><a href="https://db.cngb.org/cottonGVD/" title="TM-1 CRI" target="_blank">cottonGVD</a></span>
+                    <span class="data-source-links"><a href="https://www.cottongen.org/" title="TM-1 ZJU" target="_blank">cottongen</a></span>
+                    <span class="data-source-links"><a href="http://jinlab.hzau.edu.cn/T2TCottonHub/" title="Jin668_T2T" target="_blank">T2TCottonHub</a></span>
+                </div>
             <p>Copyright &copy; <span id="currentYear"></span> Author: chaimol </p>
         </div>
     </div>
