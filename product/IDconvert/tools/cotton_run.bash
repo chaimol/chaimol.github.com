@@ -34,6 +34,13 @@ cat TM-1_WHUV1.A.N244.A.xls TM-1_WHUV1.D.N244.D.xls >TM-1_WHUV1_N244.xls
 python3 id2json.py TM-1_WHUV1_N244.xls TM-1_WHUV1_N244.json TM-1_WHUV1 N244
 
 
+##构建和拟南芥的转换的表 Arabidopsis_thaliana ，注意因为不是同一个物种，所以需要下调比对时的准确率要求，此处下调到50.
+IDconvert.bash -q Ath -r N244.A --query-protein Ath.pep.getlong.fa --ref-protein N244.A.pep -n 2 -m 50
+IDconvert.bash -q Ath -r N244.D --query-protein Ath.pep.getlong.fa --ref-protein N244.D.pep -n 2 -m 50
+cat Ath.N244.A.xls Ath.N244.D.xls >Ath_N244.xls
+python3 id2json.py Ath_N244.xls Ath_N244.json Ath N244
+
+
 ####以TM-1 CRI为参考
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q Ghicr24.A -r TM_1_CRI.A --query-protein Ghicr24.A.pep --ref-protein TM_1_CRI.A.pep -n 2 -m 85
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q Ghicr24.D -r TM_1_CRI.D --query-protein Ghicr24.D.pep --ref-protein TM_1_CRI.D.pep -n 2 -m 85
