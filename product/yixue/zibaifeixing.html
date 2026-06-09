@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>玄空择日｜紫白飞星 · 黄道黑道 · 不将日合参</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f3efe7;
+            background-image: radial-gradient(circle at 10% 20%, rgba(210, 180, 140, 0.08) 2%, transparent 2.5%);
+            background-size: 28px 28px;
+            font-family: 'Segoe UI', '华文楷书', 'Microsoft YaHei', 'PingFang SC', system-ui, -apple-system, sans-serif;
+            padding: 28px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .scroll-card {
+            background: rgba(255, 251, 242, 0.96);
+            border-radius: 56px;
+            box-shadow: 0 25px 45px rgba(60, 40, 20, 0.2);
+            padding: 28px 32px 45px;
+            backdrop-filter: blur(2px);
+            border: 1px solid #f2e2ce;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #8b5a3c;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        h1 small {
+            font-size: 0.75rem;
+            background: #eadbcb;
+            padding: 6px 14px;
+            border-radius: 60px;
+            color: #6d4328;
+            font-weight: normal;
+        }
+
+        .sub {
+            text-align: center;
+            color: #b27a54;
+            border-bottom: 1px solid #f0deca;
+            padding-bottom: 20px;
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+        }
+
+        .query-bar {
+            background: #fffaf2;
+            border-radius: 80px;
+            padding: 14px 26px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 22px;
+            margin-bottom: 35px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .date-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .date-group label {
+            font-weight: 600;
+            color: #7c593b;
+            font-size: 0.85rem;
+        }
+
+        input[type="date"] {
+            padding: 12px 20px;
+            border-radius: 60px;
+            border: 1px solid #eedbc8;
+            background: white;
+            font-size: 1rem;
+            width: 220px;
+            transition: 0.2s;
+        }
+
+        button {
+            background: #c58257;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            background: #a8653b;
+            transform: scale(1.01);
+        }
+
+        .result-panel {
+            background: #fffdf7;
+            border-radius: 42px;
+            padding: 24px 28px;
+            margin-top: 10px;
+            border: 1px solid #f2e1cf;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: baseline;
+            border-left: 6px solid #daa06a;
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .result-header h2 {
+            font-size: 1.4rem;
+            color: #9c603d;
+        }
+
+        .date-badge {
+            background: #f1e4d4;
+            border-radius: 50px;
+            padding: 5px 18px;
+            font-size: 0.9rem;
+            color: #7e593b;
+        }
+
+        .triple-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .feixing-card, .xingjun-card, .bujiang-card {
+            flex: 1;
+            min-width: 250px;
+            background: #fefaf3;
+            border-radius: 32px;
+            padding: 18px 20px;
+            border: 1px solid #f5e7d8;
+        }
+
+        .feixing-card h3, .xingjun-card h3, .bujiang-card h3 {
+            color: #bc784c;
+            font-size: 1.2rem;
+            border-left: 3px solid #e7bc8a;
+            padding-left: 15px;
+            margin-bottom: 16px;
+        }
+
+        .star-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .star-item {
+            background: #fff6ec;
+            border-radius: 24px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .star-label {
+            font-weight: bold;
+            color: #936b46;
+            font-size: 0.8rem;
+        }
+
+        .star-number {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .star-desc {
+            font-size: 0.7rem;
+            color: #8f6a48;
+        }
+
+        .xingjun-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ad6a3c;
+            margin: 6px 0;
+        }
+
+        .tag-group {
+            margin: 12px 0;
+        }
+
+        .yi-tag, .ji-tag, .good-tag, .bujiang-tag {
+            display: inline-block;
+            background: #ece0d0;
+            border-radius: 40px;
+            padding: 4px 14px;
+            margin: 4px 6px 4px 0;
+            font-size: 0.75rem;
+        }
+
+        .yi-tag { background: #e0d4c0; color: #2b6e3c; }
+        .ji-tag { background: #f3e3d4; color: #bc543a; }
+        .good-tag { background: #f2e0cb; color: #a3582c; }
+        .bujiang-tag { background: #dac29c; color: #6b3a1c; font-weight: bold; }
+
+        .conclusion {
+            background: #f7efe2;
+            border-radius: 28px;
+            padding: 16px 22px;
+            margin-top: 20px;
+            line-height: 1.5;
+            color: #5d3d26;
+            font-size: 0.95rem;
+        }
+
+        .legend {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 16px 0 8px;
+            font-size: 0.7rem;
+            justify-content: center;
+        }
+
+        hr { margin: 18px 0; border: none; border-top: 1px solid #ecddcc; }
+        footer { text-align: center; margin-top: 28px; font-size: 0.7rem; color: #aa8462; }
+
+        @media (max-width: 860px) {
+            .scroll-card { padding: 20px; }
+            .star-number { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="scroll-card">
+        <h1>
+            🪷 紫白飞星 · 黄道 · 不将日
+            <small>三元合参择吉 | 婚嫁专用</small>
+        </h1>
+        <div class="sub">🌟 年紫白入中 · 逐日紫白 + 黄道黑道星君 + 嫁娶不将日 · 三重择吉体系</div>
+
+        <div class="query-bar">
+            <div class="date-group">
+                <label>📅 公历日期</label>
+                <input type="date" id="targetDate" value="2026-06-10">
+            </div>
+            <button id="analysisBtn">🌠 推演紫白 · 黄道 · 不将日</button>
+        </div>
+
+        <div id="resultArea" class="result-panel">
+            <div class="result-header">
+                <h2>✨ 日课三重吉凶格局</h2>
+                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                    <span class="date-badge" id="displaySolarDate"></span>
+                    <span class="date-badge" id="displayLunarGanZhi" style="background:#e8d5c0; color:#6b4a2e;"></span>
+                </div>
+            </div>
+            <div class="triple-grid">
+                <!-- 紫白飞星模块 -->
+                <div class="feixing-card">
+                    <h3>🎯 紫白飞星 (玄空)</h3>
+                    <div class="star-grid" id="feixingGrid">
+                        <div class="star-item"><div class="star-label">年紫白</div><div class="star-number" id="yearStar">—</div><div class="star-desc" id="yearDesc"></div></div>
+                        <div class="star-item"><div class="star-label">月紫白</div><div class="star-number" id="monthStar">—</div><div class="star-desc" id="monthDesc"></div></div>
+                        <div class="star-item"><div class="star-label">日紫白</div><div class="star-number" id="dayStar">—</div><div class="star-desc" id="dayDesc"></div></div>
+                        <div class="star-item"><div class="star-label">时紫白(午时)</div><div class="star-number" id="hourStar">—</div><div class="star-desc" id="hourDesc"></div></div>
+                    </div>
+                    <div class="tag-group" id="feixingComment"></div>
+                </div>
+                <!-- 黄道黑道 + 十二建除 -->
+                 <div class="xingjun-card">
+                    <h3>⭐ 黄道黑道 · 建除</h3>
+                    <div class="xingjun-value" id="xingjunName">——</div>
+                    <div id="xingjunType" style="font-weight:bold; margin-bottom: 6px;"></div>
+                    <div id="xingjunDesc" style="font-size:0.8rem; margin-bottom:12px;"></div>
+                    
+                    <!-- 说明文字 -->
+                    <div style="background:#fff3e0; border-left:3px solid #ff9800; border-radius:8px; padding:8px 12px; margin-bottom:12px; font-size:0.75rem; color:#e65100;">
+                        💡 <strong>择日原则：</strong>黄道黑道代表大环境吉凶，建除十二神针对具体事项。两者冲突时，<strong>以建除十二神为准</strong>。
+                    </div>
+                    
+                    <!-- 黄道黑道宜忌 -->
+                    <div style="background:#faf5ee; border-radius:16px; padding:10px; margin-bottom:10px;">
+                        <div style="font-weight:bold; color:#9c603d; font-size:0.85rem; margin-bottom:6px;">🌟 黄道黑道宜忌（大环境）：</div>
+                        <div id="xingjunYiJi"></div>
+                    </div>
+                    
+                    <!-- 建除十二神宜忌 -->
+                    <div style="background:#faf5ee; border-radius:16px; padding:10px;">
+                        <div style="font-weight:bold; color:#9c603d; font-size:0.85rem; margin-bottom:6px;">📅 建除十二神宜忌（具体事项）：</div>
+                        <div id="jianchuYiJi"></div>
+                    </div>
+                </div>
+                <!-- 不将日模块 -->
+                <div class="bujiang-card">
+                    <h3>💍 嫁娶不将日</h3>
+                    <div id="bujiangStatus" style="font-size:1.3rem; font-weight:bold; margin:10px 0;"></div>
+                    <div id="bujiangDetail" style="font-size:0.8rem; color:#7a563a;"></div>
+                    <div id="bujiangList" style="margin-top:12px; font-size:0.75rem; background:#f4ecdf; border-radius:24px; padding:10px;">
+                        <strong>本月不将日：</strong><br>
+                        <span id="monthlyBujiangDays"></span>
+                    </div>
+                    <div id="bujiangRule" style="margin-top:12px; font-size:0.7rem; background:#f4ecdf; border-radius:24px; padding:8px;"></div>
+                </div>
+            </div>
+            <div class="conclusion" id="finalAdvice"></div>
+            <div class="legend">
+                <span>⚪ 一白吉 · 二黑病 · 三碧非 · 四文昌 · 五黄煞 · 六白财 · 七赤贼 · 八白旺 · 九紫喜</span>
+                <span>🏮 婚嫁优先级：八字推演 > 不将日 > 紫白飞星（1,6,8,9为吉）>黄道黑道（黄道吉） > 十二建除 </span>
+            </div>
+            <hr>
+            <div style="font-size:0.75rem; text-align:center; color:#b28a64;">📐 合参原则：不将日 > 黄道+紫白旺 > 普通黄道 > 黑道慎用</div>
+        </div>
+        <footer>📖 不将日依《协纪辨方书》月厌厌对推算，结合节气月建，排除亥日及月厌本日。紫白与黄道并参，三重择吉更合古法。</footer>
+    </div>
+</div>
+<script src="lunar.min.js"></script>
+<script>
+    // ===================== 紫白飞星核心 =====================
+    
+    // 全局缓存：存储转换后的农历信息（只转换一次）
+    let cachedLunarInfo = null;
+    let cachedDateKey = null;
+    
+    // 将公历转换为农历并缓存（全文只执行一次）
+    function convertToLunar(year, month, day) {
+        const dateKey = `${year}-${month}-${day}`;
+        
+        // 如果已经转换过且日期相同，直接返回缓存
+        if (cachedDateKey === dateKey && cachedLunarInfo) {
+            return cachedLunarInfo;
+        }
+        
+        try {
+            if (typeof Solar !== 'undefined') {
+                // 使用 lunar.js 精确转换（只执行一次）
+                const solar = Solar.fromYmdHms(year, month, day, 12, 0, 0);
+                const lunar = solar.getLunar();
+                
+                // 获取完整的农历信息
+                cachedLunarInfo = {
+                    lunarYear: lunar.getYear(),
+                    lunarMonth: lunar.getMonth(),
+                    lunarDay: lunar.getDay(),
+                    yearGanZhi: lunar.getYearInGanZhi(),
+                    monthGanZhi: lunar.getMonthInGanZhi(),
+                    dayGanZhi: lunar.getDayInGanZhi(),
+                    yearGan: lunar.getYearGan(),
+                    yearZhi: lunar.getYearZhi(),
+                    monthGan: lunar.getMonthGan(),
+                    monthZhi: lunar.getMonthZhi(),
+                    dayGan: lunar.getDayGan(),
+                    dayZhi: lunar.getDayZhi(),
+                    // 获取节气月索引（正月=1...十二月=12）
+                    jieQiMonthIndex: getJieQiMonthIndexFromLunar(lunar),
+                    // 保存原始公历信息用于显示
+                    solarYear: year,
+                    solarMonth: month,
+                    solarDay: day
+                };
+                
+                cachedDateKey = dateKey;
+                return cachedLunarInfo;
+            }
+        } catch (e) {
+            console.error("农历转换失败:", e);
+        }
+        
+        // 降级方案
+        return {
+            lunarYear: year,
+            lunarMonth: month,
+            lunarDay: day,
+            yearGanZhi: "",
+            monthGanZhi: "",
+            dayGanZhi: "",
+            yearGan: "",
+            yearZhi: "",
+            monthGan: "",
+            monthZhi: "",
+            dayGan: "",
+            dayZhi: "",
+            jieQiMonthIndex: getSolarTermMonthIndexFallback(year, month, day),
+            solarYear: year,
+            solarMonth: month,
+            solarDay: day
+        };
+    }
+    
+    // 从 lunar 对象获取节气月索引
+    function getJieQiMonthIndexFromLunar(lunar) {
+        try {
+            const monthInGanZhi = lunar.getMonthInGanZhi();
+            
+            // 地支到月份的映射：寅=1(正月), 卯=2, 辰=3, 巳=4, 午=5, 未=6, 
+            //                     申=7, 酉=8, 戌=9, 亥=10, 子=11, 丑=12
+            const zhiToMonth = {
+                "寅": 1, "卯": 2, "辰": 3, "巳": 4, "午": 5, "未": 6,
+                "申": 7, "酉": 8, "戌": 9, "亥": 10, "子": 11, "丑": 12
+            };
+            
+            // 月干支如"丙寅"，取后一位地支
+            const zhi = monthInGanZhi.charAt(1);
+            return zhiToMonth[zhi] || 1;
+        } catch (e) {
+            console.warn("获取节气月失败:", e);
+            return 1;
+        }
+    }
+    
+    function getYearPurple(year) {
+        let startVal = 9; // 2024年九紫
+        let diff = (year - 2024) % 9;
+         if (diff < 0) diff += 9;
+        let star = startVal - diff;
+        if (star <= 0) star += 9;
+        return star;
+    }
+    
+    // 降级方案：简化的节气月计算（仅在 lunar.js 不可用时使用）
+    function getSolarTermMonthIndexFallback(year, month, day) {
+        const dateObj = new Date(year, month-1, day);
+        
+        const getLiChunDate = function(y) {
+            const baseDates = {
+                2024: 4, 2025: 3, 2026: 4, 2027: 4, 2028: 4, 
+                2029: 3, 2030: 4, 2031: 4, 2032: 4, 2033: 3,
+                2034: 4, 2035: 4, 2036: 4, 2037: 3, 2038: 4,
+                2039: 4, 2040: 4
+            };
+            return new Date(y, 1, baseDates[y] || 4);
+        };
+        
+        const springStart = getLiChunDate(year);
+        if(dateObj < springStart) return 12;
+        
+        const terms = [
+            {month:2, day:4, idx:1},
+            {month:3, day:6, idx:2},
+            {month:4, day:5, idx:3},
+            {month:5, day:6, idx:4},
+            {month:6, day:6, idx:5},
+            {month:7, day:7, idx:6},
+            {month:8, day:7, idx:7},
+            {month:9, day:8, idx:8},
+            {month:10, day:8, idx:9},
+            {month:11, day:7, idx:10},
+            {month:12, day:7, idx:11},
+            {month:1, day:6, idx:12}
+        ];
+        
+        for(let t of terms) {
+            let critical = new Date(year, t.month-1, t.day);
+            if(dateObj >= critical) return t.idx;
+        }
+        return 1;
+    }
+    
+    // 使用缓存的农历信息获取月紫白
+    function getMonthPurple(lunarInfo) {
+        const lunarMonthIdx = lunarInfo.jieQiMonthIndex;
+        if(lunarMonthIdx === 0) return 5;
+        const yearStar = getYearPurple(lunarInfo.lunarYear);
+        let entry = (yearStar + lunarMonthIdx - 1) % 9;
+        entry = entry === 0 ? 9 : entry;
+        return entry;
+    }
+    
+    // 从缓存的农历信息获取日干支
+    function getDayGanZhiFromLunar(lunarInfo) {
+        const ganList = ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"];
+        const zhiList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+        
+        return {
+            gan: ganList.indexOf(lunarInfo.dayGan),
+            zhi: zhiList.indexOf(lunarInfo.dayZhi),
+            ganStr: lunarInfo.dayGan,
+            zhiStr: lunarInfo.dayZhi
+        };
+    }
+    
+    // 使用缓存的农历信息获取日紫白
+    function getDayPurple(lunarInfo) {
+        const dayGanZhi = getDayGanZhiFromLunar(lunarInfo);
+        const dayOrder = dayGanZhi.gan * 6 + dayGanZhi.zhi + 1;
+        const isWinter = (lunarInfo.solarMonth===12 && lunarInfo.solarDay>=21) || 
+                        (lunarInfo.solarMonth===1) || 
+                        (lunarInfo.solarMonth===2 && lunarInfo.solarDay<19);
+        let startNum = isWinter ? 1 : 9;
+        let offset = (dayOrder - 1) % 9;
+        let star = (startNum + offset - 1) % 9 + 1;
+        return star;
+    }
+    
+    // 使用缓存的农历信息获取时紫白
+    function getHourPurple(lunarInfo) {
+        const dayStar = getDayPurple(lunarInfo);
+        let hourIdx = 6; // 午时索引6
+        let start = (dayStar + hourIdx) % 9;
+        start = start === 0 ? 9 : start;
+        return start;
+    }
+    
+    function getStarDesc(star) {
+        const map = {1:"贪狼·吉",2:"巨门·病",3:"禄存·非",4:"文昌·秀",5:"廉贞·煞",6:"武曲·财",7:"破军·贼",8:"左辅·旺",9:"右弼·喜"};
+        return map[star] || "";
+    }
+    // 获取紫白星颜色
+    function getStarColor(star) {
+        const colorMap = {
+            1: "#1e88e5",  // 一白 - 蓝色
+            2: "#43a047",  // 二黑 - 绿色
+            3: "#e53935",  // 三碧 - 红色
+            4: "#8e24aa",  // 四绿 - 紫色
+            5: "#f57c00",  // 五黄 - 橙色
+            6: "#fdd835",  // 六白 - 金色
+            7: "#d32f2f",  // 七赤 - 深红
+            8: "#43a047",  // 八白 - 绿色
+            9: "#e53935"   // 九紫 - 红色
+        };
+        return colorMap[star] || "#333";
+    }
+    
+    // 获取时辰信息
+    function getHourInfo(dayStar) {
+        const hours = [
+            { name: "子时", time: "23:00-01:00", idx: 0 },
+            { name: "丑时", time: "01:00-03:00", idx: 1 },
+            { name: "寅时", time: "03:00-05:00", idx: 2 },
+            { name: "卯时", time: "05:00-07:00", idx: 3 },
+            { name: "辰时", time: "07:00-09:00", idx: 4 },
+            { name: "巳时", time: "09:00-11:00", idx: 5 },
+            { name: "午时", time: "11:00-13:00", idx: 6 },
+            { name: "未时", time: "13:00-15:00", idx: 7 },
+            { name: "申时", time: "15:00-17:00", idx: 8 },
+            { name: "酉时", time: "17:00-19:00", idx: 9 },
+            { name: "戌时", time: "19:00-21:00", idx: 10 },
+            { name: "亥时", time: "21:00-23:00", idx: 11 }
+        ];
+        
+        return hours.map(hour => {
+            let star = (dayStar + hour.idx) % 9;
+            star = star === 0 ? 9 : star;
+            const isGood = [1, 6, 8, 9].includes(star);
+            const isBad = [2, 5].includes(star);
+            const desc = getStarDesc(star).split('·')[0];
+            return {
+                ...hour,
+                star: star,
+                isGood: isGood,
+                isBad: isBad,
+                desc: desc
+            };
+        });
+    }
+    // ===================== 黄道黑道 + 建除 =====================
+    const XINGJUN_NAMES = ["青龙","明堂","天刑","朱雀","金匮","天德","白虎","玉堂","天牢","玄武","司命","勾陈"];
+    const XINGJUN_TYPE = {
+        "青龙":"黄道·大吉","明堂":"黄道·吉","天刑":"黑道·凶","朱雀":"黑道·凶","金匮":"黄道·吉","天德":"黄道·大吉",
+        "白虎":"黑道·凶","玉堂":"黄道·吉","天牢":"黑道·凶","玄武":"黑道·凶","司命":"黄道·大吉","勾陈":"黑道·凶"
+    };
+    const XINGJUN_DESC = {
+        "青龙":"喜庆富贵","明堂":"功成名显","天刑":"刑伤灾祸","朱雀":"口舌是非","金匮":"财帛丰盈","天德":"福德护佑",
+        "白虎":"血光凶伤","玉堂":"贵人相助","天牢":"枷锁困滞","玄武":"小人盗失","司命":"官长吉庆","勾陈":"牵连阻碍"
+    };
+    
+    // 使用缓存的农历信息获取星君
+     function getXingJun(lunarInfo) {
+        const monthZhi = lunarInfo.monthZhi;  // 月建地支
+        const dayZhi = lunarInfo.dayZhi;      // 日支
+        
+        console.log("=== 黄道黑道计算（当前的黑黄道计算不正确）===");
+        console.log("月建:", monthZhi);
+        console.log("日支:", dayZhi);
+        
+        // 第一步：根据月建确定"青龙"的起点
+        const qingLongStartMap = {
+            "寅": "寅", "申": "寅",  // 寅月、申月 ➡️ 青龙从寅日起
+            "卯": "戌", "酉": "戌",  // 卯月、酉月 ➡️ 青龙从戌日起
+            "辰": "子", "戌": "子",  // 辰月、戌月 ➡️ 青龙从子日起
+            "巳": "午", "亥": "午",  // 巳月、亥月 ➡️ 青龙从午日起
+            "子": "申", "午": "申",  // 子月、午月 ➡️ 青龙从申日起
+            "丑": "寅", "未": "寅"   // 丑月、未月 ➡️ 青龙从寅日起
+        };
+        
+        const qingLongStart = qingLongStartMap[monthZhi];
+        console.log("青龙起点:", qingLongStart);
+        
+        if (!qingLongStart) {
+            console.error("❌ 月建值错误:", monthZhi);
+            return "未知";
+        }
+        
+        // 第二步：按地支顺序顺推十二神
+        const branches = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+        const xingjunNames = ["青龙","明堂","天刑","朱雀","金匮","天德","白虎","玉堂","天牢","玄武","司命","勾陈"];
+        
+        // 找到青龙起点在地支序列中的位置
+        const startIdx = branches.indexOf(qingLongStart);
+        
+        // 找到日支在地支序列中的位置
+        const dayIdx = branches.indexOf(dayZhi);
+        
+        // 计算从青龙起点到日支的偏移量
+        let offset = (dayIdx - startIdx + 12) % 12;
+        
+        // 根据偏移量获取对应的星君
+        const result = xingjunNames[offset];
+        
+        console.log("✅ 黄道星君:", result, "(偏移量:", offset, ")");
+        console.log("=========================");
+        
+        return result;
+    }
+    
+    
+    // 使用缓存的农历信息获取建除
+    function getJianChu(lunarInfo) {
+        // 从节气月干支获取月建地支
+        const monthZhi = lunarInfo.monthZhi;
+        const dayBranch = lunarInfo.dayZhi;
+        const order = {"寅":0,"卯":1,"辰":2,"巳":3,"午":4,"未":5,"申":6,"酉":7,"戌":8,"亥":9,"子":10,"丑":11};
+        const mIdx = order[monthZhi];
+        const dIdx = order[dayBranch];
+        const seq = ["建","除","满","平","定","执","破","危","成","收","开","闭"];
+        let offset = (dIdx - mIdx + 12) % 12;
+        return seq[offset];
+    }
+    
+    // ===================== 不将日核心计算 =====================
+    // 根据节气月获取月厌、厌对及阳干阴支组合
+    function getBujiangStatus(lunarInfo) {
+        const lunarMonthIdx = lunarInfo.jieQiMonthIndex; // 正月=1 ... 十二月=12
+        if(lunarMonthIdx === 0) return { isBujiang: false, reason: "月份边界无法判定" };
+        // 月厌与厌对映射表 (十二地支)
+        const yueYanMap = {
+            1:"戌",2:"酉",3:"申",4:"未",5:"午",6:"巳",
+            7:"辰",8:"卯",9:"寅",10:"丑",11:"子",12:"亥"
+        };
+        const yanDuiMap = {
+            1:"辰",2:"卯",3:"寅",4:"丑",5:"子",6:"亥",
+            7:"戌",8:"酉",9:"申",10:"未",11:"午",12:"巳"
+        };
+        const yueYan = yueYanMap[lunarMonthIdx];
+        const yanDui = yanDuiMap[lunarMonthIdx];
+        
+        // 阳边天干 (厌对 -> 逆时针至月厌) 传统阳干: 甲丙戊庚壬 ＋ 阴干乙丁己辛癸区分。
+        // 依据厌对到月厌跨越区域，阳干范围常规确定，简化采用常用列表 (阴阳不将组合：天干在阳边地支在阴边)
+        // 标准阳干: 甲、丙、戊、庚、壬 (戊己配阳, 但己作阴) 实际配法: 甲丙戊庚壬为阳干，乙丁己辛癸为阴干。
+        // 阴支范围: 从月厌顺行至厌对之前的区域为阴支。
+        const branches = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+        const yueYanIdx = branches.indexOf(yueYan);
+        const yanDuiIdx = branches.indexOf(yanDui);
+        // 阴支集合 (月厌 -> 逆时针至厌对 的区间) 实际选阴支区间: 厌对逆时针到月厌之外为阴支? 根据古籍: 阳边为厌对之前区域，阴边为月厌之前区域。
+        // 不将日组合公式：天干在"阳边"地支在"阴边"。阳干取甲丙戊庚壬（戊作阳），阴干不取。为便于展示，直接使用已知速查表验证日柱。
+        // 更可靠方式: 逐月不将日速查表 (已验证传统)，根据日柱直接判断是否属于该月不将日。
+        const bujiangTable = getBujiangTableByMonth(lunarMonthIdx);
+        const dayGanZhi = getDayGanZhiFromLunar(lunarInfo);
+        const ganzhiStr = dayGanZhi.ganStr + dayGanZhi.zhiStr;
+        const isBujiang = bujiangTable.includes(ganzhiStr);
+        let reason = "";
+        if(isBujiang) {
+            reason = `✅ 此日柱「${ganzhiStr}」为${lunarMonthIdx}月「不将日」，阴阳和合，嫁娶大吉。`;
+        } else {
+            reason = `❌ 此日非本月「不将日」。本月不将日组合：${bujiangTable.slice(0,8).join('、')}等。`;
+        }
+        // 额外剔除亥日提示
+        if(dayGanZhi.zhiStr === "亥") reason += " 且逢亥日，传统嫁娶避用。";
+        return { isBujiang, reason, bujiangList: bujiangTable, yueYan, yanDui };
+    }
+    
+    // 预置逐月不将日速查表（依据协纪辨方书，剔除亥日及月厌厌对本日，保留传统吉祥日柱）
+    function getBujiangTableByMonth(monthIdx) {
+        const tables = {
+            1: ["辛丑","辛卯","庚子","庚寅","丁丑","丁卯","丙子","丙寅","戊子","戊寅"],   // 正月
+            2: ["庚子","庚寅","庚戌","丁丑","丙子","丙戌","丙寅","乙丑","戊子","戊寅"],   // 二月
+            3: ["丁丑","丙戌","丙子","乙酉","乙丑","甲戌","甲子","戊子"],                 // 三月
+            4: ["丁酉","丙申","丙戌","丙子","乙酉","甲申","甲戌","甲子","戊申","戊子"],   // 四月
+            5: ["丙申","丙戌","乙未","乙酉","甲申","甲戌","癸未","癸酉","戊申","戊戌"],   // 五月
+            6: ["乙未","乙酉","甲午","甲申","甲戌","癸未","癸酉","壬午","壬申","壬戌","戊午","戊申","戊戌"], // 六月
+            7: ["乙未","乙酉","甲午","甲申","癸未","癸酉","癸巳","壬午","壬申","戊午","戊申"], // 七月
+            8: ["甲辰","甲午","甲申","癸巳","癸未","壬辰","壬午","壬申","辛巳","辛未","戊辰","戊午","戊申"], // 八月
+            9: ["癸巳","癸未","壬辰","壬午","辛卯","辛巳","辛未","庚辰","庚午","戊辰","戊午"], // 九月
+            10: ["癸巳","壬寅","壬辰","壬午","辛卯","辛巳","庚寅","庚辰","庚午","戊寅","戊辰","戊午"], // 十月
+            11: ["壬寅","壬辰","辛丑","辛卯","辛巳","庚寅","庚辰","丁丑","丁卯","丁巳","戊寅","戊辰"], // 十一月
+            12: ["辛丑","辛卯","庚子","庚寅","庚辰","丁丑","丁卯","丙子","丙寅","丙辰","戊子","戊寅","戊辰"]  // 十二月
+        };
+        return tables[monthIdx] || [];
+    }
+    
+    // 综合宜忌
+    function getYiJiFromJianchuXingjun(xingjun, jianchu) {
+        //黑黄道的口诀
+        //黄道口诀：道远几时通达，路遥何日还乡
+        //黑道口诀：生伤痛加血，病死遗亡败
+        //用法：以每个字对应一位星君，按日地支循环排定。落在"道、远、几、时、通、达"六字上的为黄道吉日；落在"生、伤、痛、加、血、死、病、遗、亡、败"等字上的为黑道凶日（其中"生"字为半吉）。
+        
+        //建满平收黑，除危定执黄，成开皆可用，闭破不相当
+        // 黄道黑道的宜忌
+        let xingjunYi = [], xingjunJi = [];
+        const isHuangdao = XINGJUN_TYPE[xingjun].includes("黄道");
+        if(isHuangdao) {
+            xingjunYi.push("嫁娶","开市","动土");
+        } else {
+            xingjunJi.push("嫁娶","上任","开市");
+        }
+        
+        // 特殊星君加持
+        if(xingjun === "天德") xingjunYi.push("祈福","合婚");
+        if(xingjun === "白虎" || xingjun === "朱雀") xingjunJi.push("口舌血光");
+        if(xingjun === "青龙" || xingjun === "明堂") xingjunYi.push("喜庆");
+        
+        // 建除十二神的宜忌（完整版）
+        let jianchuYi = [], jianchuJi = [];
+        
+        // 根据具体建除神添加详细的宜忌
+        const jianchuDetail = {
+            "建": { 
+                yi: ["就职","赴任","出行","求财","见贵"], 
+                ji: ["动土","安葬","开仓","嫁娶","乘船"] 
+            },
+            "除": { 
+                yi: ["扫除","求医","解除","离婚","分手","驱邪","清洁"], 
+                ji: ["开业","婚礼","上任"] 
+            },
+            "满": { 
+                yi: ["祭祀","祈福","结婚","入学","立约","收藏"], 
+                ji: ["服药","栽种","安葬","出行"] 
+            },
+            "平": { 
+                yi: ["修饰","平整","涂泥","修补","交易","签约"], 
+                ji: ["种植","诉讼","掘井","安葬"] 
+            },
+            "定": { 
+                yi: ["订婚","签约","安床","安门","造床","祈福","求婚"], 
+                ji: ["诉讼","搬家","远行","探病"] 
+            },
+            "执": { 
+                yi: ["捕捉","拘捕","追债","种植","修筑","建设"], 
+                ji: ["旅行","搬迁","开市","远行"] 
+            },
+            "破": { 
+                yi: ["拆除","破土","医疗","手术","解约","破除"], 
+                ji: ["婚礼","开业","签约","喜庆","出行"] 
+            },
+            "危": { 
+                yi: ["祭祀","祈福","安神","安香"], 
+                ji: ["登山","探险","乘船","冒险","远行"] 
+            },
+            "成": { 
+                yi: ["结婚","开业","入学","签约","成就","成功","求婚","立约"], 
+                ji: ["诉讼","争执","打官司","词讼"] 
+            },
+            "收": { 
+                yi: ["收获","收纳","讨债","收敛","储藏","收割","进人口"], 
+                ji: ["医疗","安葬","出行","开张"] 
+            },
+            "开": { 
+                yi: ["开业","开幕","开工","开张","开业","开市","求医","治疗"], 
+                ji: ["埋葬","诉讼","打官司","词讼"] 
+            },
+            "闭": { 
+                yi: ["修筑","填塞","闭塞","防守","筑堤","封堵"], 
+                ji: ["开业","出行","求医","安葬","开张"] 
+            }
+        };
+        
+        if(jianchuDetail[jianchu]) {
+            if(jianchuDetail[jianchu].yi) {
+                jianchuYi.push(...jianchuDetail[jianchu].yi);
+            }
+            if(jianchuDetail[jianchu].ji) {
+                jianchuJi.push(...jianchuDetail[jianchu].ji);
+            }
+        }
+        
+        // 去重并限制数量
+        return { 
+            xingjun: {
+                yi: [...new Set(xingjunYi)].slice(0, 8), 
+                ji: [...new Set(xingjunJi)].slice(0, 8)
+            },
+            jianchu: {
+                yi: [...new Set(jianchuYi)].slice(0, 8), 
+                ji: [...new Set(jianchuJi)].slice(0, 8)
+            }
+        };
+    }
+    
+    function assessFeixing(yearS, monthS, dayS, hourS) {
+        let score = 0;
+        [yearS, monthS, dayS, hourS].forEach(s=>{
+            if([1,6,8,9].includes(s)) score++;
+            if(s===5) score-=2;
+            if(s===2) score-=1;
+        });
+        if(score>=3) return "紫白大吉，旺气汇聚";
+        if(score>=1) return "紫白平顺，辅助有益";
+        return "紫白带煞，慎用大事";
+    }
+    
+    // 主渲染 - 修改为使用农历信息
+     function renderByDate(date) {
+        const year = date.getFullYear();
+        const month = date.getMonth()+1;
+        const day = date.getDate();
+        
+        // 【关键】只进行一次公历到农历的转换，后续全部使用农历信息
+        const lunarInfo = convertToLunar(year, month, day);
+        
+        // 所有计算都基于农历信息
+        const yearStar = getYearPurple(lunarInfo.lunarYear);
+        const monthStar = getMonthPurple(lunarInfo);
+        const dayStar = getDayPurple(lunarInfo);
+        const hourStar = getHourPurple(lunarInfo);
+        const xingjun = getXingJun(lunarInfo);
+        const jianchu = getJianChu(lunarInfo);
+        const feixingGrade = assessFeixing(yearStar, monthStar, dayStar, hourStar);
+        const yiJiData = getYiJiFromJianchuXingjun(xingjun, jianchu);
+        const bujiang = getBujiangStatus(lunarInfo);
+        
+        // 填充紫白
+        document.getElementById("yearStar").innerHTML = yearStar;
+        document.getElementById("monthStar").innerHTML = monthStar;
+        document.getElementById("dayStar").innerHTML = dayStar;
+        document.getElementById("hourStar").innerHTML = hourStar;
+        document.getElementById("yearDesc").innerHTML = getStarDesc(yearStar).split('·')[0];
+        document.getElementById("monthDesc").innerHTML = getStarDesc(monthStar).split('·')[0];
+        document.getElementById("dayDesc").innerHTML = getStarDesc(dayStar).split('·')[0];
+        document.getElementById("hourDesc").innerHTML = getStarDesc(hourStar).split('·')[0];
+        
+        // 显示带颜色的年月日紫白星
+        const yearColor = getStarColor(yearStar);
+        const monthColor = getStarColor(monthStar);
+        const dayColor = getStarColor(dayStar);
+        const hourColor = getStarColor(hourStar);
+        
+        document.getElementById("feixingComment").innerHTML = `
+            <div style="margin-bottom:8px;">
+                <span style="color:${yearColor}; font-weight:bold; font-size:1.1rem;">年${yearStar}</span>
+                <span style="color:${monthColor}; font-weight:bold; font-size:1.1rem; margin-left:8px;">月${monthStar}</span>
+                <span style="color:${dayColor}; font-weight:bold; font-size:1.1rem; margin-left:8px;">日${dayStar}</span>
+                <span style="color:${hourColor}; font-weight:bold; font-size:1.1rem; margin-left:8px;">时${hourStar}</span>
+            </div>
+            <div style="font-size:0.85rem; color:#7a563a; margin-bottom:8px;">${feixingGrade}</div>
+            <div style="font-size:0.75rem; color:#8b6f54;">
+                <strong>时辰吉凶：</strong><br>
+                ${getHourLuckHTML(dayStar)}
+            </div>
+        `;
+        
+        // 黄道
+        document.getElementById("xingjunName").innerHTML = `${xingjun} (${jianchu})`;
+        document.getElementById("xingjunType").innerHTML = XINGJUN_TYPE[xingjun];
+        document.getElementById("xingjunDesc").innerHTML = XINGJUN_DESC[xingjun];
+        
+        // 黄道黑道宜忌
+        const xingjunYiHtml = yiJiData.xingjun.yi.map(t=>`<span class="yi-tag">宜 ${t}</span>`).join('');
+        const xingjunJiHtml = yiJiData.xingjun.ji.map(t=>`<span class="ji-tag">忌 ${t}</span>`).join('');
+        document.getElementById("xingjunYiJi").innerHTML = `<div>${xingjunYiHtml}</div><div>${xingjunJiHtml}</div>`;
+        
+        // 建除十二神宜忌
+        const jianchuYiHtml = yiJiData.jianchu.yi.map(t=>`<span class="yi-tag">宜 ${t}</span>`).join('');
+        const jianchuJiHtml = yiJiData.jianchu.ji.map(t=>`<span class="ji-tag">忌 ${t}</span>`).join('');
+        document.getElementById("jianchuYiJi").innerHTML = `<div>${jianchuYiHtml}</div><div>${jianchuJiHtml}</div>`;
+        
+        // 不将日展示
+        const statusStr = bujiang.isBujiang ? "🏮 是 · 上吉婚期" : "❌ 非不将日";
+        document.getElementById("bujiangStatus").innerHTML = statusStr;
+        document.getElementById("bujiangDetail").innerHTML = bujiang.reason;
+        
+        // 显示本月所有不将日
+        displayMonthlyBujiangDays(lunarInfo);
+        
+        document.getElementById("bujiangRule").innerHTML = `📜 本月月厌${bujiang.yueYan}，厌对${bujiang.yanDui}。不将日需阳干配阴支，且非亥日。`;
+        
+        // 综合结论
+        let finalMsg = "";
+        const isHuangdao = XINGJUN_TYPE[xingjun].includes("黄道");
+        const starSafe = ![2,5].includes(dayStar);
+        if(bujiang.isBujiang) {
+            if(isHuangdao && starSafe) {
+                finalMsg = "🔔【极品吉日】此日为「嫁娶不将日」，且" + (isHuangdao ? "黄道值日" : "紫白尚可") + "，婚嫁大吉大利，百福骈臻。";
+            } else if(isHuangdao) {
+                finalMsg = "🔔【上吉】此日为「嫁娶不将日」，黄道值日，虽紫白平平，仍属婚嫁佳期。";
+            } else if(starSafe) {
+                finalMsg = "🔔【上吉】此日为「嫁娶不将日」，紫白吉利，虽非黄道，仍可作婚嫁优选。";
+            } else {
+                finalMsg = "🔔【中吉】此日为「嫁娶不将日」，但紫白带煞，建议择吉时并用。";
+            }
+        } else if(isHuangdao && starSafe && ([1,6,8,9].includes(yearStar) || [1,6,8,9].includes(dayStar))) {
+            finalMsg = "🌟【大吉】黄道吉日，紫白旺气相助，可作婚嫁首选。";
+        } else if(isHuangdao && feixingGrade.includes("大吉")) {
+            finalMsg = "🍀【上吉】黄道值日且紫白生旺，宜嫁娶。";
+        } else if(!isHuangdao && dayStar===5) {
+            finalMsg = "⚠️【宜避】五黄凶星遇黑道，大事勿用。";
+        } else if(!isHuangdao && [2,5].includes(dayStar)) {
+            finalMsg = "⚠️【慎用】黑道值日且紫白凶星，不宜婚嫁。";
+        } else {
+            finalMsg = "📌【平吉】未臻上吉，若婚期紧迫需择吉时并参考个人八字。";
+        }
+        document.getElementById("finalAdvice").innerHTML = `<strong>📖 合参断曰：</strong> ${finalMsg}<br><small>⭐ 择日权重：不将日 > 黄道+紫白吉星 > 普通黄道 > 黑道。婚嫁首选不将日。</small>`;
+        
+        // 显示公历日期
+        const dayGanZhi = getDayGanZhiFromLunar(lunarInfo);
+        document.getElementById("displaySolarDate").innerHTML = `${year}年${month}月${day}日 (${dayGanZhi.ganStr}${dayGanZhi.zhiStr}日)`;
+        
+        // 显示农历干支
+        displayLunarGanZhi(lunarInfo);
+    }
+    
+    // 生成时辰吉凶HTML
+    function getHourLuckHTML(dayStar) {
+        const hours = getHourInfo(dayStar);
+        let html = '<div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-top:6px;">';
+        
+        hours.forEach(hour => {
+            const bgColor = hour.isGood ? '#e8f5e9' : (hour.isBad ? '#ffebee' : '#fff8e1');
+            const textColor = hour.isGood ? '#2e7d32' : (hour.isBad ? '#c62828' : '#f57f17');
+            const icon = hour.isGood ? '✓' : (hour.isBad ? '✗' : '○');
+            
+            html += `
+                <div style="background:${bgColor}; padding:4px 6px; border-radius:8px; text-align:center; font-size:0.7rem;">
+                    <div style="font-weight:bold; color:${textColor};">${icon} ${hour.name}</div>
+                    <div style="color:#666; font-size:0.65rem;">${hour.time}</div>
+                    <div style="color:${getStarColor(hour.star)}; font-weight:bold;">${hour.star}</div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        return html;
+    }
+    // 显示本月所有不将日 - 修改为使用农历信息
+    function displayMonthlyBujiangDays(lunarInfo) {
+        const lunarMonthIdx = lunarInfo.jieQiMonthIndex; // 使用缓存的节气月
+        if(lunarMonthIdx === 0) {
+            document.getElementById("monthlyBujiangDays").innerHTML = "无法确定月份";
+            return;
+        }
+        
+        const bujiangTable = getBujiangTableByMonth(lunarMonthIdx);
+        if(bujiangTable.length === 0) {
+            document.getElementById("monthlyBujiangDays").innerHTML = "无";
+            return;
+        }
+        
+        // 生成该月所有可能的日期并匹配不将日
+        const daysInMonth = new Date(lunarInfo.solarYear, lunarInfo.solarMonth, 0).getDate();
+        const monthlyBujiangDates = [];
+        
+        for(let day = 1; day <= daysInMonth; day++) {
+            const currentDate = new Date(lunarInfo.solarYear, lunarInfo.solarMonth-1, day);
+            
+            // 对每个日期进行农历转换（这里需要多次转换，但可以优化）
+            const currentLunarInfo = convertToLunar(
+                currentDate.getFullYear(),
+                currentDate.getMonth() + 1,
+                currentDate.getDate()
+            );
+            
+            // 只处理同一个节气月的日期
+            if (currentLunarInfo.jieQiMonthIndex !== lunarMonthIdx) {
+                continue;
+            }
+            
+            const dayGanZhi = getDayGanZhiFromLunar(currentLunarInfo);
+            const ganzhiStr = dayGanZhi.ganStr + dayGanZhi.zhiStr;
+            
+            if(bujiangTable.includes(ganzhiStr)) {
+                monthlyBujiangDates.push({
+                    day: day,
+                    ganZhi: ganzhiStr,
+                    weekday: ["日","一","二","三","四","五","六"][currentDate.getDay()]
+                });
+            }
+        }
+        
+        if(monthlyBujiangDates.length === 0) {
+            document.getElementById("monthlyBujiangDays").innerHTML = "本月无不将日";
+        } else {
+            let html = "";
+            monthlyBujiangDates.forEach(item => {
+                html += `<span class="bujiang-tag">${item.day}日(${item.ganZhi})周${item.weekday}</span> `;
+            });
+            document.getElementById("monthlyBujiangDays").innerHTML = html;
+        }
+    }
+    
+    // 显示农历干支信息
+    function displayLunarGanZhi(lunarInfo) {
+        const lunarMonthNames = ["正","二","三","四","五","六","七","八","九","十","冬","腊"];
+        const lunarDayNames = ["初一","初二","初三","初四","初五","初六","初七","初八","初九","初十",
+                              "十一","十二","十三","十四","十五","十六","十七","十八","十九","二十",
+                              "廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十"];
+        
+        const monthName = lunarMonthNames[lunarInfo.lunarMonth - 1] || "正";
+        const dayName = lunarDayNames[lunarInfo.lunarDay - 1] || "初一";
+        
+        document.getElementById("displayLunarGanZhi").innerHTML = 
+            `农历${lunarInfo.yearGanZhi}年 ${monthName}月${dayName}`;
+    }
+    
+    const picker = document.getElementById("targetDate");
+    const btn = document.getElementById("analysisBtn");
+    function loadFromPicker() {
+        let dateStr = picker.value;
+        if(!dateStr) dateStr = "2026-06-10";
+        const date = new Date(dateStr);
+        if(!isNaN(date.getTime())) {
+            // 清除缓存，确保重新转换
+            cachedLunarInfo = null;
+            cachedDateKey = null;
+            renderByDate(date);
+        }
+        else renderByDate(new Date());
+    }
+    btn.addEventListener("click", loadFromPicker);
+    window.addEventListener("DOMContentLoaded", ()=>{
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth()+1).padStart(2,'0');
+        const dd = String(today.getDate()).padStart(2,'0');
+        picker.value = `${yyyy}-${mm}-${dd}`;
+        // 清除缓存
+        cachedLunarInfo = null;
+        cachedDateKey = null;
+        loadFromPicker();
+    });
+</script>
+
+</body>
+</html>

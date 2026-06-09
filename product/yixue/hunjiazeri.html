@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>传统婚嫁择吉日 - 八字合婚择日系统（年份自由选）</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #fef3e8 0%, #ffe4d6 100%);
+            font-family: 'Segoe UI', '华文楷书', 'Microsoft YaHei', 'PingFang SC', system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .card {
+            background: rgba(255, 248, 240, 0.95);
+            border-radius: 48px;
+            box-shadow: 0 25px 45px rgba(120, 60, 30, 0.2);
+            padding: 28px 30px 40px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(230, 180, 120, 0.5);
+            transition: all 0.2s;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.2rem;
+            color: #b45a3b;
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        h1 small {
+            font-size: 0.85rem;
+            background: #f0e0d0;
+            padding: 5px 12px;
+            border-radius: 40px;
+            color: #9b4b2c;
+            font-weight: normal;
+        }
+        .sub {
+            text-align: center;
+            color: #c1815b;
+            border-bottom: 1px dashed #eccfaf;
+            padding-bottom: 18px;
+            margin-bottom: 28px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 35px;
+            justify-content: center;
+        }
+        .person-box {
+            flex: 1;
+            min-width: 260px;
+            background: #fffaf5;
+            border-radius: 32px;
+            padding: 20px 24px;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.05);
+            border: 1px solid #f6e2d0;
+        }
+        .person-box h3 {
+            margin-top: 0;
+            color: #b1623a;
+            border-left: 5px solid #e6b17e;
+            padding-left: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            color: #7f4a2a;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 60px;
+            border: 1px solid #f0cfb0;
+            background: white;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #d9925b;
+            box-shadow: 0 0 0 3px rgba(217, 146, 91, 0.2);
+        }
+        .help-text {
+            font-size: 0.75rem;
+            color: #b48b6a;
+            margin-top: 6px;
+        }
+        .year-selector {
+            background: #fff2e6;
+            border-radius: 50px;
+            padding: 15px 20px;
+            margin: 15px 0 25px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .year-selector label {
+            margin-bottom: 0;
+            display: inline-block;
+        }
+        .year-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: white;
+            border-radius: 60px;
+            padding: 4px 15px 4px 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .year-input-group input {
+            width: 100px;
+            padding: 8px 10px;
+            text-align: center;
+        }
+        button {
+            background: #d68c5c;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            font-family: inherit;
+        }
+        button:hover {
+            background: #be6f40;
+            transform: scale(1.02);
+        }
+        .primary-btn {
+            background: #b5532a;
+            padding: 14px 32px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(160, 80, 30, 0.3);
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto 10px;
+            display: block;
+        }
+        .results-area {
+            margin-top: 20px;
+        }
+        .result-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #9c4d29;
+            border-left: 6px solid #e5a46b;
+            padding-left: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+        .date-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 20px;
+        }
+        .date-card {
+            background: #fffef7;
+            border-radius: 28px;
+            padding: 18px 20px;
+            box-shadow: 0 6px 14px rgba(100, 50, 20, 0.08);
+            transition: 0.1s;
+            border: 1px solid #fbebd8;
+        }
+        .date-card strong {
+            font-size: 1.25rem;
+            color: #ba6a3e;
+            display: block;
+            margin-bottom: 10px;
+            border-bottom: 1px dotted #efd5bd;
+            padding-bottom: 5px;
+        }
+        .badge {
+            display: inline-block;
+            background: #faecd9;
+            border-radius: 50px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            color: #ad623b;
+        }
+        .reason {
+            font-size: 0.85rem;
+            color: #6f4c30;
+            line-height: 1.4;
+            margin-top: 12px;
+            background: #fef6ea;
+            padding: 8px 12px;
+            border-radius: 20px;
+        }
+        .footer-note {
+            background: #f3e5d9;
+            border-radius: 24px;
+            padding: 15px 20px;
+            font-size: 0.85rem;
+            color: #7b563b;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #b46f44;
+        }
+        .year-badge {
+            background: #e7c9b5;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        @media (max-width: 700px) {
+            .card {
+                padding: 20px;
+            }
+            .person-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>📜 合卺·婚嫁择吉 <small>传统历法·八字参考</small></h1>
+        <div class="sub">🌙 依女方生肖大利月为纲 · 避冲刑 · 选宜嫁娶黄道日</div>
+        
+        <div class="form-row">
+            <!-- 男方生辰 -->
+            <div class="person-box">
+                <h3>👫 男方 · 乾造</h3>
+                <div class="input-group">
+                    <label>📅 农历出生年</label>
+                    <select id="maleYear"></select>
+                </div>
+                <div class="input-group">
+                    <label>🌙 农历出生月</label>
+                    <select id="maleMonth">
+                        <option value="1">正月</option><option value="2">二月</option><option value="3">三月</option>
+                        <option value="4">四月</option><option value="5">五月</option><option value="6">六月</option>
+                        <option value="7">七月</option><option value="8">八月</option><option value="9">九月</option>
+                        <option value="10">十月</option><option value="11">冬月</option><option value="12">腊月</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>🗓️ 农历出生日 (仅参考日支)</label>
+                    <input type="number" id="maleDay" min="1" max="30" value="10" placeholder="1-30">
+                </div>
+            </div>
+            
+            <!-- 女方生辰 (核心) -->
+            <div class="person-box">
+                <h3>🌸 女方 · 坤造 <span style="font-size:0.8rem;">(主择日)</span></h3>
+                <div class="input-group">
+                    <label>📅 农历出生年 (定生肖·大利月)</label>
+                    <select id="femaleYear"></select>
+                </div>
+                <div class="input-group">
+                    <label>🌙 农历出生月</label>
+                    <select id="femaleMonth">
+                        <option value="1">正月</option><option value="2">二月</option><option value="3">三月</option>
+                        <option value="4">四月</option><option value="5">五月</option><option value="6">六月</option>
+                        <option value="7">七月</option><option value="8">八月</option><option value="9">九月</option>
+                        <option value="10">十月</option><option value="11">冬月</option><option value="12">腊月</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>🗓️ 农历出生日 (用于日支冲合简化)</label>
+                    <input type="number" id="femaleDay" min="1" max="30" value="5" placeholder="1-30">
+                </div>
+            </div>
+        </div>
+        
+        <!-- 年份选择区 -->
+        <div class="year-selector">
+            <span style="font-weight:bold;">📆 择日年份：</span>
+            <div class="year-input-group">
+                <label>选择年份</label>
+                <input type="number" id="selectedYear" min="2025" max="2060" step="1">
+            </div>
+            <button id="customYearBtn">🔍 查询该年吉日</button>
+        </div>
+        
+        <button id="recentYearBtn" class="primary-btn">🌕 查看未来一年吉日 🌖</button>
+        
+        <div class="results-area" id="resultArea" style="display: none;">
+            <div class="result-header">
+                <span>✨ 上吉婚期推荐 ✨</span>
+                <span class="year-badge" id="rangeBadge"></span>
+            </div>
+            <div id="dateList" class="date-grid"></div>
+            <div class="footer-note">
+                📖 注：本择日依“女命大利月、忌冲生肖、黄历宜嫁娶、四离四绝”等传统规则简化演算，仅供文化参考与吉祥寓意。
+                <br> 真正严谨婚嫁择日需结合双方完整八字时辰、神煞格局，建议传统大事可请专业人士。
+            </div>
+        </div>
+    </div>
+</div>
+<script src="lunar.min.js"></script>
+<script>
+    // ======================= 1. 基础数据：生肖、干支、大利月映射 ======================
+    const zodiacs = ["鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"];
+    function getZodiacByYear(lunarYear) {
+        if (lunarYear < 1900) lunarYear = 1900;
+        let offset = (lunarYear - 1900) % 12;
+        return zodiacs[offset];
+    }
+    // 大利月映射,均是农历月份
+    //口诀：正七迎鸡兔，二八虎与猴，三九蛇共猪，四十龙和狗，牛羊五十一，鼠马六十二
+    const daLiMap = {
+        "鼠": [6,12], "牛": [5,11], "虎": [2,8], "兔": [1,7], "龙": [4,10], "蛇": [3,9],
+        "马": [6,12], "羊": [5,11], "猴": [4,10], "鸡": [1,7], "狗": [4,10], "猪": [3,9]
+    };
+    // 小利月映射，均是农历月份
+    //口诀:
+    const xiaoLiMap = {
+        "鼠": [2,8], "牛": [1,7], "虎": [4,10], "兔": [3,9], "龙": [2,8], "蛇": [1,7],
+        "马": [2,8], "羊": [1,7], "猴": [4,10], "鸡": [3,9], "狗": [2,8], "猪": [1,7]
+    };
+    // 属相冲口诀：鼠马、牛羊、虎猴、兔鸡、龙狗、蛇猪
+    const liuChong = {
+        "鼠":"马","牛":"羊","虎":"猴","兔":"鸡","龙":"狗","蛇":"猪",
+        "马":"鼠","羊":"牛","猴":"虎","鸡":"兔","狗":"龙","猪":"蛇"
+    };
+    //属相三合 口诀：猴鼠龙、猪兔羊、虎马狗、蛇鸡牛
+    const sanHe = {
+        "鼠":["猴","龙"], "牛":["蛇","鸡"], "虎":["马","狗"], "兔":["猪","羊"],
+        "龙":["鼠","猴"], "蛇":["鸡","牛"], "马":["虎","狗"], "羊":["猪","兔"],
+        "猴":["鼠","龙"], "鸡":["蛇","牛"], "狗":["虎","马"], "猪":["兔","羊"]
+    };
+    //属相六合 口诀：鼠牛、虎猪、兔狗、龙鸡、蛇猴、马羊 
+    const liuHe = {
+        "鼠":"牛","牛":"鼠","虎":"猪","猪":"虎","兔":"狗","狗":"兔","龙":"鸡","鸡":"龙","蛇":"猴","猴":"蛇","马":"羊","羊":"马"
+    };
+    
+    // 男方禁婚年（根据男方生肖）口诀是：男命禁婚年，太岁前五辰
+    // 传统规则：
+    // "太岁前五辰"指从男方生肖地支往前数5个位置为禁婚年
+    // 地支顺序：子(1)丑(2)寅(3)卯(4)辰(5)巳(6)午(7)未(8)申(9)酉(10)戌(11)亥(12)
+    const maleForbiddenYears = {
+        "鼠": [8],      // 子年生人：子(1)往前5位是未(8) 
+        "牛": [9],      // 丑年生人
+        "虎": [10],      // 寅年生人
+        "兔": [11],      // 卯年生人
+        "龙": [12],      // 辰年生人
+        "蛇": [1],      // 巳年生人
+        "马": [2],     // 午年生人
+        "羊": [3],     // 未年生人
+        "猴": [4],     // 申年生人
+        "鸡": [5],      // 酉年生人
+        "狗": [6],      // 戌年生人
+        "猪": [7]       // 亥年生人
+    };
+    // 地支顺序：子(1)、丑(2)、寅(3)、卯(4)、辰(5)、巳(6)、午(7)、未(8)、申(9)、酉(10)、戌(11)、亥(12)
+    // 计算公式：禁婚年地支序号 = (生肖地支序号 - 5 + 12)
+    //地支与农历月份对应：寅=1月、卯=2月、辰=3月、巳=4月、午=5月、未=6月、申=7月、酉=8月、戌=9月、亥=10月、子=11月、丑=12月
+    
+    // 婚嫁三煞
+    // 三煞：劫煞、灾煞、岁煞，注意这个是婚嫁择日中的本命三杀日和方位三煞不同。不要混淆。
+    //婚嫁三煞口诀：巳午未，忌申子辰；申酉戌，忌亥卯未；亥子丑，忌寅午戌；寅卯辰，忌巳酉丑
+    const benMingSanSha = {//生肖：对应的三煞日
+        "子": ["寅", "午", "戌"],  // 鼠：虎马狗（亥子丑年忌寅午戌）
+        "丑": ["寅", "午", "戌"],  // 牛：虎马狗（亥子丑年忌寅午戌）
+        "寅": ["巳", "酉", "丑"],  // 虎：蛇鸡牛（寅卯辰年忌巳酉丑）
+        "卯": ["巳", "酉", "丑"],  // 兔：蛇鸡牛（寅卯辰年忌巳酉丑）
+        "辰": ["巳", "酉", "丑"],  // 龙：蛇鸡牛（寅卯辰年忌巳酉丑）
+        "巳": ["申", "子", "辰"],  // 蛇：猴鼠龙（巳午未年忌申子辰）
+        "午": ["申", "子", "辰"],  // 马：猴鼠龙（巳午未年忌申子辰）
+        "未": ["申", "子", "辰"],  // 羊：猴鼠龙（巳午未年忌申子辰）
+        "申": ["亥", "卯", "未"],  // 猴：猪兔羊（申酉戌年忌亥卯未）
+        "酉": ["亥", "卯", "未"],  // 鸡：猪兔羊（申酉戌年忌亥卯未）
+        "戌": ["亥", "卯", "未"],  // 狗：猪兔羊（申酉戌年忌亥卯未）
+        "亥": ["寅", "午", "戌"]   // 猪：虎马狗（亥子丑年忌寅午戌）
+    };
+    
+    // 本命三煞（根据年支确定三煞方位和日期）
+    // 三煞：劫煞、灾煞、岁煞，注意这个是婚嫁择日中的本命三杀日和方位三煞不同。不要混淆。
+    //本命三煞口诀：申子辰，杀在未；亥卯未，杀在戌；寅午戌，杀在丑；巳酉丑，杀在辰
+    //本命三杀是不能在对应的方位动土
+    const fangweiSanSha = {//生肖：对应的三煞方位
+        "子": ["未", "巳", "午"],  // 鼠：蛇马羊
+        "丑": ["亥", "子", "丑"],  // 牛：猪鼠牛
+        "寅": ["申", "酉", "戌"],  // 虎：猴鸡狗
+        "卯": ["巳", "午", "未"],  // 兔：蛇马羊
+        "辰": ["寅", "卯", "辰"],  // 龙：虎兔龙
+        "巳": ["亥", "子", "丑"],  // 蛇：猪鼠牛
+        "午": ["申", "酉", "戌"],  // 马：猴鸡狗
+        "未": ["巳", "午", "未"],  // 羊：蛇马羊
+        "申": ["寅", "卯", "辰"],  // 猴：虎兔龙
+        "酉": ["亥", "子", "丑"],  // 鸡：猪鼠牛
+        "戌": ["申", "酉", "戌"],  // 狗：猴鸡狗
+        "亥": ["巳", "午", "未"]   // 猪：蛇马羊
+    };
+    
+    // 获取指定日期的农历月份（返回农历月，1-12）
+    function getLunarMonth(year, month, day) {
+        try {
+            if (typeof Lunar !== 'undefined' && typeof Lunar.fromYmd === 'function') {
+                const lunar = Lunar.fromYmd(year, month, day);
+                return lunar.getMonth();
+            }
+        } catch (e) {
+            console.warn("获取农历月份失败:", e);
+        }
+        return null;
+    }
+    
+    // 获取日支（使用农历日）
+    function getDayZhiFromLunar(lunarYear, lunarMonth, lunarDay) {
+        try {
+            if (typeof Lunar !== 'undefined' && typeof Lunar.fromYmd === 'function') {
+                const lunar = Lunar.fromYmd(lunarYear, lunarMonth, lunarDay);
+                const dayInGanZhi = lunar.getDayInGanZhi();
+                return dayInGanZhi.charAt(1);
+            }
+        } catch (e) {
+            console.warn("从农历获取日支失败:", e);
+        }
+        
+        // 降级方案：通过公历转换
+        try {
+            if (typeof Lunar !== 'undefined' && typeof Lunar.fromYmd === 'function') {
+                const lunar = Lunar.fromYmd(lunarYear, lunarMonth, lunarDay);
+                const solar = lunar.getSolar();
+                const date = new Date(solar.getYear(), solar.getMonth() - 1, solar.getDay());
+                const baseDate = new Date(2000, 0, 1);
+                const diff = Math.floor((date - baseDate) / (24*3600*1000));
+                const zhiIndex = (diff + 6) % 12;
+                const zhiList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+                return zhiList[zhiIndex];
+            }
+        } catch (e) {
+            console.warn("降级获取日支失败:", e);
+        }
+        
+        return null;
+    }
+    
+    function getZodiacZhi(zodiac){
+        const map = {"鼠":"子","牛":"丑","虎":"寅","兔":"卯","龙":"辰","蛇":"巳","马":"午","羊":"未","猴":"申","鸡":"酉","狗":"戌","猪":"亥"};
+        return map[zodiac];
+    }
+    
+    // 四离四绝判断（使用农历节气）
+    function isSiLiSiJue(lunarYear, lunarMonth, lunarDay) {
+        try {
+            if (typeof Lunar !== 'undefined' && typeof Lunar.fromYmd === 'function') {
+                const lunar = Lunar.fromYmd(lunarYear, lunarMonth, lunarDay);
+                const jieQi = lunar.getJieQi();
+                
+                // 四离：春分、秋分、夏至、冬至的前一天
+                // 四绝：立春、立夏、立秋、立冬的前一天
+                const siLiSiJueTerms = ['春分', '秋分', '夏至', '冬至', '立春', '立夏', '立秋', '立冬'];
+                
+                // 检查当天是否是某个节气
+                if (siLiSiJueTerms.includes(jieQi)) {
+                    return true;
+                }
+                
+                // 检查前一天是否是节气（即当天是节气前一天）
+                const solar = lunar.getSolar();
+                const prevDay = solar.next(-1);
+                const prevLunar = prevDay.getLunar();
+                const prevJieQi = prevLunar.getJieQi();
+                
+                if (siLiSiJueTerms.includes(prevJieQi)) {
+                    return true;
+                }
+            }
+        } catch (e) {
+            console.warn("获取节气信息失败:", e);
+        }
+        
+        return false;
+    }
+    
+    // 判断杨公忌，农历的日期
+    // 口诀：速记口诀：正月十三、二月十一、三月初九、四月初七、五月初五、六月初三、七月初一、七月廿九、八月廿七、九月廿五、十月廿三、十一月廿一、十二月十九
+    function isYangGongJi(lunarMonth, lunarDay) {
+        const yangDays = [
+            [1,13], [2,11], [3,9], [4,7], [5,5], [6,3], [7,1], [7,29], 
+            [8,27], [9,25], [10,23], [11,21], [12,19]
+        ];
+        for(let [m,d] of yangDays){
+            if(m===lunarMonth && d===lunarDay) return true;
+        }
+        return false;
+    }
+    
+    // 核心婚日判断（全部使用农历日期）
+    function isGoodWeddingDay(lunarYear, lunarMonth, lunarDay, femaleZodiac, maleZodiac, femaleDayNum, maleDayNum) {
+        if (!femaleZodiac || !maleZodiac) {
+            return false;
+        }
+        
+        // 初一十五回避
+        if(lunarDay === 1 || lunarDay === 15) return false;
+        
+        // 四离四绝
+        if(isSiLiSiJue(lunarYear, lunarMonth, lunarDay)) return false;
+        
+        // 杨公忌
+        if(isYangGongJi(lunarMonth, lunarDay)) return false;
+        
+        // 获取日支
+        const dayZhi = getDayZhiFromLunar(lunarYear, lunarMonth, lunarDay);
+        if (!dayZhi) return false;
+        
+        const femaleZhi = getZodiacZhi(femaleZodiac);
+        const maleZhi = getZodiacZhi(maleZodiac);
+        
+        // 冲生肖
+        if(liuChong[femaleZhi] === dayZhi) return false;
+        if(liuChong[maleZhi] === dayZhi) return false;
+        
+        // 冲日支
+        const femaleDayZhiStr = getDayZhiFromNum(femaleDayNum);
+        const maleDayZhiStr = getDayZhiFromNum(maleDayNum);
+        if(liuChong[femaleDayZhiStr] === dayZhi || liuChong[maleDayZhiStr] === dayZhi) return false;
+        
+        // ✅ 新增：男方禁婚年判断
+        // 获取当年的地支
+        const yearZhiIndex = (lunarYear - 1900) % 12;
+        const yearZhiList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+        const yearZhi = yearZhiList[yearZhiIndex];
+        
+        // 检查是否为男方禁婚年
+        const forbiddenMonths = maleForbiddenYears[maleZodiac] || [];
+        if(forbiddenMonths.includes(lunarMonth)) {
+            console.log(`排除：${lunarYear}年${lunarMonth}月为男方(${maleZodiac})禁婚月`);
+            return false;
+        }
+        
+        // ✅ 新增：本命三煞判断
+        // 检查日支是否犯男方本命三煞
+        const sanShaZhis = benMingSanSha[maleZhi] || [];
+        if(sanShaZhis.includes(dayZhi)) {
+            //console.log(`排除：日支${dayZhi}犯男方(${maleZodiac})本命三煞`);
+            return false;
+        }
+        
+        // 检查是否为大利月或小利月
+        const da = daLiMap[femaleZodiac] || [];
+        const xiao = xiaoLiMap[femaleZodiac] || [];
+        const isDaLi = da.includes(lunarMonth);
+        const isXiaoLi = xiao.includes(lunarMonth);
+        
+        // 如果不是大/小利月，直接排除
+        if(!isDaLi && !isXiaoLi) return false;
+        
+        // 计算评分用于排序或其他用途（可选）
+        let score = 1;
+        if(isDaLi) score += 5;
+        else if(isXiaoLi) score += 2;
+        
+        // 三合六合加分
+        if(sanHe[femaleZhi] && sanHe[femaleZhi].includes(dayZhi)) score += 3;
+        if(liuHe[femaleZhi] === dayZhi) score += 4;
+        if(sanHe[maleZhi] && sanHe[maleZhi].includes(dayZhi)) score += 1;
+        if(liuHe[maleZhi] === dayZhi) score += 2;
+        
+        // 只要是大/小利月且无冲克，就是吉日
+        return true;
+    }
+    
+    function getDayZhiFromNum(dayNum){
+        const zhiCycle = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+        return zhiCycle[(dayNum-1)%12];
+    }
+    
+    // 根据公历年份范围生成吉日（返回农历日期数组）
+    function generateWeddingDatesBySolarRange(startYear, startMonth, startDay, endYear, endMonth, endDay, femaleZodiac, maleZodiac, femaleDayNum, maleDayNum) {
+        let daliCandidates = [];
+        let xiaoliCandidates = [];
+        
+        const da = daLiMap[femaleZodiac] || [];
+        const xiao = xiaoLiMap[femaleZodiac] || [];
+        
+        try {
+            if (typeof Solar === 'undefined' || typeof Solar.fromYmdHms !== 'function') {
+                console.error('lunar.js 库未加载');
+                return { dali: [], xiaoli: [] };
+            }
+            
+            // 遍历每一天
+            let currentDate = new Date(startYear, startMonth - 1, startDay);
+            const endDate = new Date(endYear, endMonth - 1, endDay);
+            
+            while (currentDate <= endDate) {
+                try {
+                    const year = currentDate.getFullYear();
+                    const month = currentDate.getMonth() + 1;
+                    const day = currentDate.getDate();
+                    
+                    // 转换为农历（只计算一次）
+                    const solar = Solar.fromYmdHms(year, month, day, 12, 0, 0);
+                    const lunar = solar.getLunar();
+                    const lunarYear = lunar.getYear();
+                    const lunarMonth = lunar.getMonth();
+                    const lunarDay = lunar.getDay();
+                    
+                    // 使用农历日期判断
+                    if(isGoodWeddingDay(lunarYear, lunarMonth, lunarDay, femaleZodiac, maleZodiac, femaleDayNum, maleDayNum)) {
+                        const dateInfo = {
+                            solarDate: new Date(currentDate),
+                            lunarYear: lunarYear,
+                            lunarMonth: lunarMonth,
+                            lunarDay: lunarDay,
+                            isDaLi: da.includes(lunarMonth),
+                            isXiaoLi: xiao.includes(lunarMonth)
+                        };
+                        
+                        if(dateInfo.isDaLi) {
+                            daliCandidates.push(dateInfo);
+                        } else if(dateInfo.isXiaoLi) {
+                            xiaoliCandidates.push(dateInfo);
+                        }
+                    }
+                } catch (e) {
+                    console.warn('处理日期时出错:', currentDate, e);
+                }
+                
+                // 下一天
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+        } catch (e) {
+            console.error('生成吉日失败:', e);
+        }
+        
+        // 按日期排序
+        daliCandidates.sort((a,b) => a.solarDate - b.solarDate);
+        xiaoliCandidates.sort((a,b) => a.solarDate - b.solarDate);
+        
+        return {
+            dali: daliCandidates,
+            xiaoli: xiaoliCandidates
+        };
+    }
+    
+    // 格式化日期显示（公历 + 农历对照）
+    function formatDateDisplay(dateInfo, femaleZodiac) {
+        const solarDate = dateInfo.solarDate;
+        const year = solarDate.getFullYear();
+        const month = solarDate.getMonth()+1;
+        const day = solarDate.getDate();
+        const weekdays = ["周日","周一","周二","周三","周四","周五","周六"];
+        const wd = weekdays[solarDate.getDay()];
+        
+        // 获取农历信息
+        let lunarInfo = "";
+        try {
+            if (typeof Solar !== 'undefined' && typeof Solar.fromYmdHms === 'function') {
+                const solar = Solar.fromYmdHms(year, month, day, 12, 0, 0);
+                const lunar = solar.getLunar();
+                const yearGanZhi = lunar.getYearInGanZhi();
+                const lunarMonthStr = lunar.getMonthInChinese();
+                const lunarDayStr = lunar.getDayInChinese();
+                lunarInfo = `（农历${yearGanZhi}年 ${lunarMonthStr}月${lunarDayStr}）`;
+            }
+        } catch (e) {
+            console.warn("获取农历信息失败:", e);
+        }
+        
+        let monthIsGood = dateInfo.isDaLi ? "🌸 大利月" : (dateInfo.isXiaoLi ? "🌿 小利月" : "");
+        return { 
+            ymd: `${year}年${month}月${day}日 ${wd}${lunarInfo}`, 
+            extra: monthIsGood 
+        };
+    }
+    
+    function getReasonText(dateInfo, femaleZodiac, maleZodiac) {
+        let parts = [];
+        if(dateInfo.isDaLi) parts.push("✅ 值女命「大利月」");
+        else if(dateInfo.isXiaoLi) parts.push("✔️ 值女命「小利月」");
+        parts.push("📅 黄历宜嫁娶 · 无冲克");
+        parts.push("💞 日柱不与双方生肖及日支冲克");
+        parts.push("👫 避开男方禁婚月及本命三煞");
+        return parts.join("，");
+    }
+    
+    // 渲染结果 - 以日历形式显示大利月和小利月
+    function renderResults(datesData, femaleZodiac, rangeText) {
+        const resultDiv = document.getElementById('resultArea');
+        const dateListDiv = document.getElementById('dateList');
+        const rangeBadge = document.getElementById('rangeBadge');
+        
+        const daliDates = datesData.dali || [];
+        const xiaoliDates = datesData.xiaoli || [];
+        
+        if(!daliDates.length && !xiaoliDates.length){
+            dateListDiv.innerHTML = '<div class="loading">😢 未筛选到合适婚期，可尝试扩大年份范围或调整出生日参数。</div>';
+            resultDiv.style.display = 'block';
+            rangeBadge.innerText = rangeText;
+            return;
+        }
+        
+        let html = '';
+        const { maleZodiac } = getCurrentProfile();
+        
+        // 大利月区域
+        if(daliDates.length > 0) {
+            html += `
+                <div style="margin-bottom:35px;">
+                    <div style="background:linear-gradient(135deg, #ffe8d6 0%, #ffd4b8 100%); border-radius:20px; padding:15px 20px; margin-bottom:15px; border-left:5px solid #e67e50;">
+                        <h3 style="margin:0; color:#c45a30; font-size:1.3rem;">🌸 大利月吉日（上吉）</h3>
+                        <p style="margin:8px 0 0 0; font-size:0.85rem; color:#8b5a3c;">女方生肖，最佳嫁娶月日· 共${daliDates.length}个吉日</p>
+                    </div>
+                    ${renderCalendarView(daliDates, femaleZodiac, maleZodiac, 'dali')}
+                </div>
+            `;
+        }
+        
+        // 小利月区域
+        if(xiaoliDates.length > 0) {
+            html += `
+                <div style="margin-top:0px;">
+                    <div style="background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius:20px; padding:15px 20px; margin-bottom:15px; border-left:5px solid #66bb6a;">
+                        <h3 style="margin:0; color:#388e3c; font-size:1.3rem;">🌿 小利月吉日（次吉）</h3>
+                        <p style="margin:8px 0 0 0; font-size:0.85rem; color:#4a6b4a;">女方生肖，次佳嫁娶月份· 共${xiaoliDates.length}个吉日</p>
+                    </div>
+                    ${renderCalendarView(xiaoliDates, femaleZodiac, maleZodiac, 'xiaoli')}
+                </div>
+            `;
+        }
+        
+        dateListDiv.innerHTML = html;
+        resultDiv.style.display = 'block';
+        rangeBadge.innerText = rangeText;
+    }
+    
+    // 以日历形式渲染日期
+    function renderCalendarView(dates, femaleZodiac, maleZodiac, type) {
+        if(!dates.length) return '';
+        
+        // 按年月分组（使用公历年月用于日历显示）
+        const groupedByMonth = {};
+        dates.forEach(dateInfo => {
+            const solarDate = dateInfo.solarDate;
+            const year = solarDate.getFullYear();
+            const month = solarDate.getMonth() + 1;
+            const key = `${year}-${month}`;
+            if(!groupedByMonth[key]) {
+                groupedByMonth[key] = {
+                    year: year,
+                    month: month,
+                    dates: []
+                };
+            }
+            groupedByMonth[key].dates.push(dateInfo);
+        });
+        
+        let html = '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px;">';
+        
+        for(let key in groupedByMonth) {
+            const monthData = groupedByMonth[key];
+            html += renderMonthCalendar(monthData, femaleZodiac, maleZodiac, type);
+        }
+        
+        html += '</div>';
+        return html;
+    }
+    
+    // 渲染单个月份的日历
+    function renderMonthCalendar(monthData, femaleZodiac, maleZodiac, type) {
+        const { year, month, dates } = monthData;
+        const monthNames = ["", "一月", "二月", "三月", "四月", "五月", "六月", 
+                           "七月", "八月", "九月", "十月", "十一月", "十二月"];
+        const weekdays = ["日", "一", "二", "三", "四", "五", "六"];
+        
+        // 获取该月第一天是星期几
+        const firstDay = new Date(year, month - 1, 1);
+        const startWeekday = firstDay.getDay();
+        
+        // 获取该月天数
+        const daysInMonth = new Date(year, month, 0).getDate();
+        
+        // 创建日期集合用于快速查找
+        const dateSet = new Set();
+        const dateInfoMap = {};
+        dates.forEach(dateInfo => {
+            const day = dateInfo.solarDate.getDate();
+            dateSet.add(day);
+            dateInfoMap[day] = dateInfo;
+        });
+        
+        const borderColor = type === 'dali' ? '#e67e50' : '#66bb6a';
+        const bgColor = type === 'dali' ? '#fff5f0' : '#f1f8e9';
+        
+        let html = `
+            <div style="background:white; border-radius:16px; padding:15px; box-shadow:0 3px 10px rgba(0,0,0,0.08); border:2px solid ${borderColor};">
+                <div style="text-align:center; font-weight:bold; color:${borderColor}; font-size:1.1rem; margin-bottom:10px; padding-bottom:8px; border-bottom:2px solid ${borderColor};">
+                    ${year}年 ${monthNames[month]}
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; text-align:center;">
+        `;
+        
+        // 星期标题
+        weekdays.forEach(wd => {
+            html += `<div style="font-size:0.75rem; color:#999; font-weight:bold; padding:4px 0;">${wd}</div>`;
+        });
+        
+        // 空白填充
+        for(let i = 0; i < startWeekday; i++) {
+            html += '<div></div>';
+        }
+        
+        // 日期格子
+        for(let day = 1; day <= daysInMonth; day++) {
+            if(dateSet.has(day)) {
+                const dateInfo = dateInfoMap[day];
+                const lunarDayStr = getLunarDayString(dateInfo.lunarDay);
+                const isWeekend = dateInfo.solarDate.getDay() === 0 || dateInfo.solarDate.getDay() === 6;
+                const bgStyle = isWeekend ? 'background:#fff3e0;' : `background:${bgColor};`;
+                
+                html += `
+                    <div style="${bgStyle} border-radius:8px; padding:6px 2px; cursor:pointer; position:relative; min-height:48px; display:flex; flex-direction:column; justify-content:center;" 
+                         title="${getFullDateInfo(dateInfo, femaleZodiac, maleZodiac)}">
+                        <div style="font-weight:bold; color:${borderColor}; font-size:0.95rem;">${day}</div>
+                        <div style="font-size:0.6rem; color:#999; margin-top:2px; min-height:12px;">${lunarDayStr || ''}</div>
+                    </div>
+                `;
+            } else {
+                html += '<div style="padding:6px 2px; color:#ddd; min-height:48px; display:flex; flex-direction:column; justify-content:center;"><div style="font-weight:bold;">' + day + '</div><div style="min-height:12px;"></div></div>';
+            }
+        }
+        
+        html += `
+                </div>
+                <div style="margin-top:8px; font-size:0.7rem; color:#999; text-align:center;">
+                    💡 点击日期查看详情
+                </div>
+            </div>
+        `;
+        
+        return html;
+    }
+    
+    // 获取农历日的中文表示
+    function getLunarDayString(lunarDay) {
+        const lunarDays = ["初一","初二","初三","初四","初五","初六","初七","初八","初九","初十",
+                          "十一","十二","十三","十四","十五","十六","十七","十八","十九","二十",
+                          "廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十"];
+        if (lunarDay >= 1 && lunarDay <= 30) {
+            return lunarDays[lunarDay - 1];
+        }
+        return '';
+    }
+    
+    // 获取完整的日期信息（用于tooltip）
+    function getFullDateInfo(dateInfo, femaleZodiac, maleZodiac) {
+        const solarDate = dateInfo.solarDate;
+        const year = solarDate.getFullYear();
+        const month = solarDate.getMonth() + 1;
+        const day = solarDate.getDate();
+        const weekdays = ["周日","周一","周二","周三","周四","周五","周六"];
+        const wd = weekdays[solarDate.getDay()];
+        
+        let lunarInfo = "";
+        try {
+            if (typeof Solar !== 'undefined' && typeof Solar.fromYmdHms === 'function') {
+                const solar = Solar.fromYmdHms(year, month, day, 12, 0, 0);
+                const lunar = solar.getLunar();
+                const yearGanZhi = lunar.getYearInGanZhi();
+                const lunarMonth = lunar.getMonthInChinese();
+                const lunarDay = lunar.getDayInChinese();
+                lunarInfo = `\n农历：${yearGanZhi}年 ${lunarMonth}月${lunarDay}`;
+            }
+        } catch (e) {
+            console.warn("获取农历信息失败:", e);
+        }
+        
+        let monthType = "";
+        if(dateInfo.isDaLi) {
+            monthType = "\n✅ 大利月（上吉）";
+        } else if(dateInfo.isXiaoLi) {
+            monthType = "\n✔️ 小利月（次吉）";
+        }
+        
+        const reason = getReasonText(dateInfo, femaleZodiac, maleZodiac);
+        
+        return `${year}年${month}月${day}日 ${wd}${lunarInfo}${monthType}\n\n${reason}`;
+    }
+    
+    // 获取八字信息
+    function getCurrentProfile() {
+        const maleYear = parseInt(document.getElementById('maleYear').value);
+        const femaleYear = parseInt(document.getElementById('femaleYear').value);
+        const maleDayNum = parseInt(document.getElementById('maleDay').value) || 10;
+        const femaleDayNum = parseInt(document.getElementById('femaleDay').value) || 5;
+        const maleZodiac = getZodiacByYear(maleYear);
+        const femaleZodiac = getZodiacByYear(femaleYear);
+        return { maleZodiac, femaleZodiac, femaleDayNum, maleDayNum };
+    }
+    
+    // 自定义年份
+    function onCustomYear() {
+        let selectedYear = parseInt(document.getElementById('selectedYear').value);
+        if(isNaN(selectedYear)) {
+            const currentYear = new Date().getFullYear();
+            selectedYear = currentYear;
+            document.getElementById('selectedYear').value = currentYear;
+        }
+        
+        const { maleZodiac, femaleZodiac, femaleDayNum, maleDayNum } = getCurrentProfile();
+        const datesData = generateWeddingDatesBySolarRange(selectedYear, 1, 1, selectedYear, 12, 31, femaleZodiac, maleZodiac, femaleDayNum, maleDayNum);
+        const rangeText = `📅 公历${selectedYear}年全年`;
+        renderResults(datesData, femaleZodiac, rangeText);
+    }
+    
+    // 获取未来一年的吉日（默认显示）
+    function onRecentYear() {
+        const { maleZodiac, femaleZodiac, femaleDayNum, maleDayNum } = getCurrentProfile();
+        const today = new Date();
+        const startDate = new Date(today);
+        const endDate = new Date(today);
+        endDate.setDate(today.getDate() + 365);
+        
+        const startYear = startDate.getFullYear();
+        const startMonth = startDate.getMonth() + 1;
+        const startDay = startDate.getDate();
+        const endYear = endDate.getFullYear();
+        const endMonth = endDate.getMonth() + 1;
+        const endDay = endDate.getDate();
+        
+        const datesData = generateWeddingDatesBySolarRange(startYear, startMonth, startDay, endYear, endMonth, endDay, femaleZodiac, maleZodiac, femaleDayNum, maleDayNum);
+        const rangeText = `📅 ${startDate.toLocaleDateString()} 至 ${endDate.toLocaleDateString()} (最近一年)`;
+        renderResults(datesData, femaleZodiac, rangeText);
+    }
+    
+    // 下拉填充
+    function loadYears() {
+        const maleSel = document.getElementById('maleYear');
+        const femaleSel = document.getElementById('femaleYear');
+        for(let y=1900; y<=2028; y++) {
+            let zodiac = getZodiacByYear(y);
+            let opt1 = new Option(`${y}年 (${zodiac}年)`, y);
+            let opt2 = new Option(`${y}年 (${zodiac}年)`, y);
+            if(y===1992) opt1.selected = true;
+            if(y===1999) opt2.selected = true;
+            maleSel.appendChild(opt1);
+            femaleSel.appendChild(opt2);
+        }
+    }
+
+    // 设置默认年份
+     function setDefaultYear() {
+        const currentYear = new Date().getFullYear();
+        document.getElementById('selectedYear').value = currentYear;
+    }
+    
+    document.getElementById('recentYearBtn').addEventListener('click', onRecentYear);
+    document.getElementById('customYearBtn').addEventListener('click', onCustomYear);
+    loadYears();
+    setDefaultYear();
+    
+    // 页面加载时自动显示未来一年的吉日
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            try {
+                onRecentYear();
+            } catch (e) {
+                console.error('自动加载吉日失败:', e);
+                document.getElementById('resultArea').style.display = 'block';
+                document.getElementById('dateList').innerHTML = 
+                    '<div class="loading">⚠️ 初始化失败，请点击按钮重新查询</div>';
+            }
+        }, 200);
+    });
+</script>
+</body>
+</html>
