@@ -362,7 +362,20 @@
     const BRANCHES = ["寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥", "子", "丑"];
     // 建除十二神序列(固定顺序)
     const JIANCHU_NAMES = ["建", "除", "满", "平", "定", "执", "破", "危", "成", "收", "开", "闭"];
-    // 建除吉凶简要描述
+    
+    // 吉凶口诀：
+    /*建满平收黑，除危定执黄。 成开皆可用，闭破不吉祥。 
+    黑中平不爱，黄中危不强。 建宜出行收嫁娶，定宜冠带满修仓。 
+    破除疗病执宜捕，危本安床开丈量。 成开所做成开吉，平乃做事总平常。
+    */
+    const JIANCHU_JIXIONG = {
+        "建": "黑道", "满": "黑道", "平": "黑道", "收": "黑道",
+        "除": "黄道", "危": "黄道", "定": "黄道", "执": "黄道",
+        "成": "吉日", "开": "吉日",
+        "破": "凶日", "闭": "凶日"
+    };
+    
+    // 建除吉凶简要描述与建议
     const JIANCHU_DESC = {
         "建": "宜立基、建设，但动土吉；诸事可成但有始。忌嫁娶远行。",
         "除": "除旧布新，扫除、治病、嫁娶吉。适合清理障碍。",
@@ -378,6 +391,35 @@
         "闭": "封闭秘藏，宜筑堤、补垣，忌开光嫁娶。"
     };
     
+    // 根据口诀给出的建议
+    const JIANCHU_ADVICE = {
+        "建": "⚠️ 黑道日 - 可以开始新项目，但不宜嫁娶、远行。适合奠基、开工。",
+        "除": "✅ 黄道日 - 除旧布新的好日子！适合扫除、治病、嫁娶、清理障碍。",
+        "满": "⚠️ 黑道日 - 圆满之日，适合祭祀、纳财、祈福。不宜安葬、上任。",
+        "平": "⚠️ 黑道日 - 平稳之日，适合修造、平整道路。万事平常，无大喜大悲。",
+        "定": "✅ 黄道日 - 安定祥和，宜安床、签约、订婚。诸事稳定，适合做决定。",
+        "执": "✅ 黄道日 - 执守之日，宜捕捉、修缮、追债。忌嫁娶、搬迁。",
+        "破": "❌ 凶日 - 破败冲散，诸事不宜！忌婚丧、动土、开业。最好避免重大决策。",
+        "危": "✅ 黄道日 - 需谨慎行事，可祈福、斋醮。忌登高、涉险、冒险活动。",
+        "成": "🎉 吉日 - 成功收获之日！万事可成，结婚、开业、入学皆大吉。",
+        "收": "⚠️ 黑道日 - 收纳积聚，宜嫁娶、收藏、讨债。忌行丧、安葬。",
+        "开": "🎉 吉日 - 开启新生！宜开市、嫁娶、出行、求医。诸事皆吉。",
+        "闭": "❌ 凶日 - 封闭秘藏，宜筑堤、补垣、防守。忌开光、嫁娶、远行。"
+    };
+     /* 十二建除与十二黑黄道内在关系
+    建是青龙用为头，除是明堂黄道游。
+    满为天刑平朱雀，定为金匮吉神求。
+    执为天德是黄道，破为白虎危玉堂。
+    成为天牢固坚守，收为玄武盗贼愁。
+    开临司命为黄道，闭为勾陈主流亡。
+    黄道出行为大吉，行军斗阵黑道忧。
+    */
+    /*
+    十二黑黄道的起法：遁月起日，遁日起时。
+    子午-申起青龙，卯酉-寅起青龙
+    寅申-子起青龙，巳亥-午起青龙
+    辰戌-辰起青龙，丑未-戌起青龙
+    */
     // 黄道黑道十二星君 (顺序: 青龙、明堂、天刑、朱雀、金匮、天德、白虎、玉堂、天牢、玄武、司命、勾陈)
     const XINGJUN_NAMES = ["青龙", "明堂", "天刑", "朱雀", "金匮", "天德", "白虎", "玉堂", "天牢", "玄武", "司命", "勾陈"];
     const XINGJUN_TYPE = {
@@ -429,6 +471,36 @@
     
     // 使用缓存 + lunar.js 获取月建地支
     function getMonthBranchFromDate(date) {
+        try {
+            if (typeof Solar !== 'undefined') {
+                // 使用 lunar.js 精确计算节气月
+                const solar = Solar.fromYmdHms(
+                    date.getFullYear(),
+                    date.getMonth() + 1,
+                    date.getDate(),
+                    date.getHours(),
+                    date.getMinutes(),
+                    date.getSeconds()
+                );
+                const lunar = solar.getLunar();
+                
+                // 获取月建（节气月干支）
+                const monthInGanZhi = lunar.getMonthInGanZhi();
+                
+                // 从月干支提取地支（如"甲辰" -> "辰"）
+                const monthZhi = monthInGanZhi.charAt(1);
+                
+                console.log("=== 月建计算 ===");
+                console.log("月干支:", monthInGanZhi);
+                console.log("月建地支:", monthZhi);
+                
+                return monthZhi;
+            }
+        } catch (e) {
+            console.warn("lunar.js 计算月建失败，使用降级方案:", e);
+        }
+        
+        // 降级方案：使用缓存
         const y = date.getFullYear();
         const m = date.getMonth() + 1;
         const d = date.getDate();
@@ -457,92 +529,28 @@
             return JIE_QI_TO_BRANCH[prevTerm];
         }
         
-        // 第三步：缓存未命中，使用 lunar.js 动态计算
-        try {
-            if (typeof Solar !== 'undefined') {
-                const solar = Solar.fromYmdHms(y, m, d, date.getHours(), date.getMinutes(), date.getSeconds());
-                const lunar = solar.getLunar();
-                const jieQiTable = lunar.getJieQiTable();
-                
-                const jieQiNames = ["立春", "惊蛰", "清明", "立夏", "芒种", "小暑", 
-                                   "立秋", "白露", "寒露", "立冬", "大雪", "小寒"];
-                
-                for (let i = jieQiNames.length - 1; i >= 0; i--) {
-                    const jieName = jieQiNames[i];
-                    if (jieQiTable[jieName]) {
-                        const jieSolar = jieQiTable[jieName];
-                        const jieDate = new Date(jieSolar.getYear(), jieSolar.getMonth() - 1, jieSolar.getDay());
-                        
-                        if (date >= jieDate) {
-                            return JIE_QI_TO_BRANCH[jieName] || "寅";
-                        }
-                    }
-                }
-            }
-        } catch (e) {
-            console.warn("lunar.js 计算失败，使用降级方案:", e);
-        }
-        
-        // 第四步：降级方案 - 根据月份简单估算（粗略近似，仅供参考）
-        // 节气月建对应关系：
-        // 丑月: 小寒(1月5-6日) ~ 立春(2月3-4日)
-        // 寅月: 立春(2月3-4日) ~ 惊蛰(3月5-6日)
-        // 卯月: 惊蛰(3月5-6日) ~ 清明(4月4-5日)
-        // 辰月: 清明(4月4-5日) ~ 立夏(5月5-6日)
-        // 巳月: 立夏(5月5-6日) ~ 芒种(6月5-6日)
-        // 午月: 芒种(6月5-6日) ~ 小暑(7月6-7日)
-        // 未月: 小暑(7月6-7日) ~ 立秋(8月7-8日)
-        // 申月: 立秋(8月7-8日) ~ 白露(9月7-8日)
-        // 酉月: 白露(9月7-8日) ~ 寒露(10月8-9日)
-        // 戌月: 寒露(10月8-9日) ~ 立冬(11月7-8日)
-        // 亥月: 立冬(11月7-8日) ~ 大雪(12月6-7日)
-        // 子月: 大雪(12月6-7日) ~ 小寒(1月5-6日)
-        
-        if(m===1) {
-            return d < 5 ? "子" : "丑";  // 1月5日前是子月，之后是丑月
-        }
-        if(m===2) {
-            return d < 4 ? "丑" : "寅";  // 2月4日前是丑月，之后是寅月
-        }
-        if(m===3) {
-            return d < 5 ? "寅" : "卯";  // 3月5日前是寅月，之后是卯月
-        }
-        if(m===4) {
-            return d < 4 ? "卯" : "辰";  // 4月4日前是卯月，之后是辰月
-        }
-        if(m===5) {
-            return d < 5 ? "辰" : "巳";  // 5月5日前是辰月，之后是巳月
-        }
-        if(m===6) {
-            return d < 5 ? "巳" : "午";  // 6月5日前是巳月，之后是午月
-        }
-        if(m===7) {
-            return d < 6 ? "午" : "未";  // 7月6日前是午月，之后是未月
-        }
-        if(m===8) {
-            return d < 7 ? "未" : "申";  // 8月7日前是未月，之后是申月
-        }
-        if(m===9) {
-            return d < 7 ? "申" : "酉";  // 9月7日前是申月，之后是酉月
-        }
-        if(m===10) {
-            return d < 8 ? "酉" : "戌";  // 10月8日前是酉月，之后是戌月
-        }
-        if(m===11) {
-            return d < 7 ? "戌" : "亥";  // 11月7日前是戌月，之后是亥月
-        }
-        if(m===12) {
-            return d < 6 ? "亥" : "子";  // 12月6日前是亥月，之后是子月
-        }
-        return "寅";  // 默认返回
+        // 第三步：降级方案 - 根据月份简单估算
+        if(m===1) return d < 5 ? "子" : "丑";
+        if(m===2) return d < 4 ? "丑" : "寅";
+        if(m===3) return d < 5 ? "寅" : "卯";
+        if(m===4) return d < 4 ? "卯" : "辰";
+        if(m===5) return d < 5 ? "辰" : "巳";
+        if(m===6) return d < 5 ? "巳" : "午";
+        if(m===7) return d < 6 ? "午" : "未";
+        if(m===8) return d < 7 ? "未" : "申";
+        if(m===9) return d < 7 ? "申" : "酉";
+        if(m===10) return d < 8 ? "酉" : "戌";
+        if(m===11) return d < 7 ? "戌" : "亥";
+        if(m===12) return d < 6 ? "亥" : "子";
+        return "寅";
     }
     
     // 根据公历日期计算建除十二神 (日支关系与月建)
     function getJianChu(date) {
         // 获取月建地支
         const monthBranch = getMonthBranchFromDate(date);
-        // 获取日地支
-        const dayBranch = getDayBranch(date);
+        // 获取日地支（使用 lunar.js）
+        const dayBranch = getDayBranchFromLunar(date);
         const branchOrder = { "寅":0,"卯":1,"辰":2,"巳":3,"午":4,"未":5,"申":6,"酉":7,"戌":8,"亥":9,"子":10,"丑":11 };
         const monthIdx = branchOrder[monthBranch];
         const dayIdx = branchOrder[dayBranch];
@@ -551,24 +559,87 @@
         return JIANCHU_NAMES[offset];
     }
     
-    // 获取日地支 (由公历精确推算 2000~2030 高效日柱公式)
-    function getDayBranch(date) {
-        // 日干支基: 2000年1月1日为甲午日 (地支午)
+    // 使用 lunar.js 获取日地支
+    function getDayBranchFromLunar(date) {
+        try {
+            if (typeof Solar !== 'undefined') {
+                const solar = Solar.fromYmdHms(
+                    date.getFullYear(),
+                    date.getMonth() + 1,
+                    date.getDate(),
+                    date.getHours(),
+                    date.getMinutes(),
+                    date.getSeconds()
+                );
+                const lunar = solar.getLunar();
+                
+                // 获取日地支
+                const dayZhi = lunar.getDayZhi();
+                
+                console.log("日地支:", dayZhi);
+                
+                return dayZhi;
+            }
+        } catch (e) {
+            console.warn("lunar.js 计算日支失败，使用降级方案:", e);
+        }
+        
+        // 降级方案：使用已验证的基准日期
         const baseDate = new Date(2000,0,1);
         const diff = Math.floor((date - baseDate) / (24*3600*1000));
         const zhiList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
-        const zhiIndex = (diff + 6) % 12; // 午对应索引6
+        const zhiIndex = (diff + 6) % 12;
         return zhiList[zhiIndex];
     }
     
-    // 根据日干支求黄道黑道十二星君 (固定顺序: 子日起青龙,丑明堂,寅天刑...)
+    // 根据日干支求黄道黑道十二星君 (遁月起日法)
     function getXingJun(date) {
-        const dayBranch = getDayBranch(date);
-        const orderStart = { "子":0, "丑":1, "寅":2, "卯":3, "辰":4, "巳":5, "午":6, "未":7, "申":8, "酉":9, "戌":10, "亥":11 };
-        const idx = orderStart[dayBranch];
-        return XINGJUN_NAMES[idx % 12];
+        const dayBranch = getDayBranchFromLunar(date);
+        const monthBranch = getMonthBranchFromDate(date);
+        
+        // 根据地支获取索引
+        const branchOrder = {"子":0,"丑":1,"寅":2,"卯":3,"辰":4,"巳":5,"午":6,"未":7,"申":8,"酉":9,"戌":10,"亥":11};
+        
+        // 根据月建确定青龙起始日
+        let qinglongStart;
+        switch(monthBranch) {
+            case "子":
+            case "午":
+                qinglongStart = "申"; // 子午月申日起青龙
+                break;
+            case "卯":
+            case "酉":
+                qinglongStart = "寅"; // 卯酉月寅日起青龙
+                break;
+            case "寅":
+            case "申":
+                qinglongStart = "子"; // 寅申月子日起青龙
+                break;
+            case "巳":
+            case "亥":
+                qinglongStart = "午"; // 巳亥月午日起青龙
+                break;
+            case "辰":
+            case "戌":
+                qinglongStart = "辰"; // 辰戌月辰日起青龙
+                break;
+            case "丑":
+            case "未":
+                qinglongStart = "戌"; // 丑未月戌日起青龙
+                break;
+            default:
+                qinglongStart = "子"; // 默认
+        }
+        
+        // 计算从青龙起始日到当前日支的偏移
+        const startIdx = branchOrder[qinglongStart];
+        const dayIdx = branchOrder[dayBranch];
+        const offset = (dayIdx - startIdx + 12) % 12;
+        
+        // 星君顺序：青龙、明堂、天刑、朱雀、金匮、天德、白虎、玉堂、天牢、玄武、司命、勾陈
+        return XINGJUN_NAMES[offset];
     }
-    
+   
     // 根据建除+黄道星君提供简单的宜忌汇总
     function getYiJiSummary(jianchu, xingjun) {
         // 传统原则: 建除中 除、定、执、成、开 吉； 破、闭、危 凶； 满平收建中平偏吉。
@@ -609,12 +680,21 @@
     function updateByDate(date) {
         const jianchu = getJianChu(date);
         const xingjun = getXingJun(date);
-        const branchDay = getDayBranch(date);
+        const branchDay = getDayBranchFromLunar(date);
         const monthBranch = getMonthBranchFromDate(date);
         const { yiList, jiList } = getYiJiSummary(jianchu, xingjun);
         
+        // 获取吉凶类型和建议
+        const jixiong = JIANCHU_JIXIONG[jianchu] || "平";
+        const advice = JIANCHU_ADVICE[jianchu] || "";
+        
         document.getElementById("jianchuName").innerText = jianchu;
-        document.getElementById("jianchuDesc").innerHTML = JIANCHU_DESC[jianchu] || "吉凶参半";
+        document.getElementById("jianchuDesc").innerHTML = `
+            <div style="margin-bottom:8px;">${JIANCHU_DESC[jianchu] || "吉凶参半"}</div>
+            <div style="background:#fff3e0; border-left:3px solid #ff9800; padding:8px 12px; border-radius:8px; font-size:0.85rem; color:#e65100;">
+                ${advice}
+            </div>
+        `;
         document.getElementById("xingjunName").innerHTML = `${xingjun} (${branchDay}日)`;
         document.getElementById("xingjunType").innerHTML = XINGJUN_TYPE[xingjun] || "星君值日";
         document.getElementById("xingjunDesc").innerHTML = XINGJUN_DESC[xingjun] || "诸事酌之";
@@ -625,7 +705,15 @@
         document.getElementById("jiList").innerHTML = jiHtml || '<span class="ji-tag">忌 大事不宜</span>';
         
         const explainDiv = document.getElementById("detailExplain");
-        explainDiv.innerHTML = `本月建为「${monthBranch}月」，日支「${branchDay}」。建除十二神轮至「${jianchu}」日，${JIANCHU_DESC[jianchu] || ''} 又逢「${xingjun}」星君值日，${XINGJUN_DESC[xingjun] || '须结合具体事项择吉'}。`
+        explainDiv.innerHTML = `
+            <strong>📅 本月建为「${monthBranch}月」，日支「${branchDay}」。</strong><br>
+            建除十二神轮至「<strong>${jianchu}</strong>」日，${JIANCHU_DESC[jianchu] || ''}<br>
+            又逢「<strong>${xingjun}</strong>」星君值日，${XINGJUN_DESC[xingjun] || '须结合具体事项择吉'}。<br>
+            <div style="margin-top:10px; padding:10px; background:#f5f5f5; border-radius:8px;">
+                <strong>🔮 口诀判断：</strong>${jixiong}<br>
+                <small>依据：建满平收黑，除危定执黄，成开皆可用，破闭不可当</small>
+            </div>
+        `;
         
         // 显示十二建除循环图
         const monthIdx = BRANCHES.indexOf(monthBranch);
@@ -635,7 +723,12 @@
         for(let i=0; i<12; i++) {
             let jc = JIANCHU_NAMES[(startOffset + i)%12];
             let isCurrent = (jc === jianchu);
-            gridHtml += `<div class="twelve-item ${isCurrent ? 'current-jc' : ''}">${jc}</div>`;
+            let jixiongClass = '';
+            if (['成', '开'].includes(jc)) jixiongClass = 'style="background:#c8e6c9;"';
+            else if (['破', '闭'].includes(jc)) jixiongClass = 'style="background:#ffcdd2;"';
+            else if (['除', '危', '定', '执'].includes(jc)) jixiongClass = 'style="background:#fff9c4;"';
+            
+            gridHtml += `<div class="twelve-item ${isCurrent ? 'current-jc' : ''}" ${jixiongClass}>${jc}</div>`;
         }
         document.getElementById("twelveCycleGrid").innerHTML = gridHtml;
         document.getElementById("displayDate").innerHTML = `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`;

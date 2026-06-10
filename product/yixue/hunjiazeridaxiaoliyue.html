@@ -186,7 +186,7 @@
         }
         .date-grid {
             display: grid;
-            /*grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));*/
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
             gap: 20px;
         }
         .date-card {
@@ -253,32 +253,13 @@
                 padding: 15px;
             }
         }
-        
-        /* 日期卡片网格响应式 */
-        .scored-date-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-        
-        @media (max-width: 1200px) {
-            .scored-date-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .scored-date-grid {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="card">
-        <h1>📜 合卺·婚嫁择吉 <small>传统历法·八字参考·综合评分</small></h1>
-        <div class="sub">🌙 依女方生肖大利月为纲 · 避冲刑 · 选宜嫁娶黄道日 · 五重评分系统</div>
+        <h1>📜 合卺·婚嫁择吉 <small>传统历法·八字参考</small></h1>
+        <div class="sub">🌙 依女方生肖大利月为纲 · 避冲刑 · 选宜嫁娶黄道日</div>
         
         <div class="form-row">
             <!-- 男方生辰 -->
@@ -343,12 +324,10 @@
                 <span>✨ 上吉婚期推荐 ✨</span>
                 <span class="year-badge" id="rangeBadge"></span>
             </div>
-            <div id="statsPanel" style="margin-bottom:25px;"></div>
             <div id="dateList" class="date-grid"></div>
             <div class="footer-note">
-                📖 注：本择日系统采用五重评分机制：利月(30分) > 不将日(20分) > 建除十二神(15分) > 黄黑道(15分) > 紫白飞星(10分)<br>
-                等级划分：极品吉日≥70分、上吉≥55分、中吉≥40分、平吉<40分<br>
-                真正严谨婚嫁择日需结合双方完整八字时辰、神煞格局，建议传统大事可请专业人士。
+                📖 注：本择日依“女命大利月、忌冲生肖、黄历宜嫁娶、四离四绝”等传统规则简化演算，仅供文化参考与吉祥寓意。
+                <br> 真正严谨婚嫁择日需结合双方完整八字时辰、神煞格局，建议传统大事可请专业人士。
             </div>
         </div>
     </div>
@@ -448,299 +427,7 @@
         "戌": ["申", "酉", "戌"],  // 狗：猴鸡狗
         "亥": ["巳", "午", "未"]   // 猪：蛇马羊
     };
-     // ===================== 综合打分系统核心函数 =====================
     
-    // 获取节气月索引（用于紫白和不将日计算）
-    function getJieQiMonthIndex(year, month, day) {
-        try {
-            if (typeof Solar !== 'undefined' && typeof Solar.fromYmdHms === 'function') {
-                const solar = Solar.fromYmdHms(year, month, day, 12, 0, 0);
-                const lunar = solar.getLunar();
-                const monthInGanZhi = lunar.getMonthInGanZhi();
-                
-                const zhiToMonth = {
-                    "寅": 1, "卯": 2, "辰": 3, "巳": 4, "午": 5, "未": 6,
-                    "申": 7, "酉": 8, "戌": 9, "亥": 10, "子": 11, "丑": 12
-                };
-                
-                const zhi = monthInGanZhi.charAt(1);
-                return zhiToMonth[zhi] || 1;
-            }
-        } catch (e) {
-            console.warn("获取节气月失败:", e);
-        }
-        return 1;
-    }
-    
-    // 判断是否为不将日
-    function isBuJiangDay(lunarInfo) {
-        const lunarMonthIdx = lunarInfo.jieQiMonthIndex;
-        if(lunarMonthIdx === 0) return false;
-        
-        const bujiangTable = getBujiangTableByMonth(lunarMonthIdx);
-        const ganzhiStr = lunarInfo.dayGan + lunarInfo.dayZhi;
-        return bujiangTable.includes(ganzhiStr);
-    }
-    
-    // 获取每月不将日表
-    function getBujiangTableByMonth(monthIdx) {
-        const tables = {
-            1: ["辛丑","辛卯","庚子","庚寅","丁丑","丁卯","丙子","丙寅","戊子","戊寅"],
-            2: ["庚子","庚寅","庚戌","丁丑","丙子","丙戌","丙寅","乙丑","戊子","戊寅"],
-            3: ["丁丑","丙戌","丙子","乙酉","乙丑","甲戌","甲子","戊子"],
-            4: ["丁酉","丙申","丙戌","丙子","乙酉","甲申","甲戌","甲子","戊申","戊子"],
-            5: ["丙申","丙戌","乙未","乙酉","甲申","甲戌","癸未","癸酉","戊申","戊戌"],
-            6: ["乙未","乙酉","甲午","甲申","甲戌","癸未","癸酉","壬午","壬申","壬戌","戊午","戊申","戊戌"],
-            7: ["乙未","乙酉","甲午","甲申","癸未","癸酉","癸巳","壬午","壬申","戊午","戊申"],
-            8: ["甲辰","甲午","甲申","癸巳","癸未","壬辰","壬午","壬申","辛巳","辛未","戊辰","戊午","戊申"],
-            9: ["癸巳","癸未","壬辰","壬午","辛卯","辛巳","辛未","庚辰","庚午","戊辰","戊午"],
-            10: ["癸巳","壬寅","壬辰","壬午","辛卯","辛巳","庚寅","庚辰","庚午","戊寅","戊辰","戊午"],
-            11: ["壬寅","壬辰","辛丑","辛卯","辛巳","庚寅","庚辰","丁丑","丁卯","丁巳","戊寅","戊辰"],
-            12: ["辛丑","辛卯","庚子","庚寅","庚辰","丁丑","丁卯","丙子","丙寅","丙辰","戊子","戊寅","戊辰"]
-        };
-        return tables[monthIdx] || [];
-    }
-    
-    // 获取建除十二神
-    function getJianChu(lunarInfo) {
-        const monthZhi = lunarInfo.monthZhi;
-        const dayBranch = lunarInfo.dayZhi;
-        const order = {"寅":0,"卯":1,"辰":2,"巳":3,"午":4,"未":5,"申":6,"酉":7,"戌":8,"亥":9,"子":10,"丑":11};
-        const mIdx = order[monthZhi];
-        const dIdx = order[dayBranch];
-        const seq = ["建","除","满","平","定","执","破","危","成","收","开","闭"];
-        let offset = (dIdx - mIdx + 12) % 12;
-        return seq[offset];
-    }
-    
-    // 获取黄道黑道星君
-    function getXingJun(lunarInfo) {
-        const monthZhi = lunarInfo.monthZhi;
-        const dayZhi = lunarInfo.dayZhi;
-        
-        const qingLongStartMap = {
-            "寅": "寅", "申": "寅",
-            "卯": "戌", "酉": "戌",
-            "辰": "子", "戌": "子",
-            "巳": "午", "亥": "午",
-            "子": "申", "午": "申",
-            "丑": "寅", "未": "寅"
-        };
-        
-        const qingLongStart = qingLongStartMap[monthZhi];
-        if (!qingLongStart) return "未知";
-        
-        const branches = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
-        const xingjunNames = ["青龙","明堂","天刑","朱雀","金匮","天德","白虎","玉堂","天牢","玄武","司命","勾陈"];
-        
-        const startIdx = branches.indexOf(qingLongStart);
-        const dayIdx = branches.indexOf(dayZhi);
-        let offset = (dayIdx - startIdx + 12) % 12;
-        
-        return xingjunNames[offset];
-    }
-    
-    // 获取日紫白星
-    function getDayPurpleStar(lunarInfo) {
-        const ganList = ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"];
-        const zhiList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
-        
-        const dayGanIdx = ganList.indexOf(lunarInfo.dayGan);
-        const dayZhiIdx = zhiList.indexOf(lunarInfo.dayZhi);
-        const dayOrder = dayGanIdx * 6 + dayZhiIdx + 1;
-        
-        const isWinter = (lunarInfo.solarMonth===12 && lunarInfo.solarDay>=21) || 
-                        (lunarInfo.solarMonth===1) || 
-                        (lunarInfo.solarMonth===2 && lunarInfo.solarDay<19);
-        let startNum = isWinter ? 1 : 9;
-        let offset = (dayOrder - 1) % 9;
-        let star = (startNum + offset - 1) % 9 + 1;
-        return star;
-    }
-    
-    // 获取年紫白星
-    function getYearPurpleStar(year) {
-        let startVal = 9; // 2024年九紫
-        let diff = (year - 2024) % 9;
-        if (diff < 0) diff += 9;
-        let star = startVal - diff;
-        if (star <= 0) star += 9;
-        return star;
-    }
-    
-    // 综合打分函数
-    function calculateWeddingScore(dateInfo, femaleZodiac) {
-        let score = 0;
-        let details = [];
-        let excluded = false;
-        let excludeReason = "";
-        
-        try {
-            const solarDate = dateInfo.solarDate;
-            const year = solarDate.getFullYear();
-            const month = solarDate.getMonth() + 1;
-            const day = solarDate.getDate();
-            
-            // 转换为农历
-            const solar = Solar.fromYmdHms(year, month, day, 12, 0, 0);
-            const lunar = solar.getLunar();
-            
-            const lunarInfo = {
-                lunarYear: lunar.getYear(),
-                lunarMonth: lunar.getMonth(),
-                lunarDay: lunar.getDay(),
-                yearGanZhi: lunar.getYearInGanZhi(),
-                monthGanZhi: lunar.getMonthInGanZhi(),
-                dayGanZhi: lunar.getDayInGanZhi(),
-                yearGan: lunar.getYearGan(),
-                yearZhi: lunar.getYearZhi(),
-                monthGan: lunar.getMonthGan(),
-                monthZhi: lunar.getMonthZhi(),
-                dayGan: lunar.getDayGan(),
-                dayZhi: lunar.getDayZhi(),
-                jieQiMonthIndex: getJieQiMonthIndex(year, month, day),
-                solarYear: year,
-                solarMonth: month,
-                solarDay: day
-            };
-            
-            // 1. 利月评分 (权重30分)
-            const da = daLiMap[femaleZodiac] || [];
-            const xiao = xiaoLiMap[femaleZodiac] || [];
-            let liYueScore = 0;
-            if(da.includes(lunarInfo.lunarMonth)) {
-                liYueScore = 30;
-                details.push(`✅ 大利月 (+30分)`);
-            } else if(xiao.includes(lunarInfo.lunarMonth)) {
-                liYueScore = 15;
-                details.push(`✔️ 小利月 (+15分)`);
-            } else {
-                liYueScore = 0;
-                details.push(`❌ 非利月 (0分)`);
-                excluded = true;
-                excludeReason = "不在任何利月内";
-            }
-            score += liYueScore;
-            
-            // 如果已被排除，直接返回
-            if(excluded) {
-                return {
-                    totalScore: 0,
-                    excluded: true,
-                    excludeReason: excludeReason,
-                    details: details
-                };
-            }
-            
-            // 2. 不将日评分 (权重20分)
-            const isBuJiang = isBuJiangDay(lunarInfo);
-            let buJiangScore = isBuJiang ? 20 : 0;
-            score += buJiangScore;
-            details.push(isBuJiang ? `🏮 不将日 (+20分)` : `⚪ 非不将日 (0分)`);
-            
-            // 3. 建除十二神评分 (权重15分)
-            const jianChu = getJianChu(lunarInfo);
-            let jianChuScore = 0;
-            if(jianChu === "成" || jianChu === "开") {
-                jianChuScore = 15;
-                details.push(`⭐ ${jianChu}日 (+15分)`);
-            } else if(["除", "危", "定", "执"].includes(jianChu)) {
-                jianChuScore = 10;
-                details.push(`✨ ${jianChu}日 (+10分)`);
-            } else if(["建", "满", "平", "收"].includes(jianChu)) {
-                jianChuScore = 5;
-                details.push(`🔹 ${jianChu}日 (+5分)`);
-            } else if(jianChu === "闭") {
-                jianChuScore = -10;
-                details.push(`⚠️ 闭日 (-10分)`);
-            } else if(jianChu === "破") {
-                jianChuScore = -20;
-                details.push(`❌ 破日 (-20分，直接排除)`);
-                excluded = true;
-                excludeReason = "破日";
-            }
-            score += jianChuScore;
-            
-            // 如果破日排除
-            if(excluded) {
-                return {
-                    totalScore: score,
-                    excluded: true,
-                    excludeReason: excludeReason,
-                    details: details
-                };
-            }
-            
-            // 4. 黄黑道评分 (权重15分)
-            const xingJun = getXingJun(lunarInfo);
-            const isHuangDao = ["青龙", "明堂", "金匮", "天德", "玉堂", "司命"].includes(xingJun);
-            let huangDaoScore = isHuangDao ? 15 : 0;
-            score += huangDaoScore;
-            details.push(isHuangDao ? `🌟 ${xingJun}黄道 (+15分)` : `🌑 ${xingJun}黑道 (0分)`);
-            
-            // 5. 紫白飞星评分 (权重10分)
-            const dayStar = getDayPurpleStar(lunarInfo);
-            const yearStar = getYearPurpleStar(lunarInfo.lunarYear);
-            let ziBaiScore = 0;
-            
-            if([1, 6, 8, 9].includes(dayStar)) {
-                ziBaiScore = 10;
-                details.push(`💫 日紫白${dayStar} (+10分)`);
-            } else if([1, 6, 8, 9].includes(yearStar)) {
-                ziBaiScore = 5;
-                details.push(`✨ 年紫白${yearStar}吉星 (+5分)`);
-            } else if([2, 5].includes(dayStar)) {
-                ziBaiScore = -5;
-                details.push(`⚠️ 日紫白${dayStar}凶星 (-5分)`);
-            } else {
-                ziBaiScore = 0;
-                details.push(`⚪ 无吉凶星 (0分)`);
-            }
-            score += ziBaiScore;
-            
-            // 确定等级
-            let level = "";
-            let levelColor = "";
-            if(score >= 70) {
-                level = "极品吉日";
-                levelColor = "#ff6b6b";
-            } else if(score >= 55) {
-                level = "上吉";
-                levelColor = "#ffa502";
-            } else if(score >= 40) {
-                level = "中吉";
-                levelColor = "#2ed573";
-            } else {
-                level = "平吉";
-                levelColor = "#70a1ff";
-            }
-            
-            return {
-                totalScore: score,
-                excluded: false,
-                level: level,
-                levelColor: levelColor,
-                details: details,
-                jianChu: jianChu,
-                xingJun: xingJun,
-                isBuJiang: isBuJiang,
-                dayStar: dayStar,
-                yearStar: yearStar
-            };
-            
-        } catch (e) {
-            console.error("打分计算失败:", e);
-            return {
-                totalScore: 0,
-                excluded: true,
-                excludeReason: "计算错误",
-                details: ["计算出错"]
-            };
-        }
-    }
-
-
-
     // 获取指定日期的农历月份（返回农历月，1-12）
     function getLunarMonth(year, month, day) {
         try {
@@ -836,7 +523,7 @@
         return false;
     }
     
-    // 核心婚日判断（全部使用农历日期）- 简化版，只做基本筛选
+    // 核心婚日判断（全部使用农历日期）
     function isGoodWeddingDay(lunarYear, lunarMonth, lunarDay, femaleZodiac, maleZodiac, femaleDayNum, maleDayNum) {
         if (!femaleZodiac || !maleZodiac) {
             return false;
@@ -868,6 +555,7 @@
         if(liuChong[femaleDayZhiStr] === dayZhi || liuChong[maleDayZhiStr] === dayZhi) return false;
         
         // ✅ 新增：男方禁婚年判断
+        // 获取当年的地支
         const yearZhiIndex = (lunarYear - 1900) % 12;
         const yearZhiList = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
         const yearZhi = yearZhiList[yearZhiIndex];
@@ -875,12 +563,15 @@
         // 检查是否为男方禁婚年
         const forbiddenMonths = maleForbiddenYears[maleZodiac] || [];
         if(forbiddenMonths.includes(lunarMonth)) {
+            console.log(`排除：${lunarYear}年${lunarMonth}月为男方(${maleZodiac})禁婚月`);
             return false;
         }
         
         // ✅ 新增：本命三煞判断
+        // 检查日支是否犯男方本命三煞
         const sanShaZhis = benMingSanSha[maleZhi] || [];
         if(sanShaZhis.includes(dayZhi)) {
+            //console.log(`排除：日支${dayZhi}犯男方(${maleZodiac})本命三煞`);
             return false;
         }
         
@@ -893,7 +584,18 @@
         // 如果不是大/小利月，直接排除
         if(!isDaLi && !isXiaoLi) return false;
         
-        // 只要是大/小利月且无冲克，就是候选吉日（后续会打分排序）
+        // 计算评分用于排序或其他用途（可选）
+        let score = 1;
+        if(isDaLi) score += 5;
+        else if(isXiaoLi) score += 2;
+        
+        // 三合六合加分
+        if(sanHe[femaleZhi] && sanHe[femaleZhi].includes(dayZhi)) score += 3;
+        if(liuHe[femaleZhi] === dayZhi) score += 4;
+        if(sanHe[maleZhi] && sanHe[maleZhi].includes(dayZhi)) score += 1;
+        if(liuHe[maleZhi] === dayZhi) score += 2;
+        
+        // 只要是大/小利月且无冲克，就是吉日
         return true;
     }
     
@@ -902,9 +604,10 @@
         return zhiCycle[(dayNum-1)%12];
     }
     
-    // 根据公历年份范围生成吉日（返回农历日期数组，带打分）
+    // 根据公历年份范围生成吉日（返回农历日期数组）
     function generateWeddingDatesBySolarRange(startYear, startMonth, startDay, endYear, endMonth, endDay, femaleZodiac, maleZodiac, femaleDayNum, maleDayNum) {
-        let allCandidates = [];
+        let daliCandidates = [];
+        let xiaoliCandidates = [];
         
         const da = daLiMap[femaleZodiac] || [];
         const xiao = xiaoLiMap[femaleZodiac] || [];
@@ -912,7 +615,7 @@
         try {
             if (typeof Solar === 'undefined' || typeof Solar.fromYmdHms !== 'function') {
                 console.error('lunar.js 库未加载');
-                return { scored: [], dali: [], xiaoli: [] };
+                return { dali: [], xiaoli: [] };
             }
             
             // 遍历每一天
@@ -932,7 +635,7 @@
                     const lunarMonth = lunar.getMonth();
                     const lunarDay = lunar.getDay();
                     
-                    // 使用农历日期判断基本筛选条件
+                    // 使用农历日期判断
                     if(isGoodWeddingDay(lunarYear, lunarMonth, lunarDay, femaleZodiac, maleZodiac, femaleDayNum, maleDayNum)) {
                         const dateInfo = {
                             solarDate: new Date(currentDate),
@@ -943,22 +646,10 @@
                             isXiaoLi: xiao.includes(lunarMonth)
                         };
                         
-                        // 计算综合打分
-                        const scoreResult = calculateWeddingScore(dateInfo, femaleZodiac);
-                        
-                        // 只有未被排除的日期才加入候选列表
-                        if(!scoreResult.excluded) {
-                            dateInfo.score = scoreResult.totalScore;
-                            dateInfo.level = scoreResult.level;
-                            dateInfo.levelColor = scoreResult.levelColor;
-                            dateInfo.scoreDetails = scoreResult.details;
-                            dateInfo.jianChu = scoreResult.jianChu;
-                            dateInfo.xingJun = scoreResult.xingJun;
-                            dateInfo.isBuJiang = scoreResult.isBuJiang;
-                            dateInfo.dayStar = scoreResult.dayStar;
-                            dateInfo.yearStar = scoreResult.yearStar;
-                            
-                            allCandidates.push(dateInfo);
+                        if(dateInfo.isDaLi) {
+                            daliCandidates.push(dateInfo);
+                        } else if(dateInfo.isXiaoLi) {
+                            xiaoliCandidates.push(dateInfo);
                         }
                     }
                 } catch (e) {
@@ -972,15 +663,11 @@
             console.error('生成吉日失败:', e);
         }
         
-        // 按总分从高到低排序
-        allCandidates.sort((a,b) => b.score - a.score);
-        
-        // 分类为大/小利月（用于兼容旧代码）
-        const daliCandidates = allCandidates.filter(d => d.isDaLi);
-        const xiaoliCandidates = allCandidates.filter(d => d.isXiaoLi);
+        // 按日期排序
+        daliCandidates.sort((a,b) => a.solarDate - b.solarDate);
+        xiaoliCandidates.sort((a,b) => a.solarDate - b.solarDate);
         
         return {
-            scored: allCandidates,  // 所有已打分的候选日期（按分数排序）
             dali: daliCandidates,
             xiaoli: xiaoliCandidates
         };
@@ -1027,138 +714,207 @@
         return parts.join("，");
     }
     
-    // 渲染结果 - 以日历形式显示大利月和小利月，增加打分显示
+    // 渲染结果 - 以日历形式显示大利月和小利月
     function renderResults(datesData, femaleZodiac, rangeText) {
         const resultDiv = document.getElementById('resultArea');
-        const statsPanel = document.getElementById('statsPanel');
         const dateListDiv = document.getElementById('dateList');
         const rangeBadge = document.getElementById('rangeBadge');
         
-        const scoredDates = datesData.scored || [];
         const daliDates = datesData.dali || [];
         const xiaoliDates = datesData.xiaoli || [];
         
-        if(!scoredDates.length){
-            statsPanel.innerHTML = '';
+        if(!daliDates.length && !xiaoliDates.length){
             dateListDiv.innerHTML = '<div class="loading">😢 未筛选到合适婚期，可尝试扩大年份范围或调整出生日参数。</div>';
             resultDiv.style.display = 'block';
             rangeBadge.innerText = rangeText;
             return;
         }
         
+        let html = '';
         const { maleZodiac } = getCurrentProfile();
         
-        // 显示统计信息（独立面板）
-        const statsHtml = `
-            <div style="background:linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%); border-radius:20px; padding:15px 20px; border-left:5px solid #ff9800; box-shadow:0 4px 12px rgba(255,152,0,0.15);">
-                <h3 style="margin:0 0 10px 0; color:#e65100; font-size:1.1rem;">📊 择日统计</h3>
-                <div style="display:flex; flex-wrap:wrap; gap:15px; font-size:0.85rem; color:#6d4c41;">
-                    <span>✅ 总计候选：<strong>${scoredDates.length}</strong> 个吉日</span>
-                    <span>🌸 大利月：<strong>${daliDates.length}</strong> 个</span>
-                    <span>🌿 小利月：<strong>${xiaoliDates.length}</strong> 个</span>
-                    <span>🏆 最高分：<strong>${scoredDates[0].score}</strong> 分 (${scoredDates[0].level})</span>
-                </div>
-            </div>
-        `;
-        statsPanel.innerHTML = statsHtml;
-        
-        // 按分数等级分组显示
-        const groupedByLevel = {
-            "极品吉日": scoredDates.filter(d => d.score >= 70),
-            "上吉": scoredDates.filter(d => d.score >= 55 && d.score < 70),
-            "中吉": scoredDates.filter(d => d.score >= 40 && d.score < 55),
-            "平吉": scoredDates.filter(d => d.score < 40)
-        };
-        
-        let html = '';
-        for(let level in groupedByLevel) {
-            const levelDates = groupedByLevel[level];
-            if(levelDates.length > 0) {
-                let bgColor, borderColor, icon;
-                switch(level) {
-                    case "极品吉日":
-                        bgColor = "#fff5f5";
-                        borderColor = "#ff6b6b";
-                        icon = "🏆";
-                        break;
-                    case "上吉":
-                        bgColor = "#fff9e6";
-                        borderColor = "#ffa502";
-                        icon = "🌟";
-                        break;
-                    case "中吉":
-                        bgColor = "#f0fff4";
-                        borderColor = "#2ed573";
-                        icon = "✨";
-                        break;
-                    default:
-                        bgColor = "#f0f8ff";
-                        borderColor = "#70a1ff";
-                        icon = "📅";
-                }
-                
-                html += `
-                    <div style="margin-bottom:30px;">
-                        <div style="background:${bgColor}; border-radius:20px; padding:15px 20px; margin-bottom:15px; border-left:5px solid ${borderColor};">
-                            <h3 style="margin:0; color:${borderColor}; font-size:1.3rem;">${icon} ${level}（${levelDates.length}个）</h3>
-                            <p style="margin:8px 0 0 0; font-size:0.85rem; color:#666;">按综合评分从高到低排列</p>
-                        </div>
-                        ${renderScoredDateList(levelDates, femaleZodiac, maleZodiac)}
+        // 大利月区域
+        if(daliDates.length > 0) {
+            html += `
+                <div style="margin-bottom:35px;">
+                    <div style="background:linear-gradient(135deg, #ffe8d6 0%, #ffd4b8 100%); border-radius:20px; padding:15px 20px; margin-bottom:15px; border-left:5px solid #e67e50;">
+                        <h3 style="margin:0; color:#c45a30; font-size:1.3rem;">🌸 大利月吉日（上吉）</h3>
+                        <p style="margin:8px 0 0 0; font-size:0.85rem; color:#8b5a3c;">女方生肖，最佳嫁娶月日· 共${daliDates.length}个吉日</p>
                     </div>
-                `;
-            }
+                    ${renderCalendarView(daliDates, femaleZodiac, maleZodiac, 'dali')}
+                </div>
+            `;
+        }
+        
+        // 小利月区域
+        if(xiaoliDates.length > 0) {
+            html += `
+                <div style="margin-top:0px;">
+                    <div style="background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius:20px; padding:15px 20px; margin-bottom:15px; border-left:5px solid #66bb6a;">
+                        <h3 style="margin:0; color:#388e3c; font-size:1.3rem;">🌿 小利月吉日（次吉）</h3>
+                        <p style="margin:8px 0 0 0; font-size:0.85rem; color:#4a6b4a;">女方生肖，次佳嫁娶月份· 共${xiaoliDates.length}个吉日</p>
+                    </div>
+                    ${renderCalendarView(xiaoliDates, femaleZodiac, maleZodiac, 'xiaoli')}
+                </div>
+            `;
         }
         
         dateListDiv.innerHTML = html;
         resultDiv.style.display = 'block';
         rangeBadge.innerText = rangeText;
     }
-    // 渲染打分后的日期列表
-    function renderScoredDateList(dates, femaleZodiac, maleZodiac) {
+    
+    // 以日历形式渲染日期
+    function renderCalendarView(dates, femaleZodiac, maleZodiac, type) {
         if(!dates.length) return '';
         
-        let html = '<div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:18px;">';
-        
-        dates.forEach((dateInfo, index) => {
-            const displayInfo = formatDateDisplay(dateInfo, femaleZodiac);
-            const reason = getScoredReasonText(dateInfo, femaleZodiac, maleZodiac);
-            
-            html += `
-                <div class="date-card" style="border-left:4px solid ${dateInfo.levelColor}; position:relative;">
-                    <div style="position:absolute; top:-8px; right:-8px; background:${dateInfo.levelColor}; color:white; border-radius:50%; width:45px; height:45px; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.9rem; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
-                        ${dateInfo.score}
-                    </div>
-                    <strong>${displayInfo.ymd}</strong>
-                    <div style="margin-top:8px;">
-                        <span class="badge">${displayInfo.extra}</span>
-                        <span class="badge" style="background:${dateInfo.levelColor}; color:white;">${dateInfo.level}</span>
-                        ${dateInfo.isBuJiang ? '<span class="badge" style="background:#dac29c; color:#6b3a1c; font-weight:bold;">🏮 不将日</span>' : ''}
-                        <span class="badge">⭐ ${dateInfo.xingJun}</span>
-                        <span class="badge">📅 ${dateInfo.jianChu}日</span>
-                        <span class="badge">💫 日紫白${dateInfo.dayStar}</span>
-                    </div>
-                    <div class="reason">${reason}</div>
-                    <div style="margin-top:10px; font-size:0.75rem; color:#999; background:#f9f9f9; padding:8px; border-radius:12px;">
-                        <strong>评分详情：</strong><br>
-                        ${dateInfo.scoreDetails.join('<br>')}
-                    </div>
-                </div>
-            `;
+        // 按年月分组（使用公历年月用于日历显示）
+        const groupedByMonth = {};
+        dates.forEach(dateInfo => {
+            const solarDate = dateInfo.solarDate;
+            const year = solarDate.getFullYear();
+            const month = solarDate.getMonth() + 1;
+            const key = `${year}-${month}`;
+            if(!groupedByMonth[key]) {
+                groupedByMonth[key] = {
+                    year: year,
+                    month: month,
+                    dates: []
+                };
+            }
+            groupedByMonth[key].dates.push(dateInfo);
         });
+        
+        let html = '<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px;">';
+        
+        for(let key in groupedByMonth) {
+            const monthData = groupedByMonth[key];
+            html += renderMonthCalendar(monthData, femaleZodiac, maleZodiac, type);
+        }
         
         html += '</div>';
         return html;
     }
     
-    function getScoredReasonText(dateInfo, femaleZodiac, maleZodiac) {
-        let parts = [];
-        if(dateInfo.isDaLi) parts.push("✅ 值女命「大利月」");
-        else if(dateInfo.isXiaoLi) parts.push("✔️ 值女命「小利月」");
-        parts.push("📅 黄历宜嫁娶 · 无冲克");
-        parts.push("💞 日柱不与双方生肖及日支冲克");
-        parts.push("👫 避开男方禁婚月及本命三煞");
-        parts.push(`🎯 综合评分：${dateInfo.score}分 (${dateInfo.level})`);
-        return parts.join("，");
+    // 渲染单个月份的日历
+    function renderMonthCalendar(monthData, femaleZodiac, maleZodiac, type) {
+        const { year, month, dates } = monthData;
+        const monthNames = ["", "一月", "二月", "三月", "四月", "五月", "六月", 
+                           "七月", "八月", "九月", "十月", "十一月", "十二月"];
+        const weekdays = ["日", "一", "二", "三", "四", "五", "六"];
+        
+        // 获取该月第一天是星期几
+        const firstDay = new Date(year, month - 1, 1);
+        const startWeekday = firstDay.getDay();
+        
+        // 获取该月天数
+        const daysInMonth = new Date(year, month, 0).getDate();
+        
+        // 创建日期集合用于快速查找
+        const dateSet = new Set();
+        const dateInfoMap = {};
+        dates.forEach(dateInfo => {
+            const day = dateInfo.solarDate.getDate();
+            dateSet.add(day);
+            dateInfoMap[day] = dateInfo;
+        });
+        
+        const borderColor = type === 'dali' ? '#e67e50' : '#66bb6a';
+        const bgColor = type === 'dali' ? '#fff5f0' : '#f1f8e9';
+        
+        let html = `
+            <div style="background:white; border-radius:16px; padding:15px; box-shadow:0 3px 10px rgba(0,0,0,0.08); border:2px solid ${borderColor};">
+                <div style="text-align:center; font-weight:bold; color:${borderColor}; font-size:1.1rem; margin-bottom:10px; padding-bottom:8px; border-bottom:2px solid ${borderColor};">
+                    ${year}年 ${monthNames[month]}
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; text-align:center;">
+        `;
+        
+        // 星期标题
+        weekdays.forEach(wd => {
+            html += `<div style="font-size:0.75rem; color:#999; font-weight:bold; padding:4px 0;">${wd}</div>`;
+        });
+        
+        // 空白填充
+        for(let i = 0; i < startWeekday; i++) {
+            html += '<div></div>';
+        }
+        
+        // 日期格子
+        for(let day = 1; day <= daysInMonth; day++) {
+            if(dateSet.has(day)) {
+                const dateInfo = dateInfoMap[day];
+                const lunarDayStr = getLunarDayString(dateInfo.lunarDay);
+                const isWeekend = dateInfo.solarDate.getDay() === 0 || dateInfo.solarDate.getDay() === 6;
+                const bgStyle = isWeekend ? 'background:#fff3e0;' : `background:${bgColor};`;
+                
+                html += `
+                    <div style="${bgStyle} border-radius:8px; padding:6px 2px; cursor:pointer; position:relative; min-height:48px; display:flex; flex-direction:column; justify-content:center;" 
+                         title="${getFullDateInfo(dateInfo, femaleZodiac, maleZodiac)}">
+                        <div style="font-weight:bold; color:${borderColor}; font-size:0.95rem;">${day}</div>
+                        <div style="font-size:0.6rem; color:#999; margin-top:2px; min-height:12px;">${lunarDayStr || ''}</div>
+                    </div>
+                `;
+            } else {
+                html += '<div style="padding:6px 2px; color:#ddd; min-height:48px; display:flex; flex-direction:column; justify-content:center;"><div style="font-weight:bold;">' + day + '</div><div style="min-height:12px;"></div></div>';
+            }
+        }
+        
+        html += `
+                </div>
+                <div style="margin-top:8px; font-size:0.7rem; color:#999; text-align:center;">
+                    💡 点击日期查看详情
+                </div>
+            </div>
+        `;
+        
+        return html;
+    }
+    
+    // 获取农历日的中文表示
+    function getLunarDayString(lunarDay) {
+        const lunarDays = ["初一","初二","初三","初四","初五","初六","初七","初八","初九","初十",
+                          "十一","十二","十三","十四","十五","十六","十七","十八","十九","二十",
+                          "廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十"];
+        if (lunarDay >= 1 && lunarDay <= 30) {
+            return lunarDays[lunarDay - 1];
+        }
+        return '';
+    }
+    
+    // 获取完整的日期信息（用于tooltip）
+    function getFullDateInfo(dateInfo, femaleZodiac, maleZodiac) {
+        const solarDate = dateInfo.solarDate;
+        const year = solarDate.getFullYear();
+        const month = solarDate.getMonth() + 1;
+        const day = solarDate.getDate();
+        const weekdays = ["周日","周一","周二","周三","周四","周五","周六"];
+        const wd = weekdays[solarDate.getDay()];
+        
+        let lunarInfo = "";
+        try {
+            if (typeof Solar !== 'undefined' && typeof Solar.fromYmdHms === 'function') {
+                const solar = Solar.fromYmdHms(year, month, day, 12, 0, 0);
+                const lunar = solar.getLunar();
+                const yearGanZhi = lunar.getYearInGanZhi();
+                const lunarMonth = lunar.getMonthInChinese();
+                const lunarDay = lunar.getDayInChinese();
+                lunarInfo = `\n农历：${yearGanZhi}年 ${lunarMonth}月${lunarDay}`;
+            }
+        } catch (e) {
+            console.warn("获取农历信息失败:", e);
+        }
+        
+        let monthType = "";
+        if(dateInfo.isDaLi) {
+            monthType = "\n✅ 大利月（上吉）";
+        } else if(dateInfo.isXiaoLi) {
+            monthType = "\n✔️ 小利月（次吉）";
+        }
+        
+        const reason = getReasonText(dateInfo, femaleZodiac, maleZodiac);
+        
+        return `${year}年${month}月${day}日 ${wd}${lunarInfo}${monthType}\n\n${reason}`;
     }
     
     // 获取八字信息
