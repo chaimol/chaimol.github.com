@@ -1024,7 +1024,7 @@
         const dayName = lunarDayNames[lunarInfo.lunarDay - 1] || "初一";
         
         document.getElementById("displayLunarGanZhi").innerHTML = 
-            `农历${lunarInfo.yearGanZhi}年 ${monthName}月${dayName}`;
+            `农历${lunarInfo.yearGanZhi}年 ${lunarInfo.monthGanZhi}月 ${lunarInfo.dayGanZhi}日  ${monthName}月${dayName}`;
     }
     
     const picker = document.getElementById("targetDate");
