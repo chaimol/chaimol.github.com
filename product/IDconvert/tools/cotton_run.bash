@@ -9,6 +9,7 @@ IDconvertAD.bash Ghicr24 ZM24.pep Ghicr24_A Ghicr24_D
 IDconvertAD.bash 3-79.HAU_V2 AD2_HAUV2.pep Gbar_A Gbar_D
 IDconvertAD.bash Pima90 Pima90.pep GbM_A GbM_D
 IDconvertAD.bash TM-1_WHUV1 TM-1_WHUV1.pep Ghi_A Ghi_D
+IDconvertAD.bash TM-1_NAUV1.1 TM-1.NAU_NBI_V1.1.pep Gh_A Gh_D
 # 
 
 #以N244为参考
@@ -32,6 +33,11 @@ bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM-1_WHUV1.A -r N244.A 
 bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM-1_WHUV1.D -r N244.D --query-protein TM-1_WHUV1.D.pep --ref-protein N244.D.pep -n 2 -m 85
 cat TM-1_WHUV1.A.N244.A.xls TM-1_WHUV1.D.N244.D.xls >TM-1_WHUV1_N244.xls
 python3 id2json.py TM-1_WHUV1_N244.xls TM-1_WHUV1_N244.json TM-1_WHUV1 N244
+
+bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM-1_NAUV1.1.A -r N244.A --query-protein TM-1_NAUV1.1.A.pep --ref-protein N244.A.pep -n 2 -m 85
+bsub -q normal -n 24 -o r.out -e r.err IDconvert.bash -q TM-1_NAUV1.1.D -r N244.D --query-protein TM-1_NAUV1.1.D.pep --ref-protein N244.D.pep -n 2 -m 85
+cat TM-1_NAUV1.1.A.N244.A.xls TM-1_NAUV1.1.D.N244.D.xls >TM-1_NAUV1.1_N244.xls
+python3 id2json.py TM-1_NAUV1.1_N244.xls TM-1_NAUV1.1_N244.json TM-1_NAUV1.1 N244
 
 
 ##构建和拟南芥的转换的表 Arabidopsis_thaliana ，注意因为不是同一个物种，所以需要下调比对时的准确率要求，此处下调到50.
